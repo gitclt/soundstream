@@ -12,7 +12,6 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-   
       elevation: 0.0,
       flexibleSpace: Container(
         // height: 200,
@@ -32,38 +31,10 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
           bottom: Radius.circular(15),
         ),
       ),
-      actions: <Widget>[
-        IconButton(icon: const Icon(Icons.search), onPressed: () => {})
-      ],
+      // actions: <Widget>[
+      //   IconButton(icon: svgWidget('assets/svg/Bell.svg'), onPressed: () => {})
+      // ],
     );
-    // AppBar(
-    //   elevation: 0.0,
-    //   flexibleSpace: Container(
-    //     decoration: BoxDecoration(gradient: primaryColor),
-    //   ),
-    //   centerTitle: false,
-    //   leading: InkWell(
-    //       onTap: () {
-    //         Get.back();
-    //       },
-    //       child: svgWidget('assets/svg/back_arrow.svg')),
-    //   title: Text(
-    //     label,
-    //     style: const TextStyle(fontSize: 18, color: Colors.white),
-    //   ),
-    //   actions: [
-    //     widget ?? const SizedBox()
-    //     // Visibility(
-    //     //   visible: visibility!,
-    //     //   child: IconButton(
-    //     //       onPressed: () {
-    //     //         Get.toNamed(Routes.CART);
-    //     //       },
-    //     //       icon: svgWidget('assets/svg/shop_cart.svg')),
-    //     // ),
-    //     //   IconButton(onPressed: () {}, icon: svgWidget('assets/svg/search.svg')),
-    //   ],
-    // );
   }
 
   @override

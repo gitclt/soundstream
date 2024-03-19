@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class LoginTextField extends StatelessWidget {
   final String hintText;
   final bool? isEnable;
@@ -47,13 +46,13 @@ class LoginTextField extends StatelessWidget {
         //   LengthLimitingTextInputFormatter(10),
         // ],
         decoration: InputDecoration(
-          fillColor: const Color(0xFFF3F3F3),
+          fillColor: Colors.white,
           // contentPadding: EdgeInsets.symmetric(horizontal: 15),
           hintStyle: const TextStyle(
-            color: Color(0xff7b7b7b),
-            fontSize: 16,
+            color: Color(0xff87898E),
+            fontSize: 14,
             fontFamily: "Manrope",
-            fontWeight: FontWeight.w500,
+            fontWeight: FontWeight.w400,
           ),
           filled: true,
           isDense: true,
@@ -71,12 +70,13 @@ class LoginTextField extends StatelessWidget {
           //   borderSide: const BorderSide(color: Color(0xFFFFFFFF)),
           //   borderRadius: BorderRadius.circular(16.0),
           // ),
-          border: OutlineInputBorder(
-            borderSide: const BorderSide(
-              color: Color(0xFFF3F3F3),
-            ),
-            borderRadius: BorderRadius.circular(12.0),
-          ),
+          // border: OutlineInputBorder(
+          //   borderSide: const BorderSide(
+          //     color: Color(0xFFF3F3F3),
+          //   ),
+          //   borderRadius: BorderRadius.circular(12.0),
+          // ),
+
           enabledBorder: OutlineInputBorder(
             borderSide: const BorderSide(
               color: Color(0xFFF3F3F3),
