@@ -5,3 +5,5 @@ LinearGradient primaryColor = const LinearGradient(
   end: Alignment.centerRight,
   colors: [Color(0xFF4A00E0), Color(0xFF8E2DE2)],
 );
+
+const blueColor = Color(0xFF4A00E0);
