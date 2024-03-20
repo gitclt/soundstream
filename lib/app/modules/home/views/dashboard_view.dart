@@ -38,10 +38,12 @@ class DashboardView extends GetView<DashboardController> {
                 BottomNavigationBarItem(
                     icon: Padding(
                       padding: const EdgeInsets.only(bottom: 5.0),
-                      child: svgWidget('assets/svg/Home.svg',
-                          color: controller.selectedIndex.value == 0
-                              ? blueColor
-                              : Colors.black),
+                      child: controller.selectedIndex.value == 0
+                          ? svgWidget('assets/svg/Home.svg',
+                              color: controller.selectedIndex.value == 0
+                                  ? blueColor
+                                  : Colors.black)
+                          : svgWidget('assets/svg/home1.svg'),
                     ),
                     label: 'Home'),
                 // BottomNavigationBarItem(
@@ -56,10 +58,12 @@ class DashboardView extends GetView<DashboardController> {
                 BottomNavigationBarItem(
                     icon: Padding(
                       padding: const EdgeInsets.only(bottom: 5.0),
-                      child: svgWidget('assets/svg/circle_profile.svg',
-                          color: controller.selectedIndex.value == 1
-                              ? blueColor
-                              : Colors.black),
+                      child: controller.selectedIndex.value == 1
+                          ? svgWidget('assets/svg/circle_profile1.svg',
+                              color: controller.selectedIndex.value == 1
+                                  ? blueColor
+                                  : Colors.black)
+                          : svgWidget('assets/svg/circle_profile.svg'),
                     ),
                     label: 'Profile')
               ]),

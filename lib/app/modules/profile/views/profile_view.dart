@@ -13,23 +13,23 @@ class ProfileView extends GetView<ProfileController> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: const CommonAppBar(label: 'Profile'),
-        body: Column(
-          children: [
-            const SizedBox(
-              height: 20,
-            ),
-            const ProfileImgWidget(),
-            const SizedBox(
-              height: 10,
-            ),
-            colorText('Rajesh Raj', 24,
-                color: const Color(0xFF4D02E0), fontWeight: FontWeight.w700),
-            const SizedBox(
-              height: 25,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
+        body: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 20,
+              ),
+              const ProfileImgWidget(),
+              const SizedBox(
+                height: 10,
+              ),
+              colorText('Rajesh Raj', 24,
+                  color: const Color(0xFF4D02E0), fontWeight: FontWeight.w700),
+              const SizedBox(
+                height: 30,
+              ),
+              Container(
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: const BorderRadius.all(Radius.circular(8)),
@@ -71,8 +71,38 @@ class ProfileView extends GetView<ProfileController> {
                       ],
                     ),
                   )),
-            )
-          ],
+              const SizedBox(
+                height: 15,
+              ),
+              InkWell(
+                onTap: () {
+                  controller.logOut();
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: const BorderRadius.all(Radius.circular(8)),
+                      border: Border.all(width: 0.5),
+                      boxShadow: const [
+                        BoxShadow(
+                            color: Color.fromARGB(255, 240, 235, 235),
+                            blurRadius: 3.0,
+                            spreadRadius: 3),
+                      ]),
+                  child: Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        blackText('Logout', 16),
+                        svgWidget('assets/svg/logout.svg')
+                      ],
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
         ));
   }
 }
