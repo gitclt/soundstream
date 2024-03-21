@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:sound_stream_flutter_app/app/modules/home/views/home.dart';
 import 'package:sound_stream_flutter_app/app/modules/home/views/home_view.dart';
 import 'package:sound_stream_flutter_app/app/modules/profile/views/profile_view.dart';
 
