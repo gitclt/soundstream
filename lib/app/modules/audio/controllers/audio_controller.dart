@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class HomeController extends GetxController with GetTickerProviderStateMixin {
+class AudioController extends GetxController with GetTickerProviderStateMixin {
   late TabController mainController;
   var selectedIndex = 0.obs;
   var isIndex = 0.obs;
@@ -16,10 +16,4 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     mainController = TabController(length: 3, vsync: this);
   }
-
-  final List<String> option = [
-    'All',
-    'Speeches',
-    ' Songs',
-  ];
 }
