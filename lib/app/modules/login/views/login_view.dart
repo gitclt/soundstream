@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:sound_stream_flutter_app/app/routes/app_pages.dart';
 import 'package:sound_stream_flutter_app/common_widgets/button/gradient_button.dart';
@@ -40,37 +39,54 @@ class LoginView extends GetView<LoginController> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: 15,
-                ),
-                blackText('Sign In', 28, fontWeight: FontWeight.w700),
-                const SizedBox(
-                  height: 15,
-                ),
-                LoginTextField(
-                  prefixIcon: svgWidget('assets/svg/smartphone.svg'),
-                  hintText: 'Enter your Mobile Number',
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                LoginTextField(
-                  prefixIcon: svgWidget('assets/svg/vehicle.svg'),
-                  hintText: 'Enter your Vehicle Number',
-                ),
-                const SizedBox(
-                  height: 25,
-                ),
-                CommonButtonWidget(
-                  label: 'Sign in',
-                  onClick: () {
-                    Get.toNamed(Routes.HOME);
-                  },
-                ),
-              ],
+            child: Form(
+              key: controller.formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  blackText('Sign In', 28, fontWeight: FontWeight.w700),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  LoginTextField(
+                    prefixIcon: svgWidget('assets/svg/smartphone.svg'),
+                    hintText: 'Enter your Mobile Number',
+                    textEditingController: controller.mobileController,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter Mobile Number';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  LoginTextField(
+                    prefixIcon: svgWidget('assets/svg/vehicle.svg'),
+                    hintText: 'Enter your Vehicle Number',
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter Vehicle Number';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  CommonButtonWidget(
+                    label: 'Sign in',
+                    onClick: () {
+                      // if (controller.formKey.currentState!.validate()) {}
+                      Get.toNamed(Routes.HOME);
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ],
