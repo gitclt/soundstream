@@ -1,23 +1,90 @@
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sound_stream_flutter_app/app/api/api.dart';
+import 'package:sound_stream_flutter_app/app/api/base_url.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:io';
+
+import 'package:sound_stream_flutter_app/app/model/song_model.dart';
 
 class DataSyncingController extends GetxController {
-  //TODO: Implement DataSyncingController
-
-  final count = 0.obs;
+  List<SongData> songdata = [];
+  var isLoading = false.obs;
+  var allSongsDownloaded = false.obs;
+  String downlodPercntage = '';
+  RxInt songnameIndex = 0.obs;
   @override
-  void onInit() {
+  void onInit() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? locid = prefs.getString("location_id");
+    getSongs(locid.toString());
     super.onInit();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  getSongs(String locId) async {
+    isLoading(true);
+    try {
+      final response = await ApiProvider().getSong("", "", locId);
+      if (response != null) {
+        if (response.success == true) {
+          songdata.addAll(response.items.data);
+          isLoading(false);
+          for (var e in songdata) {
+            songnameIndex.value =
+                songdata.indexWhere((song) => song.fileName == e.fileName);
+            var currentSong = songdata[songnameIndex.value];
+            await downloadAndSaveAudio(BaseUrl().audioUrl, e.fileName,
+                (double progress) {
+              currentSong.downloadPercentage.value =
+                  (progress * 100).toStringAsFixed(0);
+            });
+            if (songdata.every((e) => e.downloadPercentage.value == '100')) {
+              allSongsDownloaded.value = true;
+            }
+          }
+        } else {}
+      }
+    } finally {}
   }
 
-  @override
-  void onClose() {
-    super.onClose();
+  // Future<void> downloadAndSaveAudio(String url, String fileName) async {
+  //   var audioUrl = "$url$fileName";
+  //   var response = await http.get(Uri.parse(audioUrl));
+  //   if (response.statusCode == 200) {
+  //     Directory appDocDir = await getApplicationDocumentsDirectory();
+  //     String filePath = '${appDocDir.path}/$fileName';
+  //     var file = File(filePath);
+  //     await file.writeAsBytes(response.bodyBytes);
+  //     await saveAudioFilePath(filePath);
+  //   }
+  // }
+  Future<void> downloadAndSaveAudio(
+      String url, String fileName, Function(double) onProgress) async {
+    var audioUrl = "$url$fileName";
+    var response = await http.get(Uri.parse(audioUrl));
+    if (response.statusCode == 200) {
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+      String filePath = '${appDocDir.path}/$fileName';
+      var file = File(filePath);
+      int totalBytes = response.contentLength ?? 0;
+      int bytesDownloaded = 0;
+      var sink = file.openWrite();
+      sink.add(response.bodyBytes);
+      bytesDownloaded += response.bodyBytes.length;
+      double progress = bytesDownloaded / totalBytes;
+      onProgress(progress);
+      await sink.close();
+      await saveAudioFilePath(filePath);
+    }
   }
 
-  void increment() => count.value++;
+  Future<void> saveAudioFilePath(String filePath) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> filePaths = prefs.getStringList('audioFilePaths') ?? [];
+    filePaths.add(filePath);
+    await prefs.setStringList('audioFilePaths', filePaths);
+    // prefs.setString("songs", jsonEncode(filePaths));
+  }
 }
