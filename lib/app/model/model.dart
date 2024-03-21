@@ -10,7 +10,7 @@ String loginResponseToJson(LoginResponse data) => json.encode(data.toJson());
 
 class LoginResponse {
     bool success;
-    List<Datum> data;
+    List<ProfileData> data;
     String message;
 
     LoginResponse({
@@ -21,7 +21,7 @@ class LoginResponse {
 
     factory LoginResponse.fromJson(Map<String, dynamic> json) => LoginResponse(
         success: json["success"],
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        data: List<ProfileData>.from(json["data"].map((x) => ProfileData.fromJson(x))),
         message: json["message"],
     );
 
@@ -32,7 +32,7 @@ class LoginResponse {
     };
 }
 
-class Datum {
+class ProfileData {
     int id;
     String name;
     String district;
@@ -49,7 +49,7 @@ class Datum {
     String createdAt;
     String updatedAt;
 
-    Datum({
+    ProfileData({
         required this.id,
         required this.name,
         required this.district,
@@ -67,7 +67,7 @@ class Datum {
         required this.updatedAt,
     });
 
-    factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+    factory ProfileData.fromJson(Map<String, dynamic> json) => ProfileData(
         id: json["id"],
         name: json["name"],
         district: json["district"],

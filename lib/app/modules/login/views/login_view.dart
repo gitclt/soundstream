@@ -68,6 +68,7 @@ class LoginView extends GetView<LoginController> {
                   LoginTextField(
                     prefixIcon: svgWidget('assets/svg/vehicle.svg'),
                     hintText: 'Enter your Vehicle Number',
+                    textEditingController: controller.vehicleController,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Please enter Vehicle Number';
@@ -81,8 +82,10 @@ class LoginView extends GetView<LoginController> {
                   CommonButtonWidget(
                     label: 'Sign in',
                     onClick: () {
-                      // if (controller.formKey.currentState!.validate()) {}
-                      Get.toNamed(Routes.HOME);
+                      if (controller.formKey.currentState!.validate()) {
+                        controller.login();
+                      }
+                      // Get.toNamed(Routes.HOME);
                     },
                   ),
                 ],
