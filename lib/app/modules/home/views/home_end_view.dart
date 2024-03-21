@@ -31,6 +31,7 @@ class EndView extends GetView<HomeController> {
                   ],
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,16 +90,8 @@ class EndView extends GetView<HomeController> {
         Expanded(
             child: Padding(
           padding: const EdgeInsets.only(left: 20, right: 20, top: 50),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              blackText('Start your Trip \nto see all Features', 22,
-                  fontWeight: FontWeight.w700),
-              const SizedBox(
-                width: 15,
-              ),
-            ],
-          ),
+          child: blackText('Start your Trip to\n see all Features', 22,
+              fontWeight: FontWeight.w700),
         )),
       ]),
     );
@@ -122,7 +115,7 @@ class Rowtext extends StatelessWidget {
         const SizedBox(
           width: 5,
         ),
-        colorText(title, 14, color: Colors.white, fontWeight: FontWeight.w500),
+        colorText(title, 12, color: Colors.white, fontWeight: FontWeight.w500),
       ],
     );
   }
