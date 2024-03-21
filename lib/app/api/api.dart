@@ -11,7 +11,7 @@ class ApiProvider {
   ) async {
     try {
       final response = await HttpApiConnect()
-          .httpGetApi("vehicle_login?mobile=$mobile&vehicle_no=$vehicleNo");
+          .getApi("vehicle_login?mobile=$mobile&vehicle_no=$vehicleNo");
 
       if (response.statusCode == 200) {
         var data = response.body;
@@ -27,7 +27,7 @@ class ApiProvider {
   Future<LoginResponse?> getProfile(String mobile) async {
     try {
       final response =
-          await HttpApiConnect().httpGetApi("vehicle_profile?mobile=$mobile");
+          await HttpApiConnect().getApi("vehicle_profile?mobile=$mobile");
 
       if (response.statusCode == 200) {
         var data = response.body;
@@ -42,8 +42,8 @@ class ApiProvider {
 
   Future<SongModel?> getSong(String catId, String keyword, String locId) async {
     try {
-      final response = await HttpApiConnect().httpGetApi(
-          "items?cat_id=$catId&keyword=$keyword&location_id=$locId");
+      final response = await HttpApiConnect()
+          .getApi("items?cat_id=$catId&keyword=$keyword&location_id=$locId");
 
       if (response.statusCode == 200) {
         var data = response.body;

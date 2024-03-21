@@ -28,10 +28,7 @@ class LoginController extends GetxController {
               'location_id', response.data.first.locationId.toString());
           prefs.setString('mobile', response.data.first.mobile.toString());
           prefs.setString("profile", jsonEncode(response.data));
-          final res = await getSongs(response.data.first.locationId.toString());
-          if (res != null) {
-            Get.offAllNamed(Routes.SPLASH);
-          }
+          Get.offAllNamed(Routes.SPLASH);
         } else {
           isLoading(false);
           toast(response.message);
@@ -53,15 +50,5 @@ class LoginController extends GetxController {
   //   }
   // }
 
-  getSongs(String locId) async {
-    try {
-      final response = await ApiProvider().getSong("", "", locId);
-      if (response != null) {
-        if (response.success == true) {
-          final prefs = await SharedPreferences.getInstance();
-          prefs.setString("songs", jsonEncode(response.items));
-        } else {}
-      }
-    } finally {}
-  }
+ 
 }
