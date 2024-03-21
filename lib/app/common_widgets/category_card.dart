@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sound_stream_flutter_app/app/modules/home/controllers/home_controller.dart';
 import 'package:sound_stream_flutter_app/app/routes/app_pages.dart';
 import 'package:sound_stream_flutter_app/common_widgets/svg_widget/svg_widget.dart';
 import 'package:sound_stream_flutter_app/common_widgets/text/text.dart';
 
-class CategoryBuilder extends StatelessWidget {
+class CategoryBuilder extends GetView<HomeController> {
   const CategoryBuilder({Key? key});
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: 10,
+      itemCount: controller.songDataList.length,
       itemBuilder: (context, index) {
         return const CategoryCard().paddingAll(3);
       },
@@ -18,7 +19,7 @@ class CategoryBuilder extends StatelessWidget {
   }
 }
 
-class CategoryCard extends StatelessWidget {
+class CategoryCard extends GetView<HomeController> {
   const CategoryCard({
     super.key,
   });

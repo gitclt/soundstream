@@ -66,6 +66,15 @@ class HttpApiConnect {
     }
   }
 
+  Future<dynamic> getApi(String url) async {
+    final response = await http.get(Uri.parse('${BaseUrl().baseUrl}$url'));
+    if (response.statusCode != 200) {
+      return ErrorHandleError().errorHandleError(response);
+    } else {
+      return response;
+    }
+  }
+
   Future<dynamic> putMethord(String urls, var add) async {
     final url = Uri.parse("${BaseUrl().baseUrl}$urls");
 
