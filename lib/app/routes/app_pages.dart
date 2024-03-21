@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 
 import '../modules/audio/bindings/audio_binding.dart';
 import '../modules/audio/views/audio_view.dart';
+import '../modules/data_syncing/bindings/data_syncing_binding.dart';
+import '../modules/data_syncing/views/data_syncing_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/dashboard_view.dart';
 import '../modules/login/bindings/login_binding.dart';
@@ -44,6 +46,11 @@ class AppPages {
       name: _Paths.AUDIO,
       page: () => const AudioView(),
       binding: AudioBinding(),
+    ),
+    GetPage(
+      name: _Paths.DATA_SYNCING,
+      page: () => const DataSyncingView(),
+      binding: DataSyncingBinding(),
     ),
   ];
 }
