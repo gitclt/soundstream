@@ -16,11 +16,12 @@ class HomeView extends GetView<HomeController> {
     return Scaffold(
       body: Column(children: [
         HomeHeader(
-          
+            height: 150,
+            stackheight: 100,
             homecard: const HomeCard(
-          name: 'Rajesh Raj',
-          number: 'KL11 N 6789',
-        )),
+              name: 'Rajesh Raj',
+              number: 'KL11 N 6789',
+            )),
         Expanded(
             child: Padding(
           padding: const EdgeInsets.only(left: 20, right: 20, top: 50),

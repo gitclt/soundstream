@@ -20,6 +20,8 @@ class StartView extends GetView<HomeController> {
       body: Column(
         children: [
           HomeHeader(
+              height: 180,
+              stackheight: 140,
               feild: Padding(
                 padding: const EdgeInsets.only(top: 60, left: 15, right: 15),
                 child: Column(children: [
