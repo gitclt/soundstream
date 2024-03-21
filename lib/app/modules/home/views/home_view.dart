@@ -16,6 +16,7 @@ class HomeView extends GetView<HomeController> {
     return Scaffold(
       body: Column(children: [
         HomeHeader(
+          
             homecard: const HomeCard(
           name: 'Rajesh Raj',
           number: 'KL11 N 6789',

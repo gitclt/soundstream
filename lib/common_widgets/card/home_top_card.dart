@@ -1,13 +1,16 @@
 import 'package:flutter/widgets.dart';
 import 'package:sound_stream_flutter_app/constrains/app_color.dart';
 
+// ignore: must_be_immutable
 class HomeHeader extends StatelessWidget {
   final Widget homecard;
+  final double? height;
   Widget? feild;
   HomeHeader({
     super.key,
     required this.homecard,
     this.feild,
+    this.height = 220,
   });
 
   @override
@@ -16,7 +19,7 @@ class HomeHeader extends StatelessWidget {
       clipBehavior: Clip.none,
       children: [
         Container(
-          height: 200,
+          height: height,
           decoration: BoxDecoration(
             gradient: primaryColor,
             borderRadius: const BorderRadius.vertical(
@@ -25,7 +28,7 @@ class HomeHeader extends StatelessWidget {
           ),
           child: feild,
         ),
-        Positioned(left: 20, right: 20, top: 150, child: homecard)
+        Positioned(left: 20, right: 20, top: 160, child: homecard)
       ],
     );
   }
