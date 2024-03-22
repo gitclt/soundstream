@@ -76,7 +76,8 @@ class ProfileView extends GetView<ProfileController> {
               ),
               InkWell(
                 onTap: () {
-                  controller.logOut();
+                  
+                  controller.logout();
                 },
                 child: Container(
                   decoration: BoxDecoration(

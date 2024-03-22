@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:sound_stream_flutter_app/app/common_widgets/audio_play_button.dart';
-import 'package:sound_stream_flutter_app/app/common_widgets/category_card.dart';
 import 'package:sound_stream_flutter_app/app/common_widgets/tab_bar.dart';
+import 'package:sound_stream_flutter_app/app/modules/audio/views/audio_tab.dart';
 import 'package:sound_stream_flutter_app/constrains/app_color.dart';
-
 import '../controllers/audio_controller.dart';
 
 class AudioView extends GetView<AudioController> {
@@ -91,9 +89,9 @@ class AudioView extends GetView<AudioController> {
                     controller: controller.mainController,
                     physics: const NeverScrollableScrollPhysics(),
                     children: const [
-                      CategoryBuilder(),
-                      CategoryBuilder(),
-                      CategoryBuilder(),
+                      AudioBuilder(),
+                      AudioBuilder(),
+                      AudioBuilder(),
                     ],
                   )),
                 ]),

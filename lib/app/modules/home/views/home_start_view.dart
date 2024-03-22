@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sound_stream_flutter_app/app/common_widgets/candidate_player_button.dart';
 import 'package:sound_stream_flutter_app/app/common_widgets/category_card.dart';
 import 'package:sound_stream_flutter_app/app/common_widgets/play_audio_button.dart';
 import 'package:sound_stream_flutter_app/app/common_widgets/tab_bar.dart';
 import 'package:sound_stream_flutter_app/app/modules/home/views/custom_switch.dart';
 import 'package:sound_stream_flutter_app/app/modules/home/views/home_end_view.dart';
+import 'package:sound_stream_flutter_app/app/routes/app_pages.dart';
 import 'package:sound_stream_flutter_app/common_widgets/card/home_card.dart';
 import 'package:sound_stream_flutter_app/common_widgets/card/home_top_card.dart';
 import 'package:sound_stream_flutter_app/common_widgets/svg_widget/svg_widget.dart';
@@ -34,7 +36,15 @@ class StartView extends GetView<HomeController> {
                           Get.to(const EndView());
                         },
                       ),
-                      InkWell(child: svgWidget('assets/svg/sync.svg'))
+                      InkWell(
+                          onTap: () async {
+                            final res = await Get.toNamed(Routes.DATA_SYNCING,
+                                arguments: "sync");
+                            if (res == true) {
+                              controller.getSongData();
+                            }
+                          },
+                          child: svgWidget('assets/svg/sync.svg'))
                     ],
                   ),
                   Row(
@@ -73,7 +83,8 @@ class StartView extends GetView<HomeController> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const HomePlayButton(),
+                    const HomePlayButton().paddingOnly(bottom: 30),
+                    const CandidateAudioPlayButton(),
                     blackText('Categories', 20, fontWeight: FontWeight.w700)
                         .paddingSymmetric(vertical: 20),
                     SizedBox(

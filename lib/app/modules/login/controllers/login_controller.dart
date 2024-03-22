@@ -28,7 +28,7 @@ class LoginController extends GetxController {
               'location_id', response.data.first.locationId.toString());
           prefs.setString('mobile', response.data.first.mobile.toString());
           prefs.setString("profile", jsonEncode(response.data));
-          Get.offAllNamed(Routes.SPLASH);
+          Get.offAllNamed(Routes.DATA_SYNCING, arguments: "");
         } else {
           isLoading(false);
           toast(response.message);
@@ -49,6 +49,4 @@ class LoginController extends GetxController {
   //         .toList();
   //   }
   // }
-
- 
 }

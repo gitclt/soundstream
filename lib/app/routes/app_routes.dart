@@ -11,6 +11,7 @@ abstract class Routes {
   static const PROFILE = _Paths.PROFILE;
   static const AUDIO = _Paths.AUDIO;
   static const DATA_SYNCING = _Paths.DATA_SYNCING;
+  static const HOME_START = _Paths.HOME_START;
 }
 
 abstract class _Paths {
@@ -21,4 +22,5 @@ abstract class _Paths {
   static const PROFILE = '/profile';
   static const AUDIO = '/audio';
   static const DATA_SYNCING = '/data-syncing';
+  static const HOME_START = '/home-start';
 }
