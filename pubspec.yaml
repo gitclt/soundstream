@@ -25,9 +25,6 @@ dependencies:
   shared_preferences: ^2.2.2
   percent_indicator: ^4.0.1
   path_provider: ^2.1.2
-  google_maps_flutter: ^2.2.3
-  geolocator: ^10.0.1
-  geocoding: ^2.1.0
   audioplayers: ^5.2.1
 
 dev_dependencies:
