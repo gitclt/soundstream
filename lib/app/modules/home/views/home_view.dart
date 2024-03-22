@@ -38,7 +38,6 @@ class HomeView extends GetView<HomeController> {
                 value: false,
                 onChanged: (value) {
                   controller.getSongData();
-                  ;
                   Get.to(const StartView());
                 },
               )

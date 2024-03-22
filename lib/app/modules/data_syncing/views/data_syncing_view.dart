@@ -29,25 +29,44 @@ class DataSyncingView extends GetView<DataSyncingController> {
           const SizedBox(
             height: 15,
           ),
-          Obx(() => Slider(
-                value: controller.songdata
-                    .where(
-                        (element) => element.downloadPercentage.value == "100")
-                    .length
-                    .toDouble(),
-                activeColor: const Color(0xffFF9737),
-                inactiveColor: const Color(0xffFF9737).withOpacity(0.1),
-                onChanged: (value) async {},
-                min: 0,
-                max: controller.songdata.length.toDouble(),
-              )),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Obx(
+                () => controller.isLoading.value
+                    ? const Center()
+                    : colorText(
+                            "${controller.calculatePercentage(int.parse(controller.songdata.where((element) => element.downloadPercentage.value == "100").length.toString()), int.parse(controller.songdata.length.toString())).toStringAsFixed(0)} % Done",
+                            15,
+                            fontWeight: FontWeight.w500,
+                            color: const Color(0xffFF9737))
+                        .paddingOnly(left: 10),
+              )
+            ],
+          ).paddingOnly(right: 15),
+          Obx(
+            () => controller.isLoading.value
+                ? const Center()
+                : Slider(
+                    value: controller.songdata
+                        .where((element) =>
+                            element.downloadPercentage.value == "100")
+                        .length
+                        .toDouble(),
+                    activeColor: const Color(0xffFF9737),
+                    inactiveColor: const Color(0xffFF9737).withOpacity(0.1),
+                    onChanged: (value) async {},
+                    min: 0,
+                    max: controller.songdata.length.toDouble(),
+                  ),
+          ),
           const SizedBox(
             height: 15,
           ),
           Expanded(
               child: Obx(
             () => controller.isLoading.value
-                ? const CircularProgressIndicator()
+                ? const Center(child: CircularProgressIndicator())
                 : ListView.builder(
                     itemCount: controller.songdata.length,
                     itemBuilder: (context, index) {
@@ -127,7 +146,11 @@ class DataSyncingView extends GetView<DataSyncingController> {
                 ? Center(
                     child: InkWell(
                       onTap: () {
-                        Get.offAllNamed(Routes.SPLASH);
+                        if (controller.arg == "sync") {
+                          Get.back(result: true);
+                        } else {
+                          Get.offAllNamed(Routes.SPLASH);
+                        }
                       },
                       child: Container(
                         height: 60,

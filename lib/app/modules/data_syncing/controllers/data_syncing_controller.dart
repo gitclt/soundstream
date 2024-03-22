@@ -11,10 +11,12 @@ import 'package:sound_stream_flutter_app/app/model/song_model.dart';
 
 class DataSyncingController extends GetxController {
   List<SongData> songdata = [];
+  List<String> songDataList = [];
   var isLoading = false.obs;
   var allSongsDownloaded = false.obs;
   String downlodPercntage = '';
   RxInt songnameIndex = 0.obs;
+  final arg = Get.arguments;
   @override
   void onInit() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -31,15 +33,35 @@ class DataSyncingController extends GetxController {
         if (response.success == true) {
           songdata.addAll(response.items.data);
           isLoading(false);
+
+          if (Get.arguments == "sync") {
+            songDataList.clear();
+            SharedPreferences sharedPreferences =
+                await SharedPreferences.getInstance();
+            if (sharedPreferences.containsKey("audioFilePaths")) {
+              songDataList =
+                  sharedPreferences.getStringList('audioFilePaths') ?? [];
+            }
+            for (var song in songdata) {
+              var index = songDataList.indexWhere(
+                  (element) => element.split("/").last == song.fileName);
+              if (index != -1 && song.downloadPercentage.value != "100") {
+                song.downloadPercentage.value = "100";
+              }
+            }
+          }
           for (var e in songdata) {
             songnameIndex.value =
                 songdata.indexWhere((song) => song.fileName == e.fileName);
             var currentSong = songdata[songnameIndex.value];
-            await downloadAndSaveAudio(BaseUrl().audioUrl, e.fileName,
-                (double progress) {
-              currentSong.downloadPercentage.value =
-                  (progress * 100).toStringAsFixed(0);
-            });
+            if (e.downloadPercentage.value != "100") {
+              await downloadAndSaveAudio(BaseUrl().audioUrl, e.fileName,
+                  (double progress) {
+                currentSong.downloadPercentage.value =
+                    (progress * 100).toStringAsFixed(0);
+              });
+            }
+
             if (songdata.every((e) => e.downloadPercentage.value == '100')) {
               allSongsDownloaded.value = true;
             }
@@ -49,17 +71,6 @@ class DataSyncingController extends GetxController {
     } finally {}
   }
 
-  // Future<void> downloadAndSaveAudio(String url, String fileName) async {
-  //   var audioUrl = "$url$fileName";
-  //   var response = await http.get(Uri.parse(audioUrl));
-  //   if (response.statusCode == 200) {
-  //     Directory appDocDir = await getApplicationDocumentsDirectory();
-  //     String filePath = '${appDocDir.path}/$fileName';
-  //     var file = File(filePath);
-  //     await file.writeAsBytes(response.bodyBytes);
-  //     await saveAudioFilePath(filePath);
-  //   }
-  // }
   Future<void> downloadAndSaveAudio(
       String url, String fileName, Function(double) onProgress) async {
     var audioUrl = "$url$fileName";
@@ -86,5 +97,13 @@ class DataSyncingController extends GetxController {
     filePaths.add(filePath);
     await prefs.setStringList('audioFilePaths', filePaths);
     // prefs.setString("songs", jsonEncode(filePaths));
+  }
+
+  double calculatePercentage(int songsWithFullDownload, int totalSongs) {
+    if (songsWithFullDownload == 0) {
+      return 0;
+    } else {
+      return (songsWithFullDownload / totalSongs) * 100;
+    }
   }
 }
