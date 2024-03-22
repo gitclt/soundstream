@@ -36,9 +36,9 @@ class HomeView extends GetView<HomeController> {
               ),
               CustomSwitch(
                 value: false,
-                onChanged: (value) {
+                onChanged: (value) async {
                   controller.getSongData();
-                  ;
+                
                   Get.to(const StartView());
                 },
               )
