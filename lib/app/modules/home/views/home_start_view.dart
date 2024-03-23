@@ -7,6 +7,7 @@ import 'package:sound_stream_flutter_app/app/common_widgets/tab_bar.dart';
 import 'package:sound_stream_flutter_app/app/modules/home/views/custom_switch.dart';
 import 'package:sound_stream_flutter_app/app/modules/home/views/home_end_view.dart';
 import 'package:sound_stream_flutter_app/app/routes/app_pages.dart';
+import 'package:sound_stream_flutter_app/app/service/sessio.dart';
 import 'package:sound_stream_flutter_app/common_widgets/card/home_card.dart';
 import 'package:sound_stream_flutter_app/common_widgets/card/home_top_card.dart';
 import 'package:sound_stream_flutter_app/common_widgets/svg_widget/svg_widget.dart';
@@ -31,9 +32,11 @@ class StartView extends GetView<HomeController> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       CustomSwitch(
-                        value: true,
+                        value: Session.isCheckin,
                         onChanged: (value) {
-                          Get.to(const EndView());
+                          controller.getCheckIn();
+                         
+                          // Get.to(const EndView());
                         },
                       ),
                       InkWell(
@@ -53,7 +56,7 @@ class StartView extends GetView<HomeController> {
                       const SizedBox(
                         width: 5,
                       ),
-                      colorText('Nadakkavu, Kozhikode', 14,
+                      colorText(Session.place, 14,
                           color: Colors.white, fontWeight: FontWeight.w500),
                       const SizedBox(
                         width: 20,
@@ -62,7 +65,7 @@ class StartView extends GetView<HomeController> {
                       const SizedBox(
                         width: 5,
                       ),
-                      colorText('12:30', 14,
+                      colorText(Session.time, 14,
                           color: Colors.white, fontWeight: FontWeight.w500),
                     ],
                   ).paddingOnly(

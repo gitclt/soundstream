@@ -67,8 +67,9 @@ class ApiProvider {
     String longi,
   ) async {
     var add = {
+      "vehicle_id": vehId,
       "location_id": locId,
-      "date": date,
+      "date": "2024-03-26",
       "check_in_time": time,
       "check_in_location": place,
       "check_in_lat": lat,

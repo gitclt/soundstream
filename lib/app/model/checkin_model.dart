@@ -1,5 +1,3 @@
-
-
 import 'dart:convert';
 
 CheckInModel checkInModelFromJson(String str) =>
@@ -36,7 +34,7 @@ class CheckInData {
   int id;
   int vehicleId;
   int locationId;
-  DateTime date;
+  String date;
   String checkInTime;
   String checkInLocation;
   double checkInLat;
@@ -75,28 +73,27 @@ class CheckInData {
         id: json["id"],
         vehicleId: json["vehicle_id"],
         locationId: json["location_id"],
-        date: DateTime.parse(json["date"]),
-        checkInTime: json["check_in_time"],
+        date: json["date"] ?? "",
+        checkInTime: json["check_in_time"] ?? "",
         checkInLocation: json["check_in_location"],
-        checkInLat: json["check_in_lat"]?.toDouble(),
-        checkInLog: json["check_in_log"]?.toDouble(),
-        checkOutTime: json["check_out_time"],
-        checkOutLocation: json["check_out_location"],
-        checkOutLat: json["check_out_lat"]?.toDouble(),
-        checkOutLog: json["check_out_log"]?.toDouble(),
-        duration: json["duration"],
-        createdAt: json["created_at"],
-        updatedAt: json["updated_at"],
-        createdBy: json["created_by"],
-        updatedBy: json["updated_by"],
+        checkInLat: json["check_in_lat"] ?? 0,
+        checkInLog: json["check_in_log"] ?? 0,
+        checkOutTime: json["check_out_time"] ?? "",
+        checkOutLocation: json["check_out_location"] ?? "",
+        checkOutLat: json["check_out_lat"] ?? 0,
+        checkOutLog: json["check_out_log"] ?? 0,
+        duration: json["duration"] ?? "",
+        createdAt: json["created_at"] ?? "",
+        updatedAt: json["updated_at"] ?? "",
+        createdBy: json["created_by"] ?? "",
+        updatedBy: json["updated_by"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "vehicle_id": vehicleId,
         "location_id": locationId,
-        "date":
-            "${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
+        "date": date,
         "check_in_time": checkInTime,
         "check_in_location": checkInLocation,
         "check_in_lat": checkInLat,

@@ -13,6 +13,7 @@ class CustomSwitch extends StatefulWidget {
 
 class CustomSwitchState extends State<CustomSwitch>
     with SingleTickerProviderStateMixin {
+  // ignore: unused_field
   late Animation _circleAnimation;
   late AnimationController _animationController;
 
@@ -49,28 +50,35 @@ class CustomSwitchState extends State<CustomSwitch>
             height: 28.0,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(24.0),
-              color: _circleAnimation.value == Alignment.centerLeft
+              color: widget.value == false
                   ? const Color(0xFFA5A5A5)
                   : const Color(0xFFFF9737),
             ),
             child: Row(
               children: [
-                Container(
-                  alignment: widget.value
-                      ? Alignment.centerRight
-                      : Alignment.centerLeft,
-                  width: 24.0,
-                  height: 24.0,
-                  decoration: const BoxDecoration(
-                      shape: BoxShape.circle, color: Colors.white),
-                ),
+                if (widget.value == false)
+                  Container(
+                    alignment: Alignment.centerRight,
+                    width: 24.0,
+                    height: 24.0,
+                    decoration: const BoxDecoration(
+                        shape: BoxShape.circle, color: Colors.white),
+                  ),
                 Text(
                   widget.value == true ? "Stop" : "Start",
                   style: const TextStyle(
                       color: Colors.white,
                       fontSize: 14,
                       fontWeight: FontWeight.w500),
-                ).paddingSymmetric(horizontal: 8),
+                ).paddingSymmetric(horizontal: 12),
+                if (widget.value == true)
+                  Container(
+                    alignment: Alignment.centerRight,
+                    width: 24.0,
+                    height: 24.0,
+                    decoration: const BoxDecoration(
+                        shape: BoxShape.circle, color: Colors.white),
+                  ),
               ],
             ),
           ),

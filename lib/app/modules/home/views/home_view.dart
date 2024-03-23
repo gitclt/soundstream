@@ -31,14 +31,13 @@ class HomeView extends GetView<HomeController> {
               const SizedBox(
                 width: 15,
               ),
-              CustomSwitch(
-                value: false,
-                onChanged: (value) async {
-                  controller.getSongData();
-                  await controller.fetchLocation();
-                  // Get.to(const StartView());
-                },
-              )
+              Obx(() => CustomSwitch(
+                    value: controller.isCheckin.value,
+                    onChanged: (value) async {
+                      controller.getSongData();
+                      await controller.fetchLocation();
+                    },
+                  ))
             ],
           ),
         )),
