@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:sound_stream_flutter_app/app/modules/home/views/custom_switch.dart';
-import 'package:sound_stream_flutter_app/app/modules/home/views/home_start_view.dart';
 import 'package:sound_stream_flutter_app/common_widgets/card/home_card.dart';
 import 'package:sound_stream_flutter_app/common_widgets/card/home_top_card.dart';
 import 'package:sound_stream_flutter_app/common_widgets/text/text.dart';
-
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -38,8 +35,8 @@ class HomeView extends GetView<HomeController> {
                 value: false,
                 onChanged: (value) async {
                   controller.getSongData();
-             await     controller.fetchLocation();
-                  Get.to(const StartView());
+                  await controller.fetchLocation();
+                  // Get.to(const StartView());
                 },
               )
             ],
