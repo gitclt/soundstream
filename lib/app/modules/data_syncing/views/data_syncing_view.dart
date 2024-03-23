@@ -22,7 +22,7 @@ class DataSyncingView extends GetView<DataSyncingController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             const HomeCard(
