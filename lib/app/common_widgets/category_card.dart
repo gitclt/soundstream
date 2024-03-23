@@ -20,6 +20,7 @@ class CategoryBuilder extends GetView<HomeController> {
                 name: '',
                 ontap: () {
                   controller.audioPlayer.stop();
+                   controller.audioPlayer1.stop();
                   Get.toNamed(Routes.AUDIO, arguments: [
                     controller.songDataList[index],
                     controller.songDataList,

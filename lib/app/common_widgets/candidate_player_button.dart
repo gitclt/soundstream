@@ -1,11 +1,56 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sound_stream_flutter_app/app/modules/home/controllers/home_controller.dart';
+import 'package:sound_stream_flutter_app/app/service/audio.dart';
 import 'package:sound_stream_flutter_app/common_widgets/svg_widget/svg_widget.dart';
 import 'package:sound_stream_flutter_app/common_widgets/text/text.dart';
 import 'package:sound_stream_flutter_app/constrains/app_color.dart';
 
-class CandidateAudioPlayButton extends StatelessWidget {
+class CandidateAudioPlayButton extends StatefulWidget {
   const CandidateAudioPlayButton({super.key});
+
+  @override
+  State<CandidateAudioPlayButton> createState() =>
+      _CandidateAudioPlayButtonState();
+}
+
+class _CandidateAudioPlayButtonState extends State<CandidateAudioPlayButton> {
+  AudioPlayerService audioController = AudioPlayerService();
+  bool isState = false;
+  bool isPlaying = false;
+  List<String> existingFilePaths = [];
+  Duration duartion = Duration.zero;
+  Duration position = Duration.zero;
+  int currentIndex = 0;
+  final HomeController controller = Get.find();
+  @override
+  void initState() {
+    audioController.playlist = controller.candiateSong;
+    controller.audioPlayer1.onPlayerStateChanged.listen((event) {
+      if (event == PlayerState.playing) {
+        setState(() {
+          isPlaying = true;
+        });
+      } else {
+        setState(() {
+          isPlaying = false;
+        });
+      }
+    });
+
+    controller.audioPlayer1.onDurationChanged.listen((event) {
+      setState(() {
+        duartion = event;
+      });
+      controller.audioPlayer1.onPositionChanged.listen((Duration positio) {
+        setState(() {
+          position = positio;
+        });
+      });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,12 +89,17 @@ class CandidateAudioPlayButton extends StatelessWidget {
                   thumbShape: SliderComponentShape.noThumb,
                 ),
                 child: Slider(
-                  value: 10,
+                  value: position.inSeconds
+                      .clamp(0, duartion.inSeconds)
+                      .toDouble(),
                   activeColor: Colors.white,
                   inactiveColor: Colors.grey,
-                  onChanged: (value) async {},
+                  onChanged: (value) async {
+                    final position = Duration(seconds: value.toInt());
+                    await controller.audioPlayer1.seek(position);
+                  },
                   min: 0,
-                  max: 50,
+                  max: duartion.inSeconds.toDouble(),
                 ),
               ),
               Row(
@@ -59,8 +109,16 @@ class CandidateAudioPlayButton extends StatelessWidget {
                   const SizedBox(
                     width: 15,
                   ),
-                  svgWidget(
-                    'assets/svg/pause_button.svg',
+                  InkWell(
+                    onTap: (){
+                      controller.audioPlayer.pause();
+                      isPlaying
+                        ? audioController.pause(controller.audioPlayer1)
+                        : audioController.play(controller.audioPlayer1);
+                    } ,
+                    child: isPlaying
+                        ? svgWidget('assets/svg/pause_button.svg')
+                        : svgWidget('assets/svg/play_white.svg'),
                   ),
                   const SizedBox(
                     width: 15,
@@ -73,5 +131,11 @@ class CandidateAudioPlayButton extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    controller.audioPlayer1.dispose();
+    super.dispose();
   }
 }

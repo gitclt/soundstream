@@ -113,6 +113,7 @@ class _HomePlayButtonState extends State<HomePlayButton> {
             children: [
               InkWell(
                   onTap: () {
+                    controller.audioPlayer1.pause();
                     audioController.playPreviousSong(controller.audioPlayer);
                   },
                   child: svgWidget('assets/svg/backward.svg')),
@@ -120,9 +121,12 @@ class _HomePlayButtonState extends State<HomePlayButton> {
                 width: 15,
               ),
               InkWell(
-                onTap: () => isPlaying
-                    ? audioController.pause(controller.audioPlayer)
-                    : audioController.play(controller.audioPlayer),
+                onTap: () {
+                  controller.audioPlayer1.pause();
+                  isPlaying
+                      ? audioController.pause(controller.audioPlayer)
+                      : audioController.play(controller.audioPlayer);
+                },
                 child: Container(
                     height: 60,
                     width: 60,
@@ -139,6 +143,7 @@ class _HomePlayButtonState extends State<HomePlayButton> {
               ),
               InkWell(
                   onTap: () {
+                    controller.audioPlayer1.pause();
                     audioController.playNextSong(controller.audioPlayer);
                   },
                   child: svgWidget('assets/svg/forward.svg')),
