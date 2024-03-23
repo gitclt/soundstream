@@ -1,10 +1,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-<uses-permission android:name="android.permission.INTERNET"/>
+
     <application
-        android:label="sound_stream_flutter_app"
+     android:allowBackup="false"
+     android:fullBackupOnly="false"  
+        android:label="Sound Stream"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true"
+        >
+        
         <activity
             android:name=".MainActivity"
             android:exported="true"

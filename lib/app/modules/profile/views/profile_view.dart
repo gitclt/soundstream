@@ -13,7 +13,8 @@ class ProfileView extends GetView<ProfileController> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: const CommonAppBar(label: 'Profile'),
-        body: Padding(
+        body:
+         Padding(
                 padding: const EdgeInsets.all(10),
                 child: Column(
                   children: [
