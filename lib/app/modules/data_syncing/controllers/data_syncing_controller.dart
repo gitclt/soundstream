@@ -116,7 +116,6 @@ class DataSyncingController extends GetxController {
         jsonEncode(songs
             .map((song) => {
                   "id": song.id,
-                  "district": song.district,
                   "name": song.name,
                   "remark": song.remark,
                   "category_id": song.categoryId,

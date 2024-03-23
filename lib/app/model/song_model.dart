@@ -97,7 +97,7 @@ class SongItems {
 
 class SongData {
   int id;
-  String district;
+
   String name;
   String remark;
   int categoryId;
@@ -112,7 +112,6 @@ class SongData {
 
   SongData({
     required this.id,
-    required this.district,
     required this.name,
     required this.remark,
     required this.categoryId,
@@ -128,7 +127,6 @@ class SongData {
 
   factory SongData.fromJson(Map<String, dynamic> json) => SongData(
         id: json["id"],
-        district: json["district"],
         name: json["name"],
         remark: json["remark"],
         categoryId: json["category_id"],
@@ -144,7 +142,6 @@ class SongData {
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "district": district,
         "name": name,
         "remark": remark,
         "category_id": categoryId,

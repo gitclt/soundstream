@@ -13,8 +13,11 @@ class ProfileView extends GetView<ProfileController> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: const CommonAppBar(label: 'Profile'),
-        body:
-         Padding(
+        body: Obx(() => controller.isLoading.value
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : Padding(
                 padding: const EdgeInsets.all(10),
                 child: Column(
                   children: [
@@ -69,7 +72,7 @@ class ProfileView extends GetView<ProfileController> {
                               const Divider(),
                               const ProfileRow(
                                 label: 'Email Id',
-                                details: 'rajeshraj@gmail.com',
+                                details: "",
                               ),
                             ],
                           ),
@@ -107,7 +110,7 @@ class ProfileView extends GetView<ProfileController> {
                     )
                   ],
                 ),
-              ));
+              )));
   }
 }
 

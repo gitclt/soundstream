@@ -12,8 +12,10 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   var isIndex = 0.obs;
   var isLoading = false.obs;
   AudioPlayer audioPlayer = AudioPlayer();
+  AudioPlayer audioPlayer1 = AudioPlayer();
   List<String> songDataList = [];
   List<String> catDataList = [];
+  List<String> candiateSong = [];
   RxList<SongData> songdata = <SongData>[].obs;
   void selectItem(int index) {
     selectedIndex.value = index;
@@ -79,6 +81,12 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
               jsonDecode(sharedPreferences.getString("songs")!))
           .map((x) => SongData.fromJson(x))
           .toList();
+      List<String> names = songdata
+          .where((e) => e.categoryId == 3)
+          .map((e) => e.fileName)
+          .toList();
+      candiateSong.addAll(catDataList
+          .where((element) => names.contains(element.split("/").last)));
     }
   }
 }
