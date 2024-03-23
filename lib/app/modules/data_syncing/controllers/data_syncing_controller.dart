@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sound_stream_flutter_app/app/api/api.dart';
@@ -33,7 +35,7 @@ class DataSyncingController extends GetxController {
         if (response.success == true) {
           songdata.addAll(response.items.data);
           isLoading(false);
-
+          addSongsData(songdata);
           if (Get.arguments == "sync") {
             songDataList.clear();
             SharedPreferences sharedPreferences =
@@ -96,7 +98,6 @@ class DataSyncingController extends GetxController {
     List<String> filePaths = prefs.getStringList('audioFilePaths') ?? [];
     filePaths.add(filePath);
     await prefs.setStringList('audioFilePaths', filePaths);
-    // prefs.setString("songs", jsonEncode(filePaths));
   }
 
   double calculatePercentage(int songsWithFullDownload, int totalSongs) {
@@ -105,5 +106,29 @@ class DataSyncingController extends GetxController {
     } else {
       return (songsWithFullDownload / totalSongs) * 100;
     }
+  }
+
+  void addSongsData(List<SongData> songs) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    prefs.setString(
+        "songs",
+        jsonEncode(songs
+            .map((song) => {
+                  "id": song.id,
+                  "district": song.district,
+                  "name": song.name,
+                  "remark": song.remark,
+                  "category_id": song.categoryId,
+                  "location_id": song.locationId,
+                  "file_name": song.fileName,
+                  "status": song.status,
+                  "created_at": song.createdAt,
+                  "updated_at": song.updatedAt,
+                  "created_by": song.createdBy,
+                  "updated_by": song.updatedBy,
+                  'downloadPercentage': song.downloadPercentage.value,
+                })
+            .toList()));
   }
 }

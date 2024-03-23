@@ -83,7 +83,13 @@ class StartView extends GetView<HomeController> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const HomePlayButton().paddingOnly(bottom: 30),
+                    Obx(() => controller.isLoading.value
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : controller.songDataList.isEmpty
+                            ? const SizedBox()
+                            : const HomePlayButton().paddingOnly(bottom: 30)),
                     const CandidateAudioPlayButton(),
                     blackText('Categories', 20, fontWeight: FontWeight.w700)
                         .paddingSymmetric(vertical: 20),
@@ -92,7 +98,11 @@ class StartView extends GetView<HomeController> {
                         child: DefaultTabController(
                           length: 3,
                           child: Column(children: [
-                            Obx(() => TabBar(
+                            Obx(() => controller.isLoading.value
+                                ? const Center(
+                                    child: CircularProgressIndicator(),
+                                  )
+                                : TabBar(
                                     controller: controller.mainController,
                                     unselectedLabelColor: Colors.black,
                                     isScrollable: true,
@@ -102,47 +112,60 @@ class StartView extends GetView<HomeController> {
                                     ),
                                     onTap: (int index) {
                                       controller.isIndex.value = index;
-                                      if (index == 1) {}
+                                      if (index == 0) {
+                                        controller.categoryFilter("");
+                                      } else if (index == 1) {
+                                        controller.categoryFilter("2");
+                                      } else if (index == 2) {
+                                        controller.categoryFilter("1");
+                                      }
                                     },
                                     tabs: [
-                                      buildTab(
-                                        "All",
-                                        controller.isIndex.value == 0
-                                            ? Colors.white
-                                            : blueColor,
-                                        controller.isIndex.value == 0
-                                            ? blueColor
-                                            : Colors.white,
-                                      ),
-                                      buildTab(
-                                        "Speeches",
-                                        controller.isIndex.value == 1
-                                            ? Colors.white
-                                            : blueColor,
-                                        controller.isIndex.value == 1
-                                            ? blueColor
-                                            : Colors.white,
-                                      ),
-                                      buildTab(
-                                        "Song",
-                                        controller.isIndex.value == 2
-                                            ? Colors.white
-                                            : blueColor,
-                                        controller.isIndex.value == 2
-                                            ? blueColor
-                                            : Colors.white,
-                                      ),
-                                    ]).paddingOnly(right: 100)),
-                            Expanded(
-                                child: TabBarView(
-                              controller: controller.mainController,
-                              physics: const NeverScrollableScrollPhysics(),
-                              children: const [
-                                CategoryBuilder(),
-                                CategoryBuilder(),
-                                CategoryBuilder(),
-                              ],
-                            )),
+                                        buildTab(
+                                          "All",
+                                          controller.isIndex.value == 0
+                                              ? Colors.white
+                                              : blueColor,
+                                          controller.isIndex.value == 0
+                                              ? blueColor
+                                              : Colors.white,
+                                        ),
+                                        buildTab(
+                                          "Speeches",
+                                          controller.isIndex.value == 1
+                                              ? Colors.white
+                                              : blueColor,
+                                          controller.isIndex.value == 1
+                                              ? blueColor
+                                              : Colors.white,
+                                        ),
+                                        buildTab(
+                                          "Song",
+                                          controller.isIndex.value == 2
+                                              ? Colors.white
+                                              : blueColor,
+                                          controller.isIndex.value == 2
+                                              ? blueColor
+                                              : Colors.white,
+                                        ),
+                                      ]).paddingOnly(right: 100)),
+                            Obx(
+                              () => controller.isLoading.value
+                                  ? const Center(
+                                      child: CircularProgressIndicator(),
+                                    )
+                                  : Expanded(
+                                      child: TabBarView(
+                                      controller: controller.mainController,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      children: const [
+                                        CategoryBuilder(),
+                                        CategoryBuilder(),
+                                        CategoryBuilder(),
+                                      ],
+                                    )),
+                            )
                           ]),
                         )),
                   ],

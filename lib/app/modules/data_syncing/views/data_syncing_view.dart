@@ -47,17 +47,22 @@ class DataSyncingView extends GetView<DataSyncingController> {
           Obx(
             () => controller.isLoading.value
                 ? const Center()
-                : Slider(
-                    value: controller.songdata
-                        .where((element) =>
-                            element.downloadPercentage.value == "100")
-                        .length
-                        .toDouble(),
-                    activeColor: const Color(0xffFF9737),
-                    inactiveColor: const Color(0xffFF9737).withOpacity(0.1),
-                    onChanged: (value) async {},
-                    min: 0,
-                    max: controller.songdata.length.toDouble(),
+                : SliderTheme(
+                    data: SliderTheme.of(context).copyWith(
+                      thumbShape: SliderComponentShape.noThumb,
+                    ),
+                    child: Slider(
+                      value: controller.songdata
+                          .where((element) =>
+                              element.downloadPercentage.value == "100")
+                          .length
+                          .toDouble(),
+                      activeColor: const Color(0xffFF9737),
+                      inactiveColor: const Color(0xffFF9737).withOpacity(0.5),
+                      onChanged: (value) async {},
+                      min: 0,
+                      max: controller.songdata.length.toDouble(),
+                    ),
                   ),
           ),
           const SizedBox(

@@ -26,7 +26,7 @@ class _HomePlayButtonState extends State<HomePlayButton> {
   final HomeController controller = Get.find();
   @override
   void initState() {
-    audioController.playlist = controller.songDataList;
+    audioController.playlist = controller.catDataList;
     controller.audioPlayer.onPlayerStateChanged.listen((event) {
       if (event == PlayerState.playing) {
         setState(() {
@@ -77,7 +77,7 @@ class _HomePlayButtonState extends State<HomePlayButton> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   colorText(
-                          controller.songDataList[audioController.currentIndex]
+                          controller.catDataList[audioController.currentIndex]
                               .split("/")
                               .last,
                           16,
