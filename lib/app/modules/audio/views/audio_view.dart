@@ -29,73 +29,80 @@ class AudioView extends GetView<AudioController> {
       body: Column(
         children: [
           const Center(child: AudioPlayButton()),
-          Container(
-              height: 280,
-              decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(8)),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Color.fromARGB(255, 240, 235, 235),
-                        blurRadius: 3.0,
-                        spreadRadius: 3),
+          Expanded(
+            child: Container(
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Color.fromARGB(255, 240, 235, 235),
+                          blurRadius: 3.0,
+                          spreadRadius: 3),
+                    ]),
+                child: DefaultTabController(
+                  length: 3,
+                  child: Column(children: [
+                    Obx(() => TabBar(
+                            controller: controller.mainController,
+                            unselectedLabelColor: Colors.black,
+                            isScrollable: true,
+                            indicator: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color: Colors.transparent,
+                            ),
+                            onTap: (int index) {
+                              controller.isIndex.value = index;
+                              if (index == 0) {
+                                controller.categoryFilter("");
+                              } else if (index == 1) {
+                                controller.categoryFilter("2");
+                              } else if (index == 2) {
+                                controller.categoryFilter("1");
+                              }
+                            },
+                            tabs: [
+                              buildTab(
+                                "All",
+                                controller.isIndex.value == 0
+                                    ? Colors.white
+                                    : blueColor,
+                                controller.isIndex.value == 0
+                                    ? blueColor
+                                    : Colors.white,
+                              ),
+                              buildTab(
+                                "Speeches",
+                                controller.isIndex.value == 1
+                                    ? Colors.white
+                                    : blueColor,
+                                controller.isIndex.value == 1
+                                    ? blueColor
+                                    : Colors.white,
+                              ),
+                              buildTab(
+                                "Song",
+                                controller.isIndex.value == 2
+                                    ? Colors.white
+                                    : blueColor,
+                                controller.isIndex.value == 2
+                                    ? blueColor
+                                    : Colors.white,
+                              ),
+                            ]).paddingOnly(right: 100)),
+                    Expanded(
+                        child: TabBarView(
+                      controller: controller.mainController,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: const [
+                        AudioBuilder(),
+                        AudioBuilder(),
+                        AudioBuilder(),
+                      ],
+                    )),
                   ]),
-              child: DefaultTabController(
-                length: 3,
-                child: Column(children: [
-                  Obx(() => TabBar(
-                          controller: controller.mainController,
-                          unselectedLabelColor: Colors.black,
-                          isScrollable: true,
-                          indicator: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            color: Colors.transparent,
-                          ),
-                          onTap: (int index) {
-                            controller.isIndex.value = index;
-                            if (index == 1) {}
-                          },
-                          tabs: [
-                            buildTab(
-                              "All",
-                              controller.isIndex.value == 0
-                                  ? Colors.white
-                                  : blueColor,
-                              controller.isIndex.value == 0
-                                  ? blueColor
-                                  : Colors.white,
-                            ),
-                            buildTab(
-                              "Speeches",
-                              controller.isIndex.value == 1
-                                  ? Colors.white
-                                  : blueColor,
-                              controller.isIndex.value == 1
-                                  ? blueColor
-                                  : Colors.white,
-                            ),
-                            buildTab(
-                              "Song",
-                              controller.isIndex.value == 2
-                                  ? Colors.white
-                                  : blueColor,
-                              controller.isIndex.value == 2
-                                  ? blueColor
-                                  : Colors.white,
-                            ),
-                          ]).paddingOnly(right: 100)),
-                  Expanded(
-                      child: TabBarView(
-                    controller: controller.mainController,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: const [
-                      AudioBuilder(),
-                      AudioBuilder(),
-                      AudioBuilder(),
-                    ],
-                  )),
-                ]),
-              )).paddingAll(10),
+                )).paddingAll(10),
+          ),
         ],
       ),
     );

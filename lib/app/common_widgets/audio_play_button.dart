@@ -56,7 +56,7 @@ class _AudioPlayButtonState extends State<AudioPlayButton> {
     return Column(
       children: [
         Image.asset('assets/image/music_image.png'),
-        Obx(() => controller.isaudioIndex.value == 0
+        Obx(() => controller.isaudioIndex.value != -1
             ? colorText(
                     controller
                         .songDataList[controller.audioController.currentIndex]

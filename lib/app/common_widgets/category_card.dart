@@ -10,22 +10,26 @@ class CategoryBuilder extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: controller.songDataList.length,
-      itemBuilder: (context, index) {
-        return CategoryCard(
-          audioname: controller.songDataList[index].split("/").last,
-          name: '',
-          ontap: () {
-            controller.audioPlayer.stop();
-            Get.toNamed(Routes.AUDIO, arguments: [
-              controller.songDataList[index],
-              controller.songDataList
-            ]);
-          },
-        ).paddingAll(3);
-      },
-    );
+    return Obx(() => controller.isLoading.value
+        ? const Center()
+        : ListView.builder(
+            itemCount: controller.songDataList.length,
+            itemBuilder: (context, index) {
+              return CategoryCard(
+                audioname: controller.songDataList[index].split("/").last,
+                name: '',
+                ontap: () {
+                  controller.audioPlayer.stop();
+                  Get.toNamed(Routes.AUDIO, arguments: [
+                    controller.songDataList[index],
+                    controller.songDataList,
+                    controller.catDataList,
+                    controller.isIndex.value
+                  ]);
+                },
+              ).paddingAll(3);
+            },
+          ));
   }
 }
 
