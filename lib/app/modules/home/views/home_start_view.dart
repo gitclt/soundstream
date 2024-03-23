@@ -93,7 +93,13 @@ class StartView extends GetView<HomeController> {
                         : controller.songDataList.isEmpty
                             ? const SizedBox()
                             : const HomePlayButton().paddingOnly(bottom: 30)),
-                    const CandidateAudioPlayButton(),
+                    Obx(() => controller.isLoading.value
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : controller.candiateSong.isEmpty
+                            ? const SizedBox()
+                            : const CandidateAudioPlayButton()),
                     blackText('Categories', 20, fontWeight: FontWeight.w700)
                         .paddingSymmetric(vertical: 20),
                     SizedBox(
