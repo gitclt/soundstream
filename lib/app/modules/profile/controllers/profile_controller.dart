@@ -1,25 +1,49 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sound_stream_flutter_app/app/model/model.dart';
 import 'package:sound_stream_flutter_app/app/routes/app_pages.dart';
 import 'package:sound_stream_flutter_app/constrains/app_color.dart';
 
 class ProfileController extends GetxController {
   List<String> songDataList = [];
+  var isLoading = false.obs;
+
+  List<ProfileData> profileList = [];
+ 
 
   @override
-  void onInit() {
+  void onInit() async {
     getSongData();
+    await getProfileData();
     super.onInit();
   }
 
   getSongData() async {
     songDataList.clear();
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
     if (sharedPreferences.containsKey("audioFilePaths")) {
       songDataList = sharedPreferences.getStringList('audioFilePaths') ?? [];
+    }
+  }
+
+ 
+
+  Future<void> getProfileData() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
+    if (sharedPreferences.containsKey("profile")) {
+      profileList.clear();
+      List<Map<String, dynamic>> profileDataJsonList =
+          List<Map<String, dynamic>>.from(
+              jsonDecode(sharedPreferences.getString("profile")!));
+      profileList = profileDataJsonList
+          .map((json) => ProfileData.fromJson(json))
+          .toList();
     }
   }
 
@@ -116,4 +140,22 @@ class ProfileController extends GetxController {
       ),
     );
   }
+
+  // void getProfile() async {
+  //   isLoading(true);
+  //   profileList.clear();
+
+  //   try {
+  //     final response = await ApiProvider().getProfile('2');
+  //     if (response != null) {
+  //       if (response.success == true) {
+  //         profileList.add(response.data);
+  //       } else {
+  //         isLoading(false);
+  //       }
+  //     }
+  //   } finally {
+  //     isLoading(false);
+  //   }
+  // }
 }

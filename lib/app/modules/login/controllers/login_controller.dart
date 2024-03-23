@@ -12,6 +12,7 @@ class LoginController extends GetxController {
   var isLoading = false.obs;
   TextEditingController mobileController = TextEditingController();
   TextEditingController vehicleController = TextEditingController();
+  
 
   void login() async {
     isLoading(true);
@@ -38,6 +39,8 @@ class LoginController extends GetxController {
       isLoading(false);
     }
   }
+
+
 
   // getData() async {
   //   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
