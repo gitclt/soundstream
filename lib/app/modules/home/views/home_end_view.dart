@@ -16,6 +16,8 @@ class EndView extends GetView<HomeController> {
     return Scaffold(
       body: Column(children: [
         HomeHeader(
+            height: 230,
+            stackheight: 180,
             feild: Padding(
               padding: const EdgeInsets.only(top: 50, left: 15, right: 15),
               child: Column(children: [

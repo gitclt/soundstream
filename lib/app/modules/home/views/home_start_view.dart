@@ -77,6 +77,9 @@ class StartView extends GetView<HomeController> {
                 name: 'Rajesh Raj',
                 number: 'KL11 N 6789',
               )),
+          const SizedBox(
+            height: 10,
+          ),
           Expanded(
               child: ListView(
             shrinkWrap: true,
@@ -149,7 +152,7 @@ class StartView extends GetView<HomeController> {
                                               : Colors.white,
                                         ),
                                         buildTab(
-                                          "Song",
+                                          "Songs",
                                           controller.isIndex.value == 2
                                               ? Colors.white
                                               : blueColor,
@@ -157,7 +160,7 @@ class StartView extends GetView<HomeController> {
                                               ? blueColor
                                               : Colors.white,
                                         ),
-                                      ]).paddingOnly(right: 100)),
+                                      ]).paddingOnly(right: 50)),
                             Obx(
                               () => controller.isLoading.value
                                   ? const Center(

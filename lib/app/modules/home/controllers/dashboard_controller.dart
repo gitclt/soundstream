@@ -14,10 +14,7 @@ class DashboardController extends GetxController {
   final GlobalKey<ScaffoldState> dashboardScaffoldkey =
       GlobalKey<ScaffoldState>();
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
+  
 
   void logOut() async {}
 }
