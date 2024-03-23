@@ -16,20 +16,20 @@ class HomeView extends GetView<HomeController> {
     return Scaffold(
       body: Column(children: [
         HomeHeader(
-            height: 150,
-            stackheight: 100,
+            height: 160,
+            stackheight: 110,
             homecard: const HomeCard(
               name: 'Rajesh Raj',
               number: 'KL11 N 6789',
             )),
         Expanded(
             child: Padding(
-          padding: const EdgeInsets.only(left: 20, right: 20, top: 50),
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 80),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              blackText('Start your Trip \nto see all Features', 22,
+              blackText('Start your Trip to\n see all Features', 22,
                   fontWeight: FontWeight.w700),
               const SizedBox(
                 width: 15,
@@ -38,8 +38,8 @@ class HomeView extends GetView<HomeController> {
                 value: false,
                 onChanged: (value) async {
                   controller.getSongData();
-             await     controller.fetchLocation();
-                  Get.to(const StartView());
+                  //  await     controller.fetchLocation();
+                  Get.to(() => const StartView());
                 },
               )
             ],
