@@ -13,12 +13,12 @@ class ProfileController extends GetxController {
   var isLoading = false.obs;
 
   List<ProfileData> profileList = [];
- 
 
   @override
   void onInit() async {
-    getSongData();
-    await getProfileData();
+    getProfileData();
+    await getSongData();
+
     super.onInit();
   }
 
@@ -31,9 +31,8 @@ class ProfileController extends GetxController {
     }
   }
 
- 
-
   Future<void> getProfileData() async {
+    isLoading(true);
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
     if (sharedPreferences.containsKey("profile")) {
@@ -45,6 +44,7 @@ class ProfileController extends GetxController {
           .map((json) => ProfileData.fromJson(json))
           .toList();
     }
+    isLoading(false);
   }
 
   Future<void> deleteFile(String filePath) async {
