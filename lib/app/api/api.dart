@@ -69,7 +69,7 @@ class ApiProvider {
     var add = {
       "vehicle_id": vehId,
       "location_id": locId,
-      "date": "2024-03-26",
+      "date": date,
       "check_in_time": time,
       "check_in_location": place,
       "check_in_lat": lat,

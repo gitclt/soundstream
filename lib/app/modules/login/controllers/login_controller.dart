@@ -12,7 +12,6 @@ class LoginController extends GetxController {
   var isLoading = false.obs;
   TextEditingController mobileController = TextEditingController();
   TextEditingController vehicleController = TextEditingController();
-  
 
   void login() async {
     isLoading(true);
@@ -29,6 +28,9 @@ class LoginController extends GetxController {
               'location_id', response.data.first.locationId.toString());
           prefs.setString('mobile', response.data.first.mobile.toString());
           prefs.setString("profile", jsonEncode(response.data));
+          prefs.setString("name", response.data.first.name.toString());
+          prefs.setString(
+              "vehicle", response.data.first.vehicleName.toString());
           Get.offAllNamed(Routes.DATA_SYNCING, arguments: "");
         } else {
           isLoading(false);
@@ -39,8 +41,6 @@ class LoginController extends GetxController {
       isLoading(false);
     }
   }
-
-
 
   // getData() async {
   //   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();

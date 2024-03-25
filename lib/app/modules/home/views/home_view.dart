@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sound_stream_flutter_app/app/modules/home/controllers/home_trip_controller.dart';
 import 'package:sound_stream_flutter_app/app/modules/home/views/custom_switch.dart';
-import 'package:sound_stream_flutter_app/app/modules/home/views/home_start_view.dart';
+import 'package:sound_stream_flutter_app/app/service/sessio.dart';
 import 'package:sound_stream_flutter_app/common_widgets/card/home_card.dart';
 import 'package:sound_stream_flutter_app/common_widgets/card/home_top_card.dart';
 import 'package:sound_stream_flutter_app/common_widgets/text/text.dart';
-import '../controllers/home_controller.dart';
 
-class HomeView extends GetView<HomeController> {
+class HomeView extends GetView<HomeTripController> {
   const HomeView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -16,9 +16,9 @@ class HomeView extends GetView<HomeController> {
         HomeHeader(
             height: 160,
             stackheight: 110,
-            homecard: const HomeCard(
-              name: 'Rajesh Raj',
-              number: 'KL11 N 6789',
+            homecard: HomeCard(
+              name: Session.userName,
+              number: Session.vehicle,
             )),
         Expanded(
             child: Padding(
@@ -32,13 +32,12 @@ class HomeView extends GetView<HomeController> {
               const SizedBox(
                 width: 15,
               ),
-              Obx(() => CustomSwitch(
-                    value: controller.isCheckin.value,
-                    onChanged: (value) async {
-                      controller.getSongData();
-                      await controller.fetchLocation();
-                    },
-                  ))
+              CustomSwitch(
+                value: Session.isCheckin,
+                onChanged: (value) async {
+                  await controller.fetchLocation();
+                },
+              )
             ],
           ),
         )),
