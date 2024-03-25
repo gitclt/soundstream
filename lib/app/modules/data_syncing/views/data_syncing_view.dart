@@ -4,6 +4,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:sound_stream_flutter_app/app/common_widgets/common_appbar.dart';
 import 'package:sound_stream_flutter_app/app/routes/app_pages.dart';
 import 'package:sound_stream_flutter_app/app/service/sessio.dart';
+import 'package:sound_stream_flutter_app/common_widgets/button/gradient_button.dart';
 import 'package:sound_stream_flutter_app/common_widgets/card/home_card.dart';
 import 'package:sound_stream_flutter_app/common_widgets/svg_widget/svg_widget.dart';
 import 'package:sound_stream_flutter_app/common_widgets/text/text.dart';
@@ -155,33 +156,46 @@ class DataSyncingView extends GetView<DataSyncingController> {
             ).paddingAll(2)),
             Obx(
               () => controller.allSongsDownloaded.value
-                  ? Center(
-                      child: InkWell(
-                        onTap: () {
-                          if (controller.arg == "sync") {
-                            Get.back(result: true);
-                          } else {
-                            Get.offAllNamed(Routes.SPLASH);
-                          }
-                        },
-                        child: Container(
-                          height: 60,
-                          width: 300,
-                          decoration: BoxDecoration(
-                            gradient: primaryColor,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Center(
-                            child: colorText(
-                              "Complete",
-                              18,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ).paddingSymmetric(vertical: 10),
-                      ),
-                    )
+                  ? CommonButtonWidget(
+                      label: 'Complete',
+                      isLoading: controller.isLoading.value,
+                      onClick: () {
+                        if (controller.arg == "sync") {
+                          Get.back(result: true);
+                        } else {
+                          Get.offAllNamed(Routes.SPLASH);
+                        }
+                      },
+                    ).paddingSymmetric(horizontal: 4, vertical: 6)
+
+                  //  Center(
+                  //     child: InkWell(
+                  //       onTap: () {
+                  //         if (controller.arg == "sync") {
+                  //           Get.back(result: true);
+                  //         } else {
+                  //           Get.offAllNamed(Routes.SPLASH);
+                  //         }
+                  //       },
+                  //       child:
+                  //        Container(
+                  //         height: 60,
+                  //         width: 300,
+                  //         decoration: BoxDecoration(
+                  //           gradient: primaryColor,
+                  //           borderRadius: BorderRadius.circular(15),
+                  //         ),
+                  //         child: Center(
+                  //           child: colorText(
+                  //             "Complete",
+                  //             18,
+                  //             color: Colors.white,
+                  //             fontWeight: FontWeight.bold,
+                  //           ),
+                  //         ),
+                  //       ).paddingSymmetric(vertical: 10),
+                  //     ),
+                  //   )
                   : const SizedBox(),
             )
           ],

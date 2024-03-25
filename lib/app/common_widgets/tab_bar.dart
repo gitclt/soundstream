@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-Widget buildTab(String label, Color borderColor,Color color ) {
+Widget buildTab(String label, Color borderColor, Color color) {
   return Tab(
     child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(30),
@@ -19,7 +20,7 @@ Widget buildTab(String label, Color borderColor,Color color ) {
             ),
           ),
         ],
-      ).paddingAll(8),
+      ),
     ),
   );
 }

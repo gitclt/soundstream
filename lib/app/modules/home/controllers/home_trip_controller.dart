@@ -102,6 +102,7 @@ class HomeTripController extends GetxController {
           Get.toNamed(Routes.HOME_START);
         } else {
           DialogHelper.hideLoading();
+          toast(response.message);
         }
       } else {
         toast("Checkin Sucessfully");

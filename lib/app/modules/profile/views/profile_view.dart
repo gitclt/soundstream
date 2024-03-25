@@ -39,7 +39,8 @@ class ProfileView extends GetView<ProfileController> {
                             color: Colors.white,
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(8)),
-                            border: Border.all(width: 0.5),
+                            border:
+                                Border.all(width: 1, color: const Color(0xFFD8D8D8)),
                             boxShadow: const [
                               BoxShadow(
                                   color: Color.fromARGB(255, 240, 235, 235),
@@ -89,7 +90,8 @@ class ProfileView extends GetView<ProfileController> {
                             color: Colors.white,
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(8)),
-                            border: Border.all(width: 0.5),
+                            border:
+                                Border.all(width: 1, color: const Color(0xFFD8D8D8)),
                             boxShadow: const [
                               BoxShadow(
                                   color: Color.fromARGB(255, 240, 235, 235),

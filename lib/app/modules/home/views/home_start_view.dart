@@ -103,9 +103,10 @@ class StartView extends GetView<HomeController> {
                             ? const SizedBox()
                             : const CandidateAudioPlayButton()),
                     blackText('Categories', 20, fontWeight: FontWeight.w700)
-                        .paddingSymmetric(vertical: 20),
+                        .paddingSymmetric(vertical: 10),
                     SizedBox(
-                        height: 280,
+                        height: 200,
+                        width: double.infinity,
                         child: DefaultTabController(
                           length: 3,
                           child: Column(children: [
@@ -131,12 +132,14 @@ class StartView extends GetView<HomeController> {
                                         controller.categoryFilter("1");
                                       }
                                     },
+                                    labelPadding: const EdgeInsets.symmetric(
+                                        horizontal: 10.0),
                                     tabs: [
                                         buildTab(
                                           "All",
                                           controller.isIndex.value == 0
                                               ? Colors.white
-                                              : blueColor,
+                                              : Colors.black,
                                           controller.isIndex.value == 0
                                               ? blueColor
                                               : Colors.white,
@@ -145,7 +148,7 @@ class StartView extends GetView<HomeController> {
                                           "Speeches",
                                           controller.isIndex.value == 1
                                               ? Colors.white
-                                              : blueColor,
+                                              : Colors.black,
                                           controller.isIndex.value == 1
                                               ? blueColor
                                               : Colors.white,
@@ -154,12 +157,12 @@ class StartView extends GetView<HomeController> {
                                           "Songs",
                                           controller.isIndex.value == 2
                                               ? Colors.white
-                                              : blueColor,
+                                              : Colors.black,
                                           controller.isIndex.value == 2
                                               ? blueColor
                                               : Colors.white,
                                         ),
-                                      ]).paddingOnly(right: 50)),
+                                      ]).paddingOnly(right: 70)),
                             Obx(
                               () => controller.isLoading.value
                                   ? const Center(
