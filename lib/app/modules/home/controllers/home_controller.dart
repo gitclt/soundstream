@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sound_stream_flutter_app/app/api/api.dart';
 import 'package:sound_stream_flutter_app/app/common_widgets/toast.dart';
@@ -26,7 +27,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   var isCheckOut = false.obs;
   AudioPlayer audioPlayer = AudioPlayer();
   AudioPlayer audioPlayer1 = AudioPlayer();
-  List<String> songDataList = [];
+  RxList<String> songDataList = <String>[].obs;
   List<String> catDataList = [];
   List<String> candiateSong = [];
   List<CheckInData> checkInDataList = [];
@@ -68,7 +69,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     isLoading(true);
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     if (sharedPreferences.containsKey("audioFilePaths")) {
-      songDataList = sharedPreferences.getStringList('audioFilePaths') ?? [];
+      songDataList.value =
+          sharedPreferences.getStringList('audioFilePaths') ?? [];
       catDataList = sharedPreferences.getStringList('audioFilePaths') ?? [];
     }
     getSongDetails();

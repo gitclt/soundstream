@@ -6,15 +6,15 @@ import 'package:sound_stream_flutter_app/common_widgets/svg_widget/svg_widget.da
 import 'package:sound_stream_flutter_app/common_widgets/text/text.dart';
 
 class CategoryBuilder extends GetView<HomeController> {
-  const CategoryBuilder({Key? key});
+  const CategoryBuilder({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Obx(() => controller.isLoading.value
         ? const Center()
         : ListView.builder(
-         physics: const ScrollPhysics(),
-         shrinkWrap: true,
+            physics: const ScrollPhysics(),
+            shrinkWrap: true,
             itemCount: controller.songDataList.length,
             itemBuilder: (context, index) {
               return CategoryCard(
@@ -22,7 +22,7 @@ class CategoryBuilder extends GetView<HomeController> {
                 name: '',
                 ontap: () {
                   controller.audioPlayer.stop();
-                   controller.audioPlayer1.stop();
+                  controller.audioPlayer1.stop();
                   Get.toNamed(Routes.AUDIO, arguments: [
                     controller.songDataList[index],
                     controller.songDataList,
