@@ -32,8 +32,8 @@ class LoginController extends GetxController {
           prefs.setString("name", response.data.first.name.toString());
           prefs.setString(
               "vehicle", response.data.first.vehicleName.toString());
-          Session.userMobile = response.data.first.name.toString();
-          Session.userName = response.data.first.vehicleName.toString();
+          Session.userMobile = response.data.first.vehicleName.toString();
+          Session.userName = response.data.first.name.toString();
           Get.offAllNamed(Routes.DATA_SYNCING, arguments: "");
         } else {
           isLoading(false);
