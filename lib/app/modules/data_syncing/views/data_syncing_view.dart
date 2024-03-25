@@ -16,6 +16,7 @@ class DataSyncingView extends GetView<DataSyncingController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CommonAppBar(
+        
         appText: 'Data Syncing',
       ),
       body: Padding(

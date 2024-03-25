@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 // import 'package:get/get.dart';
 import 'package:sound_stream_flutter_app/constrains/app_color.dart';
 
@@ -14,7 +15,7 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: IconButton(
         icon: const Icon(Icons.arrow_back),
         onPressed: () {
-          // Get.back();
+          Get.back();
         },
       ),
       flexibleSpace: Container(

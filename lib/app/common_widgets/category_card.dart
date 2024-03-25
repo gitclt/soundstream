@@ -13,6 +13,8 @@ class CategoryBuilder extends GetView<HomeController> {
     return Obx(() => controller.isLoading.value
         ? const Center()
         : ListView.builder(
+         physics: const ScrollPhysics(),
+         shrinkWrap: true,
             itemCount: controller.songDataList.length,
             itemBuilder: (context, index) {
               return CategoryCard(

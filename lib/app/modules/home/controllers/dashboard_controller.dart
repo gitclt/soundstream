@@ -8,6 +8,7 @@ class DashboardController extends GetxController {
   RxList<Widget> widgetOptions = <Widget>[
     const HomeView(),
     // const SearchView(),
+    
     const ProfileView(),
   ].obs;
   

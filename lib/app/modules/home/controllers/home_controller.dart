@@ -35,7 +35,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
   @override
   void onInit() async {
-    mainController = TabController(length: 3, vsync: this);
+    mainController = TabController(length: 4, vsync: this);
 
     getSongData();
     super.onInit();
