@@ -33,9 +33,7 @@ class EndView extends GetView<HomeController> {
                         children: [
                           CustomSwitch(
                             value: false,
-                            onChanged: (value) {
-                              
-                            },
+                            onChanged: (value) {},
                           ),
                         ],
                       ),
@@ -104,7 +102,8 @@ class EndView extends GetView<HomeController> {
               Expanded(
                   child: Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20, top: 50),
-                child: blackText('Start your Trip to\n see all Features', 22,
+                child: blackText(
+                    "Yours today's journey ends here \nThank you", 22,
                     fontWeight: FontWeight.w700),
               )),
             ]),

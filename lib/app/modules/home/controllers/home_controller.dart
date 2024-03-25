@@ -9,7 +9,6 @@ import 'package:sound_stream_flutter_app/app/api/api.dart';
 import 'package:sound_stream_flutter_app/app/common_widgets/toast.dart';
 import 'package:sound_stream_flutter_app/app/model/checkin_model.dart';
 import 'package:sound_stream_flutter_app/app/model/song_model.dart';
-import 'package:sound_stream_flutter_app/app/routes/app_pages.dart';
 import 'package:sound_stream_flutter_app/app/service/sessio.dart';
 import 'package:sound_stream_flutter_app/common_widgets/popup/dialog_helper.dart';
 import 'package:sound_stream_flutter_app/constrains/service/location.dart';
@@ -276,8 +275,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       if (response != null) {
         if (response.success == true) {
           checkInDataList.addAll(response.data);
-          Get.back();
-          Get.toNamed(Routes.HOME_END);
+          Get.close(2);
         }
       }
     } finally {
