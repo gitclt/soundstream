@@ -126,6 +126,7 @@ class DataSyncingController extends GetxController {
                   "updated_at": song.updatedAt,
                   "created_by": song.createdBy,
                   "updated_by": song.updatedBy,
+                  "assetLink": "",
                   'downloadPercentage': song.downloadPercentage.value,
                 })
             .toList()));

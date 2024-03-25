@@ -15,14 +15,15 @@ class CategoryBuilder extends GetView<HomeController> {
         : ListView.builder(
             physics: const ScrollPhysics(),
             shrinkWrap: true,
-            itemCount: controller.songDataList.length,
+            itemCount: controller.songdata.length,
             itemBuilder: (context, index) {
               return CategoryCard(
-                audioname: controller.songDataList[index].split("/").last,
+                audioname: controller.songdata[index].name,
                 name: '',
                 ontap: () {
                   controller.audioPlayer.stop();
                   controller.audioPlayer1.stop();
+                  controller.songIndex.value = index;
                   Get.toNamed(Routes.AUDIO, arguments: [
                     index,
                     controller.songDataList,

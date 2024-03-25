@@ -97,7 +97,6 @@ class SongItems {
 
 class SongData {
   int id;
-
   String name;
   String remark;
   int categoryId;
@@ -108,6 +107,7 @@ class SongData {
   String updatedAt;
   int createdBy;
   int updatedBy;
+  String assetLink;
   RxString downloadPercentage;
 
   SongData({
@@ -122,6 +122,7 @@ class SongData {
     required this.updatedAt,
     required this.createdBy,
     required this.updatedBy,
+    required this.assetLink,
     required this.downloadPercentage,
   });
 
@@ -137,6 +138,7 @@ class SongData {
         updatedAt: json["updated_at"],
         createdBy: json["created_by"],
         updatedBy: json["updated_by"],
+        assetLink: json["assetLink"] ?? "",
         downloadPercentage: "".obs,
       );
 
@@ -152,6 +154,7 @@ class SongData {
         "updated_at": updatedAt,
         "created_by": createdBy,
         "updated_by": updatedBy,
+        "assetLink": assetLink,
         "downloadPercentage": downloadPercentage
       };
 }

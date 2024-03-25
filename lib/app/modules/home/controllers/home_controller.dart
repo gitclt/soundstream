@@ -12,6 +12,7 @@ import 'package:sound_stream_flutter_app/app/model/checkin_model.dart';
 import 'package:sound_stream_flutter_app/app/model/song_model.dart';
 import 'package:sound_stream_flutter_app/app/modules/home/views/home_view.dart';
 import 'package:sound_stream_flutter_app/app/modules/profile/views/profile_view.dart';
+import 'package:sound_stream_flutter_app/app/service/audio.dart';
 import 'package:sound_stream_flutter_app/app/service/sessio.dart';
 import 'package:sound_stream_flutter_app/common_widgets/popup/dialog_helper.dart';
 import 'package:sound_stream_flutter_app/constrains/service/location.dart';
@@ -20,25 +21,32 @@ import 'package:intl/intl.dart';
 class HomeController extends GetxController with GetTickerProviderStateMixin {
   late TabController mainController;
   var selectedIndex = 0.obs;
+  var songIndex = 0.obs;
   var isIndex = 0.obs;
+  AudioPlayerService audioController = AudioPlayerService();
   var isLoading = false.obs;
   var isTripLoading = false.obs;
   var isCheckin = false.obs;
+  var isaudioIndex = 0.obs;
   var isCheckOut = false.obs;
   AudioPlayer audioPlayer = AudioPlayer();
   AudioPlayer audioPlayer1 = AudioPlayer();
+  AudioPlayer audioPlayer2 = AudioPlayer();
   RxList<String> songDataList = <String>[].obs;
   List<String> catDataList = [];
+  // List<SongModel> listofsong = [];
   List<String> candiateSong = [];
   List<CheckInData> checkInDataList = [];
   RxList<SongData> songdata = <SongData>[].obs;
+  RxList<SongData> listsongdata = <SongData>[].obs;
   void selectItem(int index) {
     selectedIndex.value = index;
   }
-   RxList<Widget> widgetOptions = <Widget>[
+
+  RxList<Widget> widgetOptions = <Widget>[
     const HomeView(),
     // const SearchView(),
-    
+
     const ProfileView(),
   ].obs;
 
@@ -84,16 +92,12 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   void categoryFilter(String catId) {
-    songDataList.clear();
+    songdata.clear();
     if (catId == "") {
-      songDataList.addAll(catDataList);
+      songdata.addAll(listsongdata);
     } else {
-      List<String> names = songdata
-          .where((e) => e.categoryId == int.parse(catId))
-          .map((e) => e.fileName)
-          .toList();
-      songDataList.addAll(catDataList
-          .where((element) => names.contains(element.split("/").last)));
+      songdata
+          .addAll(listsongdata.where((e) => e.categoryId.toString() == catId));
     }
   }
 
@@ -106,6 +110,21 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
               jsonDecode(sharedPreferences.getString("songs")!))
           .map((x) => SongData.fromJson(x))
           .toList();
+      listsongdata.value = List<Map<String, dynamic>>.from(
+              jsonDecode(sharedPreferences.getString("songs")!))
+          .map((x) => SongData.fromJson(x))
+          .toList();
+      for (var e in songdata) {
+        var catData = catDataList.firstWhere(
+          (element) => element.split("/").last == e.fileName,
+        );
+        // ignore: unnecessary_null_comparison
+        if (catData != null) {
+          e.assetLink = catData;
+        }
+      }
+      listsongdata.addAll(songdata);
+
       List<String> names = songdata
           .where((e) => e.categoryId == 3)
           .map((e) => e.fileName)
@@ -292,4 +311,13 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       isTripLoading(false);
     }
   }
+}
+
+class SongModel {
+  final String link;
+  final String name;
+  SongModel(
+    this.link,
+    this.name,
+  );
 }

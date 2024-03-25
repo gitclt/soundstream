@@ -1,7 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sound_stream_flutter_app/app/modules/audio/controllers/audio_controller.dart';
+import 'package:sound_stream_flutter_app/app/modules/home/controllers/home_controller.dart';
 import 'package:sound_stream_flutter_app/common_widgets/svg_widget/svg_widget.dart';
 import 'package:sound_stream_flutter_app/common_widgets/text/text.dart';
 import 'package:sound_stream_flutter_app/constrains/app_color.dart';
@@ -22,12 +22,14 @@ class _AudioPlayButtonState extends State<AudioPlayButton> {
   Duration duartion = Duration.zero;
   Duration position = Duration.zero;
   int currentIndex = 0;
-  final AudioController controller = Get.find();
+  final HomeController controller = Get.find();
   @override
   void initState() {
-    controller.audioController.playlist = controller.songDataList;
-    controller.audioController.currentIndex = controller.arg;
-    controller.audioPlayer.onPlayerStateChanged.listen((event) {
+    controller.audioController.playlist =
+        controller.songdata.map((element) => element.assetLink).toList();
+    controller.audioController.currentIndex = controller.songIndex.value;
+    controller.audioController.play(controller.audioPlayer2);
+    controller.audioPlayer2.onPlayerStateChanged.listen((event) {
       if (event == PlayerState.playing) {
         setState(() {
           isPlaying = true;
@@ -39,11 +41,11 @@ class _AudioPlayButtonState extends State<AudioPlayButton> {
       }
     });
 
-    controller.audioPlayer.onDurationChanged.listen((event) {
+    controller.audioPlayer2.onDurationChanged.listen((event) {
       setState(() {
         duartion = event;
       });
-      controller.audioPlayer.onPositionChanged.listen((Duration positio) {
+      controller.audioPlayer2.onPositionChanged.listen((Duration positio) {
         setState(() {
           position = positio;
         });
@@ -60,9 +62,7 @@ class _AudioPlayButtonState extends State<AudioPlayButton> {
         Obx(() => controller.isaudioIndex.value != -1
             ? colorText(
                     controller
-                        .songDataList[controller.audioController.currentIndex]
-                        .split("/")
-                        .last,
+                        .songdata[controller.audioController.currentIndex].name,
                     20,
                     fontWeight: FontWeight.w700,
                     color: blueColor)
@@ -76,7 +76,7 @@ class _AudioPlayButtonState extends State<AudioPlayButton> {
           inactiveColor: Colors.grey,
           onChanged: (value) async {
             final position = Duration(seconds: value.toInt());
-            await controller.audioPlayer.seek(position);
+            await controller.audioPlayer2.seek(position);
           },
           min: 0,
           max: duartion.inSeconds.toDouble(),
@@ -97,7 +97,7 @@ class _AudioPlayButtonState extends State<AudioPlayButton> {
                 onTap: () {
                   setState(() {
                     controller.audioController
-                        .playPreviousSong(controller.audioPlayer);
+                        .playPreviousSong(controller.audioPlayer2);
                     controller.isaudioIndex.value =
                         controller.audioController.currentIndex;
                   });
@@ -108,8 +108,8 @@ class _AudioPlayButtonState extends State<AudioPlayButton> {
             ),
             InkWell(
               onTap: () => isPlaying
-                  ? controller.audioController.pause(controller.audioPlayer)
-                  : controller.audioController.play(controller.audioPlayer),
+                  ? controller.audioController.pause(controller.audioPlayer2)
+                  : controller.audioController.play(controller.audioPlayer2),
               child: Container(
                   height: 60,
                   width: 60,
@@ -128,7 +128,7 @@ class _AudioPlayButtonState extends State<AudioPlayButton> {
                 onTap: () {
                   setState(() {
                     controller.audioController
-                        .playNextSong(controller.audioPlayer);
+                        .playNextSong(controller.audioPlayer2);
                     controller.isaudioIndex.value =
                         controller.audioController.currentIndex;
                   });

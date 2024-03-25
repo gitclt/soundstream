@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -26,7 +28,8 @@ class _HomePlayButtonState extends State<HomePlayButton> {
   final HomeController controller = Get.find();
   @override
   void initState() {
-    audioController.playlist = controller.catDataList;
+    audioController.playlist =
+      controller.listsongdata.map((element) => element.assetLink).toList();
     controller.audioPlayer.onPlayerStateChanged.listen((event) {
       if (event == PlayerState.playing) {
         setState(() {
@@ -77,9 +80,8 @@ class _HomePlayButtonState extends State<HomePlayButton> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   colorText(
-                          controller.catDataList[audioController.currentIndex]
-                              .split("/")
-                              .last,
+                          controller
+                              .songdata[audioController.currentIndex].name,
                           16,
                           fontWeight: FontWeight.w700,
                           color: blueColor)

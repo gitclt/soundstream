@@ -3,11 +3,12 @@ import 'package:get/get.dart';
 import 'package:sound_stream_flutter_app/app/common_widgets/audio_play_button.dart';
 import 'package:sound_stream_flutter_app/app/common_widgets/tab_bar.dart';
 import 'package:sound_stream_flutter_app/app/modules/audio/views/audio_tab.dart';
+import 'package:sound_stream_flutter_app/app/modules/home/controllers/home_controller.dart';
 import 'package:sound_stream_flutter_app/common_widgets/text/text.dart';
 import 'package:sound_stream_flutter_app/constrains/app_color.dart';
 import '../controllers/audio_controller.dart';
 
-class AudioView extends GetView<AudioController> {
+class AudioView extends GetView<HomeController> {
   const AudioView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {

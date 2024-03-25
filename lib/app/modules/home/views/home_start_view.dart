@@ -131,7 +131,7 @@ class StartView extends GetView<HomeController> {
                                           } else if (index == 2) {
                                             controller.categoryFilter("1");
                                           } else if (index == 3) {
-                                            controller.categoryFilter("3");
+                                            controller.categoryFilter("4");
                                           }
                                         },
                                         labelPadding:
