@@ -28,15 +28,18 @@ class EndView extends GetView<HomeController> {
                     padding:
                         const EdgeInsets.only(top: 50, left: 15, right: 15),
                     child: Column(children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustomSwitch(
-                            value: false,
-                            onChanged: (value) {},
-                          ),
-                        ],
-                      ),
+                      controller.checkInDataList.first.date !=
+                              controller.dateToFormatted(controller.datetime)
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                CustomSwitch(
+                                  value: false,
+                                  onChanged: (value) {},
+                                ),
+                              ],
+                            )
+                          : const SizedBox(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
