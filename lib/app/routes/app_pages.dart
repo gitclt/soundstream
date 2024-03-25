@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:sound_stream_flutter_app/app/modules/home/views/home_end_view.dart';
 import 'package:sound_stream_flutter_app/app/modules/home/views/home_start_view.dart';
 
 import '../modules/audio/bindings/audio_binding.dart';
@@ -51,6 +52,11 @@ class AppPages {
     GetPage(
       name: _Paths.HOME_START,
       page: () => const StartView(),
+      binding: HomeBinding(),
+    ),
+    GetPage(
+      name: _Paths.HOME_END,
+      page: () => const EndView(),
       binding: HomeBinding(),
     ),
     GetPage(

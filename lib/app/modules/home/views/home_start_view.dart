@@ -5,7 +5,6 @@ import 'package:sound_stream_flutter_app/app/common_widgets/category_card.dart';
 import 'package:sound_stream_flutter_app/app/common_widgets/play_audio_button.dart';
 import 'package:sound_stream_flutter_app/app/common_widgets/tab_bar.dart';
 import 'package:sound_stream_flutter_app/app/modules/home/views/custom_switch.dart';
-import 'package:sound_stream_flutter_app/app/modules/home/views/home_end_view.dart';
 import 'package:sound_stream_flutter_app/app/routes/app_pages.dart';
 import 'package:sound_stream_flutter_app/app/service/sessio.dart';
 import 'package:sound_stream_flutter_app/common_widgets/card/home_card.dart';
@@ -35,7 +34,7 @@ class StartView extends GetView<HomeController> {
                         value: Session.isCheckin,
                         onChanged: (value) {
                           controller.getCheckIn();
-                         
+
                           // Get.to(const EndView());
                         },
                       ),
@@ -73,9 +72,9 @@ class StartView extends GetView<HomeController> {
                   )
                 ]),
               ),
-              homecard: const HomeCard(
-                name: 'Rajesh Raj',
-                number: 'KL11 N 6789',
+              homecard: HomeCard(
+                name: Session.userName,
+                number: Session.vehicle,
               )),
           const SizedBox(
             height: 10,

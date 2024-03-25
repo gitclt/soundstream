@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:sound_stream_flutter_app/app/common_widgets/common_appbar.dart';
 import 'package:sound_stream_flutter_app/app/routes/app_pages.dart';
+import 'package:sound_stream_flutter_app/app/service/sessio.dart';
 import 'package:sound_stream_flutter_app/common_widgets/card/home_card.dart';
 import 'package:sound_stream_flutter_app/common_widgets/svg_widget/svg_widget.dart';
 import 'package:sound_stream_flutter_app/common_widgets/text/text.dart';
@@ -25,9 +26,9 @@ class DataSyncingView extends GetView<DataSyncingController> {
             const SizedBox(
               height: 15,
             ),
-            const HomeCard(
-              name: 'Rajesh Raj',
-              number: 'KL11 N 6789',
+            HomeCard(
+              name: Session.userName,
+              number: Session.vehicle,
             ),
             blackText('Audios', 20, fontWeight: FontWeight.w700)
                 .paddingOnly(left: 10, top: 8),
