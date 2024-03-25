@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 Widget buildTab(String label, Color borderColor, Color color) {
   return Tab(

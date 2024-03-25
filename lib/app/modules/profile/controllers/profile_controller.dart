@@ -85,13 +85,11 @@ class ProfileController extends GetxController {
             borderRadius: BorderRadius.all(Radius.circular(10.0))),
         title: Text(
           title,
-          textScaleFactor: .9,
         ),
         content: subTitle.isEmpty
             ? null
             : Text(
                 subTitle,
-                textScaleFactor: .9,
               ),
         actions: [
           Padding(

@@ -7,7 +7,7 @@ import 'package:sound_stream_flutter_app/constrains/app_color.dart';
 
 class AudioBuilder extends GetView<AudioController> {
   const AudioBuilder({
-    Key? key,
+    super.key,
   });
 
   @override

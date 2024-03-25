@@ -104,103 +104,88 @@ class StartView extends GetView<HomeController> {
                             : const CandidateAudioPlayButton()),
                     blackText('Categories', 20, fontWeight: FontWeight.w700)
                         .paddingSymmetric(vertical: 10),
-                    SizedBox(
-                        height: 200,
-                        width: double.infinity,
-                        child: DefaultTabController(
-                          length: 4,
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Obx(() => controller.isLoading.value
-                                        ? const Center(
-                                            child: CircularProgressIndicator(),
-                                          )
-                                        : TabBar(
-                                            controller:
-                                                controller.mainController,
-                                            unselectedLabelColor: Colors.black,
-                                            isScrollable: true,
-                                            indicator: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(30),
-                                              color: Colors.transparent,
+                    DefaultTabController(
+                      length: 4,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Obx(() => controller.isLoading.value
+                                    ? const Center(
+                                        child: CircularProgressIndicator(),
+                                      )
+                                    : TabBar(
+                                        controller: controller.mainController,
+                                        unselectedLabelColor: Colors.black,
+                                        isScrollable: true,
+                                        indicator: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(30),
+                                          color: Colors.transparent,
+                                        ),
+                                        onTap: (int index) {
+                                          controller.isIndex.value = index;
+                                          if (index == 0) {
+                                            controller.categoryFilter("");
+                                          } else if (index == 1) {
+                                            controller.categoryFilter("2");
+                                          } else if (index == 2) {
+                                            controller.categoryFilter("1");
+                                          } else if (index == 3) {
+                                            controller.categoryFilter("3");
+                                          }
+                                        },
+                                        labelPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 6.0),
+                                        tabs: [
+                                            buildTab(
+                                              "All",
+                                              controller.isIndex.value == 0
+                                                  ? Colors.white
+                                                  : Colors.black,
+                                              controller.isIndex.value == 0
+                                                  ? blueColor
+                                                  : Colors.white,
                                             ),
-                                            onTap: (int index) {
-                                              controller.isIndex.value = index;
-                                              if (index == 0) {
-                                                controller.categoryFilter("");
-                                              } else if (index == 1) {
-                                                controller.categoryFilter("2");
-                                              } else if (index == 2) {
-                                                controller.categoryFilter("1");
-                                              } else if (index == 3) {
-                                                controller.categoryFilter("3");
-                                              }
-                                            },
-                                            labelPadding:
-                                                const EdgeInsets.symmetric(
-                                                    horizontal: 6.0),
-                                            tabs: [
-                                                buildTab(
-                                                  "All",
-                                                  controller.isIndex.value == 0
-                                                      ? Colors.white
-                                                      : Colors.black,
-                                                  controller.isIndex.value == 0
-                                                      ? blueColor
-                                                      : Colors.white,
-                                                ),
-                                                buildTab(
-                                                  "Speeches",
-                                                  controller.isIndex.value == 1
-                                                      ? Colors.white
-                                                      : Colors.black,
-                                                  controller.isIndex.value == 1
-                                                      ? blueColor
-                                                      : Colors.white,
-                                                ),
-                                                buildTab(
-                                                  "Songs",
-                                                  controller.isIndex.value == 2
-                                                      ? Colors.white
-                                                      : Colors.black,
-                                                  controller.isIndex.value == 2
-                                                      ? blueColor
-                                                      : Colors.white,
-                                                ),
-                                                buildTab(
-                                                  "Announcement",
-                                                  controller.isIndex.value == 3
-                                                      ? Colors.white
-                                                      : Colors.black,
-                                                  controller.isIndex.value == 3
-                                                      ? blueColor
-                                                      : Colors.white,
-                                                ),
-                                              ])
-                                    // .paddingOnly(right: 70)
-                                    ),
-                                Obx(
-                                  () => controller.isLoading.value
-                                      ? const Center(
-                                          child: CircularProgressIndicator(),
-                                        )
-                                      : Expanded(
-                                          child: TabBarView(
-                                          controller: controller.mainController,
-                                          physics:
-                                              const NeverScrollableScrollPhysics(),
-                                          children: const [
-                                            CategoryBuilder(),
-                                            CategoryBuilder(),
-                                            CategoryBuilder(),
-                                            CategoryBuilder(),
-                                          ],
-                                        )),
-                                )
-                              ]),
-                        )),
+                                            buildTab(
+                                              "Speeches",
+                                              controller.isIndex.value == 1
+                                                  ? Colors.white
+                                                  : Colors.black,
+                                              controller.isIndex.value == 1
+                                                  ? blueColor
+                                                  : Colors.white,
+                                            ),
+                                            buildTab(
+                                              "Songs",
+                                              controller.isIndex.value == 2
+                                                  ? Colors.white
+                                                  : Colors.black,
+                                              controller.isIndex.value == 2
+                                                  ? blueColor
+                                                  : Colors.white,
+                                            ),
+                                            buildTab(
+                                              "Announcement",
+                                              controller.isIndex.value == 3
+                                                  ? Colors.white
+                                                  : Colors.black,
+                                              controller.isIndex.value == 3
+                                                  ? blueColor
+                                                  : Colors.white,
+                                            ),
+                                          ])
+                                // .paddingOnly(right: 70)
+                                ),
+                            Obx(
+                              () => controller.isLoading.value
+                                  ? const Center(
+                                      child: CircularProgressIndicator(),
+                                    )
+                                  : const CategoryBuilder(),
+                            )
+                          ]),
+                    ),
                   ],
                 ),
               ),
@@ -208,7 +193,6 @@ class StartView extends GetView<HomeController> {
           )),
         ],
       ),
-     
     );
   }
 }
