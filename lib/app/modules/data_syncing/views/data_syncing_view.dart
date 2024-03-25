@@ -8,7 +8,6 @@ import 'package:sound_stream_flutter_app/common_widgets/button/gradient_button.d
 import 'package:sound_stream_flutter_app/common_widgets/card/home_card.dart';
 import 'package:sound_stream_flutter_app/common_widgets/svg_widget/svg_widget.dart';
 import 'package:sound_stream_flutter_app/common_widgets/text/text.dart';
-import 'package:sound_stream_flutter_app/constrains/app_color.dart';
 import '../controllers/data_syncing_controller.dart';
 
 class DataSyncingView extends GetView<DataSyncingController> {
@@ -108,7 +107,7 @@ class DataSyncingView extends GetView<DataSyncingController> {
                                 () => Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    blackText(item.fileName, 14,
+                                    blackText(item.name, 14,
                                         fontWeight: FontWeight.w600),
                                     colorText(item.name, 14,
                                             fontWeight: FontWeight.w500,

@@ -28,17 +28,18 @@ class EndView extends GetView<HomeController> {
                     padding:
                         const EdgeInsets.only(top: 50, left: 15, right: 15),
                     child: Column(children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustomSwitch(
-                            value: false,
-                            onChanged: (value) {
-                              
-                            },
-                          ),
-                        ],
-                      ),
+                      controller.checkInDataList.first.date !=
+                              controller.dateToFormatted(controller.datetime)
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                CustomSwitch(
+                                  value: false,
+                                  onChanged: (value) {},
+                                ),
+                              ],
+                            )
+                          : const SizedBox(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -104,7 +105,8 @@ class EndView extends GetView<HomeController> {
               Expanded(
                   child: Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20, top: 50),
-                child: blackText('Start your Trip to\n see all Features', 22,
+                child: blackText(
+                    "Yours today's journey ends here \nThank you", 22,
                     fontWeight: FontWeight.w700),
               )),
             ]),
