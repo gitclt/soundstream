@@ -26,6 +26,7 @@ class _AudioPlayButtonState extends State<AudioPlayButton> {
   @override
   void initState() {
     controller.audioController.playlist = controller.songDataList;
+    controller.audioController.currentIndex = controller.arg;
     controller.audioPlayer.onPlayerStateChanged.listen((event) {
       if (event == PlayerState.playing) {
         setState(() {

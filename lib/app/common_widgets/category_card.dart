@@ -24,7 +24,7 @@ class CategoryBuilder extends GetView<HomeController> {
                   controller.audioPlayer.stop();
                    controller.audioPlayer1.stop();
                   Get.toNamed(Routes.AUDIO, arguments: [
-                    controller.songDataList[index],
+                    index,
                     controller.songDataList,
                     controller.catDataList,
                     controller.isIndex.value

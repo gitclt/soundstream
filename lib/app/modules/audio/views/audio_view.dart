@@ -67,6 +67,8 @@ class AudioView extends GetView<AudioController> {
                                     controller.categoryFilter("2");
                                   } else if (index == 2) {
                                     controller.categoryFilter("1");
+                                  } else if (index == 3) {
+                                    controller.categoryFilter("3");
                                   }
                                 },
                                 tabs: [
@@ -97,12 +99,22 @@ class AudioView extends GetView<AudioController> {
                                         ? blueColor
                                         : Colors.white,
                                   ),
-                                ]).paddingOnly(right: 100)),
+                                  buildTab(
+                                    "Announcement",
+                                    controller.isIndex.value == 3
+                                        ? Colors.white
+                                        : Colors.black,
+                                    controller.isIndex.value == 3
+                                        ? blueColor
+                                        : Colors.white,
+                                  ),
+                                ]).paddingOnly(right: 5)),
                         Expanded(
                             child: TabBarView(
                           controller: controller.mainController,
                           physics: const NeverScrollableScrollPhysics(),
                           children: const [
+                            AudioBuilder(),
                             AudioBuilder(),
                             AudioBuilder(),
                             AudioBuilder(),
