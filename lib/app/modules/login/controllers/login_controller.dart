@@ -6,13 +6,13 @@ import 'package:sound_stream_flutter_app/app/api/api.dart';
 import 'package:sound_stream_flutter_app/app/common_widgets/toast.dart';
 import 'package:sound_stream_flutter_app/app/routes/app_pages.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sound_stream_flutter_app/app/service/sessio.dart';
 
 class LoginController extends GetxController {
   final formKey = GlobalKey<FormState>();
   var isLoading = false.obs;
   TextEditingController mobileController = TextEditingController();
   TextEditingController vehicleController = TextEditingController();
-  
 
   void login() async {
     isLoading(true);
@@ -29,6 +29,11 @@ class LoginController extends GetxController {
               'location_id', response.data.first.locationId.toString());
           prefs.setString('mobile', response.data.first.mobile.toString());
           prefs.setString("profile", jsonEncode(response.data));
+          prefs.setString("name", response.data.first.name.toString());
+          prefs.setString(
+              "vehicle", response.data.first.vehicleName.toString());
+          Session.userMobile = response.data.first.name.toString();
+          Session.userName = response.data.first.vehicleName.toString();
           Get.offAllNamed(Routes.DATA_SYNCING, arguments: "");
         } else {
           isLoading(false);
@@ -39,8 +44,6 @@ class LoginController extends GetxController {
       isLoading(false);
     }
   }
-
-
 
   // getData() async {
   //   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();

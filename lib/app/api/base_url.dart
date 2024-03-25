@@ -4,5 +4,5 @@ class BaseUrl {
 }
 
 class AppSettings {
-  int timeout = 10;
+  int timeout = 15;
 }

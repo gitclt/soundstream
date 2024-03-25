@@ -12,6 +12,7 @@ abstract class Routes {
   static const AUDIO = _Paths.AUDIO;
   static const DATA_SYNCING = _Paths.DATA_SYNCING;
   static const HOME_START = _Paths.HOME_START;
+  static const HOME_END = _Paths.HOME_END;
 }
 
 abstract class _Paths {
@@ -23,4 +24,5 @@ abstract class _Paths {
   static const AUDIO = '/audio';
   static const DATA_SYNCING = '/data-syncing';
   static const HOME_START = '/home-start';
+  static const HOME_END = '/home-end';
 }

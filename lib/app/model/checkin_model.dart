@@ -19,8 +19,10 @@ class CheckInModel {
   factory CheckInModel.fromJson(Map<String, dynamic> json) => CheckInModel(
         success: json["success"],
         message: json["message"],
-        data: List<CheckInData>.from(
-            json["data"].map((x) => CheckInData.fromJson(x))),
+        data: json["data"] == null
+            ? []
+            : List<CheckInData>.from(
+                json["data"].map((x) => CheckInData.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {

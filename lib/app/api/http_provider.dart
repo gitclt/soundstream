@@ -66,12 +66,20 @@ class HttpApiConnect {
     }
   }
 
-  Future<dynamic> getApi(String url) async {
-    final response = await http.get(Uri.parse('${BaseUrl().baseUrl}$url'));
-    if (response.statusCode != 200) {
-      return ErrorHandleError().errorHandleError(response);
-    } else {
-      return response;
+  Future<dynamic> getApi(String url,
+      {Duration timeoutDuration = const Duration(seconds: 25)}) async {
+    try {
+      final response = await http
+          .get(Uri.parse('${BaseUrl().baseUrl}$url'))
+          .timeout(timeoutDuration);
+
+      if (response.statusCode != 200) {
+        return ErrorHandleError().errorHandleError(response);
+      } else {
+        return response;
+      }
+    } catch (e) {
+      return null;
     }
   }
 
@@ -130,18 +138,45 @@ class HttpApiConnect {
     }
   }
 
-  Future<dynamic> post(String urls, var add) async {
+  // Future<dynamic> post(String urls, var add) async {
+  //   final url = Uri.parse("${BaseUrl().baseUrl}$urls");
+
+  //   String jsonData = json.encode(add);
+
+  //   Map<String, String> headers = {"Content-Type": "application/json"};
+
+  //   final response = await http.post(url, headers: headers, body: jsonData);
+  //   if (response.statusCode != 200) {
+  //     return ErrorHandleError().errorHandleError(response);
+  //   } else {
+  //     return response;
+  //   }
+  // }
+
+  Future<dynamic> post(String urls, var add,
+      {Duration timeoutDuration = const Duration(seconds: 25)}) async {
     final url = Uri.parse("${BaseUrl().baseUrl}$urls");
 
     String jsonData = json.encode(add);
 
     Map<String, String> headers = {"Content-Type": "application/json"};
 
-    final response = await http.post(url, headers: headers, body: jsonData);
-    if (response.statusCode != 200) {
-      return ErrorHandleError().errorHandleError(response);
-    } else {
-      return response;
+    try {
+      final response = await http
+          .post(
+            url,
+            headers: headers,
+            body: jsonData,
+          )
+          .timeout(timeoutDuration);
+
+      if (response.statusCode != 200) {
+        return ErrorHandleError().errorHandleError(response);
+      } else {
+        return response;
+      }
+    } catch (e) {
+      return null;
     }
   }
 

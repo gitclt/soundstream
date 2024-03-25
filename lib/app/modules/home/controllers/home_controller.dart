@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
@@ -21,6 +20,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   var selectedIndex = 0.obs;
   var isIndex = 0.obs;
   var isLoading = false.obs;
+  var isTripLoading = false.obs;
   var isCheckin = false.obs;
   var isCheckOut = false.obs;
   AudioPlayer audioPlayer = AudioPlayer();
@@ -36,15 +36,10 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
   @override
   void onInit() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? checkin = prefs.getString('checkin');
-    if (checkin != null && checkin == "true") {
-      isCheckin.value = true;
-      Session.isCheckin = true;
-    }
-    super.onInit();
-
     mainController = TabController(length: 3, vsync: this);
+
+    getSongData();
+    super.onInit();
   }
 
   final List<String> option = [
@@ -129,6 +124,14 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     }
   }
 
+  dateToFormatted(DateTime dateTime) {
+    return DateFormat("yyyy-MM-dd").format(dateTime);
+  }
+
+  timeFormatted(DateTime dateTime) {
+    return DateFormat("HH:mm").format(dateTime);
+  }
+
   Future<void> fetchLocation() async {
     DialogHelper.showLoading("Fetching Location ...");
     final location = await determinePosition();
@@ -153,44 +156,24 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   ) async {
     DialogHelper.showLoading("Please wait while marking Check In...");
     try {
-      final response = await ApiProvider()
-          .checkInVisit(vehId, locId, date, time, place, lat, longi);
+      final response = await ApiProvider().checkInVisit(
+          vehId,
+          locId,
+          Session.date,
+          Session.time,
+          Session.time,
+          Session.lati,
+          Session.longi);
       if (response != null) {
         if (response.success == true) {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          prefs.setString('checkin', "true");
-          String? checkin = prefs.getString('checkin');
-          if (checkin != null && checkin == "true") {
-            isCheckin.value = true;
-            Session.isCheckin = true;
-            Session.place = place;
-            Session.time = timeFormatted(datetime);
-          }
-          DialogHelper.hideLoading();
-          toast("Checkin Sucessfully");
-          Get.toNamed(Routes.HOME_START);
+          getCheckIn();
         } else {
           DialogHelper.hideLoading();
         }
-      } else {
-        toast("Checkin Sucessfully");
-
-        Session.isCheckin = true;
-        Session.place = place;
-        Session.time = timeFormatted(datetime);
-        Get.toNamed(Routes.HOME_START);
-      }
+      } else {}
     } finally {
       DialogHelper.hideLoading();
     }
-  }
-
-  dateToFormatted(DateTime dateTime) {
-    return DateFormat("yyyy-MM-dd").format(dateTime);
-  }
-
-  timeFormatted(DateTime dateTime) {
-    return DateFormat("HH:mm").format(dateTime);
   }
 
   Future<void> getCheckIn() async {
@@ -198,18 +181,29 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       final response = await ApiProvider()
           .getCheckIn(Session.vehId, dateToFormatted(datetime));
       if (response != null) {
-        DialogHelper.showLoading("Fetching Location ...");
-        final location = await determinePosition();
-        DialogHelper.hideLoading();
-        if (location == null) return;
+        if (response.success == true) {
+          DialogHelper.showLoading("Fetching Location ...");
+          final location = await determinePosition();
+          DialogHelper.hideLoading();
+          if (location == null) return;
 
-        final locStatus = await getCurrentPos(location);
+          final locStatus = await getCurrentPos(location);
 
-        if (!locStatus) return;
-        String duration = calculateDurationBetween(
-            response.data.first.checkInTime, timeFormatted(datetime));
-        getCheckOutMarkVisit(response.data.first.id.toString(),
-            timeFormatted(datetime), place, crlatitude, crlongitude, duration);
+          if (!locStatus) return;
+          String duration = calculateDurationBetween(
+              response.data.first.checkInTime, timeFormatted(datetime));
+          getCheckOutMarkVisit(
+              response.data.first.id.toString(),
+              timeFormatted(datetime),
+              place,
+              crlatitude,
+              crlongitude,
+              duration);
+        } else if (response.success == false) {
+          fetchLocation();
+        }
+      } else {
+        toast("No internet");
       }
     } finally {}
   }
@@ -252,23 +246,42 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
           .checkOutVisit(id, time, place, lat, longi, duration);
       if (response != null) {
         if (response.success == true) {
-          toast(response.message);
-
+          toast("Sucessfully Checkout");
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setString('checkin', "false");
-          String? checkin = prefs.getString('checkin');
-          if (checkin != null && checkin == "false") {
-            isCheckin.value = false;
-            Session.isCheckin = false;
-            Session.place = "";
-            Session.time = "";
-          }
-        } else {
-          isCheckOut(false);
+          prefs.setString('checkin_place', "");
+          prefs.setString('checkin_time', "");
+          prefs.setString('lat', "");
+          prefs.setString('longi', "");
+          prefs.setString('date', "");
+          isCheckin.value = false;
+          Session.isCheckin = false;
+          Session.place = "";
+          Session.time = "";
+          getTripDetails();
         }
+      } else {
+        toast("Checkout Unsucessfull");
       }
     } finally {
       isCheckOut(false);
+    }
+  }
+
+  Future<void> getTripDetails() async {
+    isTripLoading(true);
+    try {
+      final response = await ApiProvider()
+          .getCheckIn(Session.vehId, dateToFormatted(datetime));
+      if (response != null) {
+        if (response.success == true) {
+          checkInDataList.addAll(response.data);
+          Get.back();
+          Get.toNamed(Routes.HOME_END);
+        }
+      }
+    } finally {
+      isTripLoading(false);
     }
   }
 }
