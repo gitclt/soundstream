@@ -52,6 +52,7 @@ class LoginView extends GetView<LoginController> {
                       height: 15,
                     ),
                     LoginTextField(
+                      keytype: TextInputType.phone,
                       prefixIcon: svgWidget('assets/svg/smartphone.svg'),
                       hintText: 'Enter your Mobile Number',
                       textEditingController: controller.mobileController,
