@@ -110,12 +110,12 @@ class _CandidateAudioPlayButtonState extends State<CandidateAudioPlayButton> {
                     width: 15,
                   ),
                   InkWell(
-                    onTap: (){
+                    onTap: () {
                       controller.audioPlayer.pause();
                       isPlaying
-                        ? audioController.pause(controller.audioPlayer1)
-                        : audioController.play(controller.audioPlayer1);
-                    } ,
+                          ? audioController.pause(controller.audioPlayer1)
+                          : audioController.play(controller.audioPlayer1);
+                    },
                     child: isPlaying
                         ? svgWidget('assets/svg/pause_button.svg')
                         : svgWidget('assets/svg/play_white.svg'),
