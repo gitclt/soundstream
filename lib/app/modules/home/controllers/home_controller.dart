@@ -28,6 +28,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   AudioPlayer audioPlayer = AudioPlayer();
   AudioPlayer audioPlayer1 = AudioPlayer();
   RxList<String> songDataList = <String>[].obs;
+
   List<String> catDataList = [];
   List<String> candiateSong = [];
   List<CheckInData> checkInDataList = [];
@@ -35,10 +36,11 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   void selectItem(int index) {
     selectedIndex.value = index;
   }
-   RxList<Widget> widgetOptions = <Widget>[
+
+  RxList<Widget> widgetOptions = <Widget>[
     const HomeView(),
     // const SearchView(),
-    
+
     const ProfileView(),
   ].obs;
 
