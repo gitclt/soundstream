@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sound_stream_flutter_app/app/model/model.dart';
 import 'package:sound_stream_flutter_app/app/routes/app_pages.dart';
+import 'package:sound_stream_flutter_app/app/service/sessio.dart';
 import 'package:sound_stream_flutter_app/constrains/app_color.dart';
 
 class ProfileController extends GetxController {
@@ -68,6 +69,10 @@ class ProfileController extends GetxController {
       }
       final prefs = await SharedPreferences.getInstance();
       prefs.clear();
+      Session.userMobile = "";
+      Session.userName = "";
+      Session.vehicle = "";
+      Session.isCheckin = false;
       Get.offAllNamed(Routes.SPLASH);
     }
   }

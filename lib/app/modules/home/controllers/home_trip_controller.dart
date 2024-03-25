@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -134,4 +135,17 @@ class HomeTripController extends GetxController {
   timeFormatted(DateTime dateTime) {
     return DateFormat("HH:mm").format(dateTime);
   }
+
+  // void startBackgroundLocationUpdates() {
+  //   const Duration interval = Duration(seconds: 10);
+
+  //   // ignore: unused_local_variable
+  //   final StreamSubscription<Position> positionStream =
+  //       Geolocator.getPositionStream().listen((Position position) {
+  //     Timer.periodic(interval, (timer) {
+  //       print(
+  //           'Latitude: ${position.latitude}, Longitude: ${position.longitude}');
+  //     });
+  //   });
+  // }
 }
