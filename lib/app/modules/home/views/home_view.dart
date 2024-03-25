@@ -37,6 +37,7 @@ class HomeView extends GetView<HomeController> {
                     onChanged: (value) async {
                       controller.getSongData();
                       await controller.fetchLocation();
+                      // Get.to(const StartView());
                     },
                   ))
             ],
