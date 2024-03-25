@@ -193,6 +193,81 @@ class StartView extends GetView<HomeController> {
           )),
         ],
       ),
+
+      bottomNavigationBar: Obx(
+        () => BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            currentIndex: controller.selectedIndex.value,
+            elevation: 0,
+            onTap: (int index) async {
+              controller.selectedIndex.value = index;
+            },
+            items: [
+              BottomNavigationBarItem(
+                  icon: Padding(
+                    padding: const EdgeInsets.only(bottom: 5.0),
+                    child: controller.selectedIndex.value == 0
+                        ? svgWidget('assets/svg/Home.svg',
+                            color: controller.selectedIndex.value == 0
+                                ? blueColor
+                                : Colors.black)
+                        : svgWidget('assets/svg/home1.svg'),
+                  ),
+                  label: 'Home'),
+              BottomNavigationBarItem(
+                  icon: Padding(
+                    padding: const EdgeInsets.only(bottom: 5.0),
+                    child: controller.selectedIndex.value == 1
+                        ? svgWidget('assets/svg/circle_profile1.svg',
+                            color: controller.selectedIndex.value == 1
+                                ? blueColor
+                                : Colors.black)
+                        : svgWidget('assets/svg/circle_profile.svg'),
+                  ),
+                  label: 'Profile')
+            ]),
+      ),
+
+      // bottomNavigationBar: BottomNavigationBar(
+      //     type: BottomNavigationBarType.fixed,
+      //     currentIndex: controller.selectedIndex.value,
+      //     elevation: 0,
+      //     onTap: (int index) async {
+      //       controller.selectedIndex.value = index;
+      //     },
+      //     items: [
+      //       BottomNavigationBarItem(
+      //           icon: Padding(
+      //             padding: const EdgeInsets.only(bottom: 5.0),
+      //             child: controller.selectedIndex.value == 0
+      //                 ? svgWidget('assets/svg/Home.svg',
+      //                     color: controller.selectedIndex.value == 0
+      //                         ? blueColor
+      //                         : Colors.black)
+      //                 : svgWidget('assets/svg/home1.svg'),
+      //           ),
+      //           label: 'Home'),
+      //       // BottomNavigationBarItem(
+      //       //     icon: Padding(
+      //       //       padding: const EdgeInsets.only(bottom: 5.0),
+      //       //       child: svgWidget('assets/svg/bottom_search.svg',
+      //       //           color: controller.selectedIndex.value == 1
+      //       //               ? redColor
+      //       //               : Colors.black),
+      //       //     ),
+      //       //     label: 'Search'),
+      //       BottomNavigationBarItem(
+      //           icon: Padding(
+      //             padding: const EdgeInsets.only(bottom: 5.0),
+      //             child: controller.selectedIndex.value == 1
+      //                 ? svgWidget('assets/svg/circle_profile1.svg',
+      //                     color: controller.selectedIndex.value == 1
+      //                         ? blueColor
+      //                         : Colors.black)
+      //                 : svgWidget('assets/svg/circle_profile.svg'),
+      //           ),
+      //           label: 'Profile')
+      //     ]),
     );
   }
 }

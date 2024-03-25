@@ -10,6 +10,8 @@ import 'package:sound_stream_flutter_app/app/api/api.dart';
 import 'package:sound_stream_flutter_app/app/common_widgets/toast.dart';
 import 'package:sound_stream_flutter_app/app/model/checkin_model.dart';
 import 'package:sound_stream_flutter_app/app/model/song_model.dart';
+import 'package:sound_stream_flutter_app/app/modules/home/views/home_view.dart';
+import 'package:sound_stream_flutter_app/app/modules/profile/views/profile_view.dart';
 import 'package:sound_stream_flutter_app/app/service/sessio.dart';
 import 'package:sound_stream_flutter_app/common_widgets/popup/dialog_helper.dart';
 import 'package:sound_stream_flutter_app/constrains/service/location.dart';
@@ -33,6 +35,12 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   void selectItem(int index) {
     selectedIndex.value = index;
   }
+   RxList<Widget> widgetOptions = <Widget>[
+    const HomeView(),
+    // const SearchView(),
+    
+    const ProfileView(),
+  ].obs;
 
   @override
   void onInit() async {
