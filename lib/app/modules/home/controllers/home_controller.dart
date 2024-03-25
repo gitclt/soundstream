@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sound_stream_flutter_app/app/api/api.dart';
 import 'package:sound_stream_flutter_app/app/common_widgets/toast.dart';
@@ -54,7 +53,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   void onInit() async {
     mainController = TabController(length: 4, vsync: this);
 
-    getSongData();
+    getSongDetails();
     super.onInit();
   }
 
@@ -70,20 +69,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   DateTime datetime = DateTime.now();
   String crlatitude = '';
   String crlongitude = '';
-
-  getSongData() async {
-    songDataList.clear();
-    catDataList.clear();
-    isLoading(true);
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    if (sharedPreferences.containsKey("audioFilePaths")) {
-      songDataList.value =
-          sharedPreferences.getStringList('audioFilePaths') ?? [];
-      catDataList = sharedPreferences.getStringList('audioFilePaths') ?? [];
-    }
-    getSongDetails();
-    isLoading(false);
-  }
 
   String formatDuration(Duration duration) {
     String minutes = (duration.inMinutes % 60).toString().padLeft(2, '0');
@@ -102,6 +87,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   getSongDetails() async {
+    isLoading(true);
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
     if (sharedPreferences.containsKey("songs")) {
@@ -114,24 +100,11 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
               jsonDecode(sharedPreferences.getString("songs")!))
           .map((x) => SongData.fromJson(x))
           .toList();
-      for (var e in songdata) {
-        var catData = catDataList.firstWhere(
-          (element) => element.split("/").last == e.fileName,
-        );
-        // ignore: unnecessary_null_comparison
-        if (catData != null) {
-          e.assetLink = catData;
-        }
-      }
-      listsongdata.addAll(songdata);
 
-      List<String> names = songdata
-          .where((e) => e.categoryId == 3)
-          .map((e) => e.fileName)
-          .toList();
-      candiateSong.addAll(catDataList
-          .where((element) => names.contains(element.split("/").last)));
+      candiateSong.addAll(
+          songdata.where((e) => e.categoryId == 3).map((e) => e.assetLink));
     }
+    isLoading(false);
   }
 
   Future<bool> getCurrentPos(Position position) async {
@@ -309,6 +282,18 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       }
     } finally {
       isTripLoading(false);
+    }
+  }
+
+  void setPlayingAtIndex(int index) {
+    SongData songToPlay = songdata[index];
+
+    for (int i = 0; i < listsongdata.length; i++) {
+      if (listsongdata[i].id == songToPlay.id) {
+        listsongdata[i].isPlaying = true;
+      } else {
+        listsongdata[i].isPlaying = false;
+      }
     }
   }
 }

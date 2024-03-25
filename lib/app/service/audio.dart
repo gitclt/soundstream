@@ -9,9 +9,20 @@ class AudioPlayerService {
     setPlayer(player);
 
     if (playlist.isNotEmpty) {
-      await _currentPlayer!.play(UrlSource(playlist[currentIndex]));
-      _currentPlayer!.onPlayerComplete.listen((event) {
-        playNextSong(_currentPlayer!);
+      await player.play(UrlSource(playlist[currentIndex]));
+      player.onPlayerComplete.listen((event) {
+        playNextSong(player);
+      });
+    }
+  }
+
+  playsingle(AudioPlayer player) async {
+    setPlayer(player);
+
+    if (playlist.isNotEmpty) {
+      await player.play(UrlSource(playlist[0]));
+      player.onPlayerComplete.listen((event) {
+        playNextSong(player);
       });
     }
   }

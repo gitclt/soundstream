@@ -7,7 +7,6 @@ import 'package:sound_stream_flutter_app/common_widgets/card/home_card.dart';
 import 'package:sound_stream_flutter_app/common_widgets/card/home_top_card.dart';
 import 'package:sound_stream_flutter_app/common_widgets/svg_widget/svg_widget.dart';
 import 'package:sound_stream_flutter_app/common_widgets/text/text.dart';
-import 'package:sound_stream_flutter_app/constrains/app_color.dart';
 
 import '../controllers/home_controller.dart';
 

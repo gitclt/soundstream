@@ -43,7 +43,7 @@ class StartView extends GetView<HomeController> {
                             final res = await Get.toNamed(Routes.DATA_SYNCING,
                                 arguments: "sync");
                             if (res == true) {
-                              controller.getSongData();
+                              controller.getSongDetails();
                             }
                           },
                           child: svgWidget('assets/svg/sync.svg'))
@@ -92,7 +92,7 @@ class StartView extends GetView<HomeController> {
                         ? const Center(
                             child: CircularProgressIndicator(),
                           )
-                        : controller.songDataList.isEmpty
+                        : controller.listsongdata.isEmpty
                             ? const SizedBox()
                             : const HomePlayButton().paddingOnly(bottom: 30)),
                     Obx(() => controller.isLoading.value

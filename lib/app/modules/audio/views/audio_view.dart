@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sound_stream_flutter_app/app/common_widgets/audio_play_button.dart';
+import 'package:sound_stream_flutter_app/app/common_widgets/category_card.dart';
 import 'package:sound_stream_flutter_app/app/common_widgets/tab_bar.dart';
-import 'package:sound_stream_flutter_app/app/modules/audio/views/audio_tab.dart';
 import 'package:sound_stream_flutter_app/app/modules/home/controllers/home_controller.dart';
 import 'package:sound_stream_flutter_app/common_widgets/text/text.dart';
 import 'package:sound_stream_flutter_app/constrains/app_color.dart';
-import '../controllers/audio_controller.dart';
 
 class AudioView extends GetView<HomeController> {
   const AudioView({Key? key}) : super(key: key);
@@ -69,7 +68,7 @@ class AudioView extends GetView<HomeController> {
                                   } else if (index == 2) {
                                     controller.categoryFilter("1");
                                   } else if (index == 3) {
-                                    controller.categoryFilter("3");
+                                    controller.categoryFilter("4");
                                   }
                                 },
                                 tabs: [
@@ -115,10 +114,10 @@ class AudioView extends GetView<HomeController> {
                           controller: controller.mainController,
                           physics: const NeverScrollableScrollPhysics(),
                           children: const [
-                            AudioBuilder(),
-                            AudioBuilder(),
-                            AudioBuilder(),
-                            AudioBuilder(),
+                            CategoryBuilder(),
+                            CategoryBuilder(),
+                            CategoryBuilder(),
+                            CategoryBuilder(),
                           ],
                         )),
                       ]),

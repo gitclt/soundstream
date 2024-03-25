@@ -59,10 +59,13 @@ class _AudioPlayButtonState extends State<AudioPlayButton> {
     return Column(
       children: [
         Image.asset('assets/image/music_image.png'),
-        Obx(() => controller.isaudioIndex.value != -1
+        Obx(() => controller.audioController.currentIndex != -1
             ? colorText(
-                    controller
-                        .songdata[controller.audioController.currentIndex].name,
+                    // ignore: unnecessary_null_comparison
+                    controller.listsongdata
+                        .where((e) => e.isPlaying == true)
+                        .first
+                        .name,
                     20,
                     fontWeight: FontWeight.w700,
                     color: blueColor)
@@ -96,10 +99,16 @@ class _AudioPlayButtonState extends State<AudioPlayButton> {
             InkWell(
                 onTap: () {
                   setState(() {
-                    controller.audioController
-                        .playPreviousSong(controller.audioPlayer2);
-                    controller.isaudioIndex.value =
-                        controller.audioController.currentIndex;
+                    if (controller.songdata.length != 1) {
+                      controller.isLoading(true);
+                      controller.audioController
+                          .playPreviousSong(controller.audioPlayer2);
+                      controller.isaudioIndex.value =
+                          controller.audioController.currentIndex;
+                      controller.setPlayingAtIndex(
+                          controller.audioController.currentIndex);
+                      controller.isLoading(false);
+                    }
                   });
                 },
                 child: svgWidget('assets/svg/backward.svg')),
@@ -127,10 +136,19 @@ class _AudioPlayButtonState extends State<AudioPlayButton> {
             InkWell(
                 onTap: () {
                   setState(() {
-                    controller.audioController
-                        .playNextSong(controller.audioPlayer2);
-                    controller.isaudioIndex.value =
-                        controller.audioController.currentIndex;
+                    if (controller.songdata.length != 1) {
+                      controller.isLoading(true);
+
+                      controller.audioController
+                          .playNextSong(controller.audioPlayer2);
+
+                      controller.isaudioIndex.value =
+                          controller.audioController.currentIndex;
+                      controller.setPlayingAtIndex(
+                          controller.audioController.currentIndex);
+
+                      controller.isLoading(false);
+                    }
                   });
                 },
                 child: svgWidget('assets/svg/forward.svg')),
@@ -142,8 +160,8 @@ class _AudioPlayButtonState extends State<AudioPlayButton> {
 
   @override
   void dispose() {
-    controller.audioPlayer.dispose();
-    controller.audioPlayer.stop();
+    controller.audioPlayer2.stop();
+    controller.audioPlayer2.dispose();
     super.dispose();
   }
 }

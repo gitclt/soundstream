@@ -4,6 +4,7 @@ import 'package:sound_stream_flutter_app/app/modules/home/controllers/home_contr
 import 'package:sound_stream_flutter_app/app/routes/app_pages.dart';
 import 'package:sound_stream_flutter_app/common_widgets/svg_widget/svg_widget.dart';
 import 'package:sound_stream_flutter_app/common_widgets/text/text.dart';
+import 'package:sound_stream_flutter_app/constrains/app_color.dart';
 
 class CategoryBuilder extends GetView<HomeController> {
   const CategoryBuilder({super.key});
@@ -18,31 +19,43 @@ class CategoryBuilder extends GetView<HomeController> {
             itemCount: controller.songdata.length,
             itemBuilder: (context, index) {
               return CategoryCard(
+                color: controller.audioController.currentIndex == index
+                    ? blueColor.withOpacity(0.3)
+                    : Colors.white,
                 audioname: controller.songdata[index].name,
                 name: '',
                 ontap: () {
+                  controller.isLoading(true);
+                  controller.audioController.currentIndex = index;
                   controller.audioPlayer.stop();
                   controller.audioPlayer1.stop();
                   controller.songIndex.value = index;
-                  Get.toNamed(Routes.AUDIO, arguments: [
-                    index,
-                    controller.songDataList,
-                    controller.catDataList,
-                    controller.isIndex.value
-                  ]);
+                  controller.audioController.playlist = controller.songdata
+                      .map((element) => element.assetLink)
+                      .toList();
+                  controller.audioController.pause(controller.audioPlayer2);
+
+                  controller.isaudioIndex.value = index;
+                  controller.audioController.play(controller.audioPlayer2);
+                  controller.setPlayingAtIndex(index);
+                  controller.isLoading(false);
+                  Get.toNamed(
+                    Routes.AUDIO,
+                  );
                 },
               ).paddingAll(3);
             },
           ));
   }
 }
-
 class CategoryCard extends GetView<HomeController> {
   final String audioname;
   final String name;
+  final Color color;
   final Function ontap;
   const CategoryCard({
     required this.audioname,
+    required this.color,
     required this.name,
     required this.ontap,
     super.key,
@@ -58,7 +71,7 @@ class CategoryCard extends GetView<HomeController> {
         height: 60,
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-            color: Colors.white,
+            color: color,
             borderRadius: const BorderRadius.all(Radius.circular(8)),
             border: Border.all(width: 0.5, color: Colors.grey),
             boxShadow: const [

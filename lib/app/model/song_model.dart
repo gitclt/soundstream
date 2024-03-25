@@ -108,6 +108,7 @@ class SongData {
   int createdBy;
   int updatedBy;
   String assetLink;
+  bool isPlaying;
   RxString downloadPercentage;
 
   SongData({
@@ -123,6 +124,7 @@ class SongData {
     required this.createdBy,
     required this.updatedBy,
     required this.assetLink,
+    required this.isPlaying,
     required this.downloadPercentage,
   });
 
@@ -139,6 +141,7 @@ class SongData {
         createdBy: json["created_by"],
         updatedBy: json["updated_by"],
         assetLink: json["assetLink"] ?? "",
+        isPlaying: json["isPlaying"] ?? false,
         downloadPercentage: "".obs,
       );
 
@@ -155,6 +158,7 @@ class SongData {
         "created_by": createdBy,
         "updated_by": updatedBy,
         "assetLink": assetLink,
+        "isPlaying": isPlaying,
         "downloadPercentage": downloadPercentage
       };
 }
