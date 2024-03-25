@@ -106,15 +106,13 @@ class DataSyncingController extends GetxController {
   void addSongsData(SongData song, String path) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    String downloadPercentage = song
-        .downloadPercentage.value; // Assuming downloadPercentage is RxString
+    String downloadPercentage = song.downloadPercentage.value;
 
     List<Map<String, dynamic>> existingSongsJson = (prefs.getString("songs") !=
             null)
         ? List<Map<String, dynamic>>.from(jsonDecode(prefs.getString("songs")!))
         : [];
 
-    // Convert SongData object to Map<String, dynamic>
     Map<String, dynamic> newSongData = {
       "id": song.id,
       "name": song.name,
