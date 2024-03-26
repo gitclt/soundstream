@@ -1,4 +1,3 @@
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -124,6 +123,7 @@ class _HomePlayButtonState extends State<HomePlayButton> {
               InkWell(
                 onTap: () {
                   controller.audioPlayer1.pause();
+                  controller.audioPlayer2.pause();
                   isPlaying
                       ? audioController.pause(controller.audioPlayer)
                       : audioController.play(controller.audioPlayer);

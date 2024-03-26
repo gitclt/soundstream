@@ -33,7 +33,7 @@ class CategoryBuilder extends GetView<HomeController> {
                   controller.audioController.playlist = controller.songdata
                       .map((element) => element.assetLink)
                       .toList();
-                  controller.audioController.pause(controller.audioPlayer2);
+                  // controller.audioController.pause(controller.audioPlayer2);
 
                   controller.isaudioIndex.value = index;
                   controller.audioController.play(controller.audioPlayer2);
@@ -48,6 +48,7 @@ class CategoryBuilder extends GetView<HomeController> {
           ));
   }
 }
+
 class CategoryCard extends GetView<HomeController> {
   final String audioname;
   final String name;

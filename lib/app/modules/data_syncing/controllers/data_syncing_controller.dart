@@ -133,26 +133,4 @@ class DataSyncingController extends GetxController {
 
     prefs.setString("songs", jsonEncode(existingSongsJson));
   }
-
-  // void addSongsData(SongData song, String path) async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-
-  //   prefs.setString(
-  //       "songs",
-  //       jsonEncode({
-  //         "id": song.id,
-  //         "name": song.name,
-  //         "remark": song.remark,
-  //         "category_id": song.categoryId,
-  //         "location_id": song.locationId,
-  //         "file_name": song.fileName,
-  //         "status": song.status,
-  //         "created_at": song.createdAt,
-  //         "updated_at": song.updatedAt,
-  //         "created_by": song.createdBy,
-  //         "updated_by": song.updatedBy,
-  //         "assetLink": path,
-  //         'downloadPercentage': song.downloadPercentage.value,
-  //       }));
-  // }
 }

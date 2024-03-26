@@ -40,6 +40,14 @@ class _AudioPlayButtonState extends State<AudioPlayButton> {
         });
       }
     });
+    controller.audioPlayer2.onPlayerComplete.listen((event) {
+      if (controller.songdata.length != 1) {
+        controller.isLoading(true);
+        controller
+            .setPlayingAtIndex(controller.audioController.currentIndex + 1);
+        controller.isLoading(false);
+      }
+    });
 
     controller.audioPlayer2.onDurationChanged.listen((event) {
       setState(() {
@@ -160,8 +168,8 @@ class _AudioPlayButtonState extends State<AudioPlayButton> {
 
   @override
   void dispose() {
-    controller.audioPlayer2.stop();
-    controller.audioPlayer2.dispose();
+    // controller.audioPlayer2.stop();
+    // controller.audioPlayer2.dispose();
     super.dispose();
   }
 }

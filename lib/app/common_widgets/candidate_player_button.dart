@@ -112,6 +112,7 @@ class _CandidateAudioPlayButtonState extends State<CandidateAudioPlayButton> {
                   InkWell(
                     onTap: () {
                       controller.audioPlayer.pause();
+                      controller.audioPlayer2.pause();
                       isPlaying
                           ? audioController.pause(controller.audioPlayer1)
                           : audioController.play(controller.audioPlayer1);

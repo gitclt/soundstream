@@ -275,7 +275,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       final response = await ApiProvider()
           .getCheckIn(Session.vehId, dateToFormatted(datetime));
       if (response != null) {
-        if (response.success == true) {
+        if (response.success == true)  {
           checkInDataList.addAll(response.data);
           Get.close(2);
         }
