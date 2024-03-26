@@ -132,7 +132,7 @@ class EndView extends GetView<HomeController> {
       //                   : svgWidget('assets/svg/home1.svg'),
       //             ),
       //             label: 'Home'),
-           
+
       //         BottomNavigationBarItem(
       //             icon: Padding(
       //               padding: const EdgeInsets.only(bottom: 5.0),

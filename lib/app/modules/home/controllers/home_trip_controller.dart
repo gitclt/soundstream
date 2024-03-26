@@ -100,7 +100,7 @@ class HomeTripController extends GetxController {
           Session.longi = longi;
           DialogHelper.hideLoading();
           toast("Checkin Sucessfully");
-          Get.toNamed(Routes.HOME_START);
+          Get.offAndToNamed(Routes.HOME_START);
         } else {
           DialogHelper.hideLoading();
           toast(response.message);
@@ -121,7 +121,7 @@ class HomeTripController extends GetxController {
         Session.date = date;
         Session.lati = lat;
         Session.longi = longi;
-        Get.toNamed(Routes.HOME_START);
+        Get.offAndToNamed(Routes.HOME_START);
       }
     } finally {
       DialogHelper.hideLoading();

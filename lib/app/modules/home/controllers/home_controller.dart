@@ -11,6 +11,7 @@ import 'package:sound_stream_flutter_app/app/model/checkin_model.dart';
 import 'package:sound_stream_flutter_app/app/model/song_model.dart';
 import 'package:sound_stream_flutter_app/app/modules/home/views/home_view.dart';
 import 'package:sound_stream_flutter_app/app/modules/profile/views/profile_view.dart';
+import 'package:sound_stream_flutter_app/app/routes/app_pages.dart';
 import 'package:sound_stream_flutter_app/app/service/audio.dart';
 import 'package:sound_stream_flutter_app/app/service/sessio.dart';
 import 'package:sound_stream_flutter_app/common_widgets/popup/dialog_helper.dart';
@@ -259,6 +260,9 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
           Session.isCheckin = false;
           Session.place = "";
           Session.time = "";
+          audioPlayer.stop();
+          audioPlayer1.stop();
+          audioPlayer2.stop();
           getTripDetails();
         }
       } else {
@@ -275,9 +279,10 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       final response = await ApiProvider()
           .getCheckIn(Session.vehId, dateToFormatted(datetime));
       if (response != null) {
-        if (response.success == true)  {
+        if (response.success == true) {
           checkInDataList.addAll(response.data);
-          Get.close(2);
+          Get.back();
+          Get.offAndToNamed(Routes.HOME_END);
         }
       }
     } finally {
