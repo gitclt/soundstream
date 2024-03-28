@@ -1,14 +1,17 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sound_stream_flutter_app/app/api/api.dart';
 import 'package:sound_stream_flutter_app/app/common_widgets/toast.dart';
 import 'package:sound_stream_flutter_app/app/model/checkin_model.dart';
 import 'package:sound_stream_flutter_app/app/model/song_model.dart';
+import 'package:sound_stream_flutter_app/app/modules/home/controllers/dashboard_controller.dart';
 import 'package:sound_stream_flutter_app/app/modules/home/views/home_view.dart';
 import 'package:sound_stream_flutter_app/app/modules/profile/views/profile_view.dart';
 import 'package:sound_stream_flutter_app/app/routes/app_pages.dart';
@@ -17,6 +20,9 @@ import 'package:sound_stream_flutter_app/app/service/sessio.dart';
 import 'package:sound_stream_flutter_app/common_widgets/popup/dialog_helper.dart';
 import 'package:sound_stream_flutter_app/constrains/service/location.dart';
 import 'package:intl/intl.dart';
+import 'package:sound_stream_flutter_app/app/api/base_url.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
 
 class HomeController extends GetxController with GetTickerProviderStateMixin {
   late TabController mainController;
@@ -39,22 +45,25 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   List<CheckInData> checkInDataList = [];
   RxList<SongData> songdata = <SongData>[].obs;
   RxList<SongData> listsongdata = <SongData>[].obs;
+  String downlodPercntage = '';
+  RxInt songnameIndex = 0.obs;
+  var allSongsDownloaded = false.obs;
   void selectItem(int index) {
     selectedIndex.value = index;
   }
 
   RxList<Widget> widgetOptions = <Widget>[
     const HomeView(),
-    // const SearchView(),
-
     const ProfileView(),
   ].obs;
 
   @override
   void onInit() async {
     mainController = TabController(length: 4, vsync: this);
-
-    getSongDetails();
+    getSongs();
+    if (Session.isCheckin == true) {
+      getSongDetails();
+    }
     super.onInit();
   }
 
@@ -158,21 +167,55 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   ) async {
     DialogHelper.showLoading("Please wait while marking Check In...");
     try {
-      final response = await ApiProvider().checkInVisit(
-          vehId,
-          locId,
-          Session.date,
-          Session.time,
-          Session.time,
-          Session.lati,
-          Session.longi);
+      final response = await ApiProvider()
+          .checkInVisit(vehId, locId, date, time, place, lat, longi);
       if (response != null) {
         if (response.success == true) {
-          getCheckIn();
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setString('checkin', "true");
+          prefs.setString('checkin_place', place);
+          prefs.setString('checkin_time', time);
+          prefs.setString('lat', crlatitude);
+          prefs.setString('longi', crlongitude);
+          prefs.setString('date', date);
+          Session.isCheckin = true;
+          Session.place = place;
+          Session.time = timeFormatted(datetime);
+          Session.date = date;
+          Session.lati = lat;
+          Session.longi = longi;
+          getSongDetails();
+          DialogHelper.hideLoading();
+          toast("Checkin Sucessfully");
+          final DashboardController dashcontroller = Get.find();
+          dashcontroller.updateWidgetOptions(true);
+          // Get.offAndToNamed(Routes.HOME);
         } else {
           DialogHelper.hideLoading();
+          toast(response.message);
         }
-      } else {}
+      } else {
+        toast("Checkin Sucessfully");
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('checkin', "true");
+        prefs.setString('checkin_place', place);
+        prefs.setString('checkin_time', time);
+        prefs.setString('lat', crlatitude);
+        prefs.setString('longi', crlongitude);
+        prefs.setString('date', date);
+        DialogHelper.hideLoading();
+        Session.isCheckin = true;
+        Session.place = place;
+        Session.time = timeFormatted(datetime);
+        Session.date = date;
+        Session.lati = lat;
+        Session.longi = longi;
+        getSongDetails();
+        final DashboardController dashcontroller = Get.find();
+        dashcontroller.updateWidgetOptions(true);
+        // Get.offAndToNamed(Routes.HOME);
+        // Get.offAndToNamed(Routes.HOME);
+      }
     } finally {
       DialogHelper.hideLoading();
     }
@@ -201,9 +244,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
               crlatitude,
               crlongitude,
               duration);
-        } else if (response.success == false) {
-          fetchLocation();
-        }
+        } else if (response.success == false) {}
       } else {
         toast("No internet");
       }
@@ -300,6 +341,108 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
         listsongdata[i].isPlaying = false;
       }
     }
+  }
+
+  double calculatePercentage(int songsWithFullDownload, int totalSongs) {
+    if (songsWithFullDownload == 0) {
+      return 0;
+    } else {
+      return (songsWithFullDownload / totalSongs) * 100;
+    }
+  }
+
+  RxList<SongData> songsList = <SongData>[].obs;
+  getSongs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    songsList.value = (jsonDecode(prefs.getString("songsList")!) as List)
+        .map((x) => SongData.fromJson(x))
+        .toList();
+    if (songsList.isNotEmpty) {
+      for (var e in songsList) {
+        List<Map<String, dynamic>> existingSongs =
+            List<Map<String, dynamic>>.from(
+                jsonDecode(prefs.getString("songs") ?? '[]'));
+
+        for (var song in songsList) {
+          var index =
+              existingSongs.indexWhere((element) => element["id"] == song.id);
+          if (index != -1 && song.downloadPercentage.value != "100") {
+            song.downloadPercentage.value = "100";
+          }
+        }
+        songnameIndex.value =
+            songsList.indexWhere((song) => song.fileName == e.fileName);
+        var currentSong = songsList[songnameIndex.value];
+
+        if (e.downloadPercentage.value != "100") {
+          await downloadAndSaveAudio(BaseUrl().audioUrl, e.fileName,
+              (double progress) {
+            currentSong.downloadPercentage.value =
+                (progress * 100).toStringAsFixed(0);
+          }, e);
+        }
+
+        if (songdata.every((e) => e.downloadPercentage.value == '100')) {
+          allSongsDownloaded.value = true;
+        }
+      }
+    }
+  }
+
+  Future<void> downloadAndSaveAudio(String url, String fileName,
+      Function(double) onProgress, SongData song) async {
+    var audioUrl = "$url$fileName";
+    var response = await http.get(Uri.parse(audioUrl));
+    if (response.statusCode == 200) {
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+      String filePath = '${appDocDir.path}/$fileName';
+      var file = File(filePath);
+      int totalBytes = response.contentLength ?? 0;
+      int bytesDownloaded = 0;
+      var sink = file.openWrite();
+      sink.add(response.bodyBytes);
+      bytesDownloaded += response.bodyBytes.length;
+      double progress = bytesDownloaded / totalBytes;
+      onProgress(progress);
+      await sink.close();
+      await saveAudioFilePath(filePath, song);
+    }
+  }
+
+  Future<void> saveAudioFilePath(String filePath, SongData song) async {
+    addSongsData(song, filePath);
+  }
+
+  void addSongsData(SongData song, String path) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String downloadPercentage = song.downloadPercentage.value;
+
+    List<Map<String, dynamic>> existingSongsJson = (prefs.getString("songs") !=
+            null)
+        ? List<Map<String, dynamic>>.from(jsonDecode(prefs.getString("songs")!))
+        : [];
+
+    Map<String, dynamic> newSongData = {
+      "id": song.id,
+      "name": song.name,
+      "remark": song.remark,
+      "category_id": song.categoryId,
+      "location_id": song.locationId,
+      "file_name": song.fileName,
+      "status": song.status,
+      "created_at": song.createdAt,
+      "updated_at": song.updatedAt,
+      "created_by": song.createdBy,
+      "updated_by": song.updatedBy,
+      "assetLink": path,
+      'downloadPercentage': downloadPercentage,
+    };
+
+    existingSongsJson.add(newSongData);
+
+    prefs.setString("songs", jsonEncode(existingSongsJson));
+    getSongDetails();
   }
 }
 

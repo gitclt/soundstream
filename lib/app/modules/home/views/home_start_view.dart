@@ -34,17 +34,16 @@ class StartView extends GetView<HomeController> {
                         value: Session.isCheckin,
                         onChanged: (value) {
                           controller.getCheckIn();
-
-                          // Get.to(const EndView());
                         },
                       ),
                       InkWell(
                           onTap: () async {
-                            final res = await Get.toNamed(Routes.DATA_SYNCING,
-                                arguments: "sync");
-                            if (res == true) {
-                              controller.getSongDetails();
-                            }
+                            controller.getSongDetails();
+                            // final res = await Get.toNamed(Routes.DATA_SYNCING,
+                            //     arguments: "sync");
+                            // if (res == true) {
+                            //   controller.getSongDetails();
+                            // }
                           },
                           child: svgWidget('assets/svg/sync.svg'))
                     ],
@@ -84,10 +83,74 @@ class StartView extends GetView<HomeController> {
             shrinkWrap: true,
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 5, left: 20, right: 20),
+                padding: const EdgeInsets.only(top: 0, left: 20, right: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Obx(
+                      () => controller.isLoading.value
+                          ? const Center()
+                          : Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  border: Border.all(
+                                      width: 1,
+                                      color: Colors.grey.withOpacity(0.3))),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      blackText(" Data Syncing Processing", 15,
+                                          fontWeight: FontWeight.w500),
+                                      const Spacer(),
+                                      Obx(
+                                        () => colorText(
+                                                "${controller.calculatePercentage(int.parse(controller.songsList.where((element) => element.downloadPercentage.value == "100").length.toString()), int.parse(controller.songsList.length.toString())).toStringAsFixed(0)} % Done",
+                                                15,
+                                                fontWeight: FontWeight.w500,
+                                                color: const Color(0xffFF9737))
+                                            .paddingOnly(left: 10),
+                                      )
+                                    ],
+                                  ),
+                                  Obx(
+                                    () => controller.isLoading.value
+                                        ? const Center()
+                                        : SliderTheme(
+                                            data: SliderTheme.of(context)
+                                                .copyWith(
+                                              thumbShape:
+                                                  SliderComponentShape.noThumb,
+                                            ),
+                                            child: Slider(
+                                              value: controller.songsList
+                                                  .where((element) =>
+                                                      element.downloadPercentage
+                                                          .value ==
+                                                      "100")
+                                                  .length
+                                                  .toDouble(),
+                                              activeColor:
+                                                  const Color(0xffFF9737),
+                                              inactiveColor:
+                                                  const Color(0xffFF9737)
+                                                      .withOpacity(0.5),
+                                              onChanged: (value) async {},
+                                              min: 0,
+                                              max: controller.songsList.length
+                                                  .toDouble(),
+                                            ),
+                                          ),
+                                  ),
+                                ],
+                              ).paddingOnly(left: 5, right: 5, top: 10),
+                            ),
+                    ).paddingOnly(
+                      right: 15,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     Obx(() => controller.isLoading.value
                         ? const Center(
                             child: CircularProgressIndicator(),

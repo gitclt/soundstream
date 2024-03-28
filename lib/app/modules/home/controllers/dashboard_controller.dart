@@ -14,6 +14,25 @@ class DashboardController extends GetxController {
 
   final GlobalKey<ScaffoldState> dashboardScaffoldkey =
       GlobalKey<ScaffoldState>();
+  @override
+  void onInit() {
+    super.onInit();
+    updateWidgetOptions(Session.isCheckin);
+  }
+
+  void updateWidgetOptions(bool isCheckin) {
+    if (isCheckin) {
+      widgetOptions.assignAll([
+        const StartView(),
+        const ProfileView(),
+      ]);
+    } else {
+      widgetOptions.assignAll([
+        const HomeView(),
+        const ProfileView(),
+      ]);
+    }
+  }
 
   void logOut() async {}
 }
