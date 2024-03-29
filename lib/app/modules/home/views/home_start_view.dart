@@ -4,8 +4,8 @@ import 'package:sound_stream_flutter_app/app/common_widgets/candidate_player_but
 import 'package:sound_stream_flutter_app/app/common_widgets/category_card.dart';
 import 'package:sound_stream_flutter_app/app/common_widgets/play_audio_button.dart';
 import 'package:sound_stream_flutter_app/app/common_widgets/tab_bar.dart';
+import 'package:sound_stream_flutter_app/app/common_widgets/toast.dart';
 import 'package:sound_stream_flutter_app/app/modules/home/views/custom_switch.dart';
-import 'package:sound_stream_flutter_app/app/routes/app_pages.dart';
 import 'package:sound_stream_flutter_app/app/service/sessio.dart';
 import 'package:sound_stream_flutter_app/common_widgets/card/home_card.dart';
 import 'package:sound_stream_flutter_app/common_widgets/card/home_top_card.dart';
@@ -38,12 +38,14 @@ class StartView extends GetView<HomeController> {
                       ),
                       InkWell(
                           onTap: () async {
-                            controller.getSongDetails();
-                            // final res = await Get.toNamed(Routes.DATA_SYNCING,
-                            //     arguments: "sync");
-                            // if (res == true) {
-                            //   controller.getSongDetails();
-                            // }
+                            if (controller.listsongdata
+                                .every((e) => e.assetLink != "")) {
+                              controller.getSongDetails();
+                              toast("Successfully Synced");
+                            } else if (controller.listsongdata.every(
+                                (e) => e.downloadPercentage.value == "100")) {
+                              controller.getSongDetails();
+                            }
                           },
                           child: svgWidget('assets/svg/sync.svg'))
                     ],
@@ -101,7 +103,10 @@ class StartView extends GetView<HomeController> {
                                   Row(
                                     children: [
                                       blackText(" Data Syncing Processing", 15,
-                                          fontWeight: FontWeight.w500),
+                                              fontWeight: FontWeight.w500)
+                                          .paddingOnly(
+                                        left: 15,
+                                      ),
                                       const Spacer(),
                                       Obx(
                                         () => colorText(
@@ -109,7 +114,7 @@ class StartView extends GetView<HomeController> {
                                                 15,
                                                 fontWeight: FontWeight.w500,
                                                 color: const Color(0xffFF9737))
-                                            .paddingOnly(left: 10),
+                                            .paddingOnly(right: 25),
                                       )
                                     ],
                                   ),
@@ -121,6 +126,7 @@ class StartView extends GetView<HomeController> {
                                                 .copyWith(
                                               thumbShape:
                                                   SliderComponentShape.noThumb,
+                                              trackHeight: 8,
                                             ),
                                             child: Slider(
                                               value: controller.songsList
@@ -143,10 +149,8 @@ class StartView extends GetView<HomeController> {
                                           ),
                                   ),
                                 ],
-                              ).paddingOnly(left: 5, right: 5, top: 10),
+                              ).paddingOnly(top: 10),
                             ),
-                    ).paddingOnly(
-                      right: 15,
                     ),
                     const SizedBox(
                       height: 10,

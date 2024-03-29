@@ -33,7 +33,8 @@ class HomeView extends GetView<HomeController> {
                       Row(
                         children: [
                           blackText(" Data Syncing Processing", 15,
-                              fontWeight: FontWeight.w500),
+                                  fontWeight: FontWeight.bold)
+                              .paddingOnly(left: 15),
                           const Spacer(),
                           Obx(
                             () => colorText(
@@ -41,7 +42,7 @@ class HomeView extends GetView<HomeController> {
                                     15,
                                     fontWeight: FontWeight.w500,
                                     color: const Color(0xffFF9737))
-                                .paddingOnly(left: 10),
+                                .paddingOnly(right: 25),
                           )
                         ],
                       ),
@@ -51,6 +52,7 @@ class HomeView extends GetView<HomeController> {
                             : SliderTheme(
                                 data: SliderTheme.of(context).copyWith(
                                   thumbShape: SliderComponentShape.noThumb,
+                                  trackHeight: 8,
                                 ),
                                 child: Slider(
                                   value: controller.songsList
@@ -69,9 +71,9 @@ class HomeView extends GetView<HomeController> {
                               ),
                       ),
                     ],
-                  ).paddingOnly(left: 10, right: 10, top: 10),
+                  ).paddingOnly(top: 10),
                 ).paddingAll(10),
-        ).paddingOnly(right: 15, top: 60),
+        ).paddingOnly(top: 60),
         Expanded(
             child: Padding(
           padding: const EdgeInsets.only(left: 20, right: 20, top: 15),

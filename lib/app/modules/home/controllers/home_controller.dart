@@ -61,9 +61,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   void onInit() async {
     mainController = TabController(length: 4, vsync: this);
     getSongs();
-    if (Session.isCheckin == true) {
-      getSongDetails();
-    }
+
     super.onInit();
   }
 
@@ -184,7 +182,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
           Session.date = date;
           Session.lati = lat;
           Session.longi = longi;
-          getSongDetails();
+          // getSongDetails();
           DialogHelper.hideLoading();
           toast("Checkin Sucessfully");
           final DashboardController dashcontroller = Get.find();
@@ -210,7 +208,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
         Session.date = date;
         Session.lati = lat;
         Session.longi = longi;
-        getSongDetails();
+        // getSongDetails();
         final DashboardController dashcontroller = Get.find();
         dashcontroller.updateWidgetOptions(true);
         // Get.offAndToNamed(Routes.HOME);
@@ -357,6 +355,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     songsList.value = (jsonDecode(prefs.getString("songsList")!) as List)
         .map((x) => SongData.fromJson(x))
         .toList();
+    listsongdata.addAll(songsList);
+    songdata.addAll(songsList);
     if (songsList.isNotEmpty) {
       for (var e in songsList) {
         List<Map<String, dynamic>> existingSongs =
@@ -370,6 +370,33 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
             song.downloadPercentage.value = "100";
           }
         }
+        if (Session.isCheckin == true) {
+          if (listsongdata.every((e) => e.assetLink != "")) {
+            getSongDetails();
+          } else if (listsongdata
+              .any((e) => e.downloadPercentage.value != "100")) {
+            SharedPreferences sharedPreferences =
+                await SharedPreferences.getInstance();
+            RxList<SongData> newlyaddedsongdata = <SongData>[].obs;
+            newlyaddedsongdata.value = List<Map<String, dynamic>>.from(
+                    jsonDecode(sharedPreferences.getString("songs")!))
+                .map((x) => SongData.fromJson(x))
+                .toList();
+
+            for (var e in newlyaddedsongdata) {
+              if (e.assetLink != "") {
+                int id = e.id;
+                var matchingSong = listsongdata.firstWhere(
+                  (song) => song.id == id,
+                );
+                matchingSong.assetLink = e.assetLink;
+              }
+            }
+          } else if (listsongdata
+              .every((e) => e.downloadPercentage.value == "100")) {
+            getSongDetails();
+          }
+        }
         songnameIndex.value =
             songsList.indexWhere((song) => song.fileName == e.fileName);
         var currentSong = songsList[songnameIndex.value];
@@ -377,8 +404,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
         if (e.downloadPercentage.value != "100") {
           await downloadAndSaveAudio(BaseUrl().audioUrl, e.fileName,
               (double progress) {
-            currentSong.downloadPercentage.value =
-                (progress * 100).toStringAsFixed(0);
+            currentSong.downloadPercentage.value = progress.toStringAsFixed(0);
           }, e);
         }
 
@@ -389,22 +415,46 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     }
   }
 
+  // Future<void> downloadAndSaveAudio(String url, String fileName,
+  //     Function(double) onProgress, SongData song) async {
+  //   var audioUrl = "$url$fileName";
+  //   var response = await http.get(Uri.parse(audioUrl));
+  //   if (response.statusCode == 200) {
+  //     Directory appDocDir = await getApplicationDocumentsDirectory();
+  //     String filePath = '${appDocDir.path}/$fileName';
+  //     var file = File(filePath);
+  //     int totalBytes = response.contentLength ?? 0;
+  //     int bytesDownloaded = 0;
+  //     var sink = file.openWrite();
+  //     sink.add(response.bodyBytes);
+  //     bytesDownloaded += response.bodyBytes.length;
+  //     double progress = bytesDownloaded / totalBytes;
+  //     onProgress(progress);
+  //     await sink.close();
+  //     await saveAudioFilePath(filePath, song);
+  //   }
+  // }
+
   Future<void> downloadAndSaveAudio(String url, String fileName,
       Function(double) onProgress, SongData song) async {
     var audioUrl = "$url$fileName";
-    var response = await http.get(Uri.parse(audioUrl));
+    final client = http.Client();
+    http.StreamedResponse response =
+        await client.send(http.Request("GET", Uri.parse(audioUrl)));
     if (response.statusCode == 200) {
       Directory appDocDir = await getApplicationDocumentsDirectory();
       String filePath = '${appDocDir.path}/$fileName';
       var file = File(filePath);
-      int totalBytes = response.contentLength ?? 0;
-      int bytesDownloaded = 0;
+      var length = response.contentLength ?? 0;
+      var received = 0;
       var sink = file.openWrite();
-      sink.add(response.bodyBytes);
-      bytesDownloaded += response.bodyBytes.length;
-      double progress = bytesDownloaded / totalBytes;
-      onProgress(progress);
-      await sink.close();
+      await response.stream.map((s) {
+        received += s.length;
+        var progress = (received / length) * 100;
+        onProgress(progress);
+        return s;
+      }).pipe(sink);
+
       await saveAudioFilePath(filePath, song);
     }
   }
@@ -442,8 +492,35 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     existingSongsJson.add(newSongData);
 
     prefs.setString("songs", jsonEncode(existingSongsJson));
-    getSongDetails();
+
+    // getSongDetails();
+    for (var existingSong in songdata) {
+      if (existingSong.id == song.id) {
+        existingSong.assetLink = path;
+        update();
+        songdata.refresh();
+      }
+    }
+    for (var existingSong in listsongdata) {
+      if (existingSong.id == song.id) {
+        existingSong.assetLink = path;
+        update();
+        listsongdata.refresh();
+      }
+    }
+    candiateSongadd(song, path);
   }
+
+  candiateSongadd(SongData sdata, String path) {
+    isLoading(true);
+    if (sdata.categoryId == 3) {
+      candiateSong.add(path);
+    }
+
+    isLoading(false);
+  }
+
+  
 }
 
 class SongModel {

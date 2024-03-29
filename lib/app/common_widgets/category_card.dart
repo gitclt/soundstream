@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:sound_stream_flutter_app/app/modules/home/controllers/home_controller.dart';
 import 'package:sound_stream_flutter_app/app/routes/app_pages.dart';
 import 'package:sound_stream_flutter_app/common_widgets/svg_widget/svg_widget.dart';
@@ -23,7 +24,10 @@ class CategoryBuilder extends GetView<HomeController> {
                     ? blueColor.withOpacity(0.3)
                     : Colors.white,
                 audioname: controller.songdata[index].name,
+                downloadPercntage:
+                    controller.songdata[index].downloadPercentage.value,
                 name: '',
+                index: index,
                 ontap: () {
                   controller.isLoading(true);
                   controller.audioController.currentIndex = index;
@@ -52,11 +56,15 @@ class CategoryBuilder extends GetView<HomeController> {
 class CategoryCard extends GetView<HomeController> {
   final String audioname;
   final String name;
+  final String downloadPercntage;
   final Color color;
+  final int index;
   final Function ontap;
   const CategoryCard({
     required this.audioname,
     required this.color,
+    required this.index,
+    required this.downloadPercntage,
     required this.name,
     required this.ontap,
     super.key,
@@ -91,12 +99,41 @@ class CategoryCard extends GetView<HomeController> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                blackText(audioname, 16, fontWeight: FontWeight.w700),
+                blackText(audioname, 14, fontWeight: FontWeight.w700),
                 colorText(name, 14,
                     fontWeight: FontWeight.w500, color: Colors.grey),
               ],
             ).paddingOnly(top: 2),
             const Spacer(),
+            Obx(
+              () {
+                final song = controller.songdata[index];
+                final downloadPercentage = song.downloadPercentage.value;
+                final isDownloaded =
+                    song.assetLink.isNotEmpty || downloadPercentage == "100";
+
+                return isDownloaded
+                    ? const SizedBox()
+                    : CircularPercentIndicator(
+                        radius: 18.0,
+                        lineWidth: 3.0,
+                        animation: false,
+                        percent: downloadPercentage.isNotEmpty
+                            ? double.parse(downloadPercentage) / 100
+                            : 0.0,
+                        center: Text(
+                          "$downloadPercentage%",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 10.0,
+                            color: Color(0xFFFF9737),
+                          ),
+                        ),
+                        circularStrokeCap: CircularStrokeCap.round,
+                        progressColor: const Color(0xFFFF9737),
+                      );
+              },
+            )
           ],
         ),
       ),
