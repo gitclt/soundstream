@@ -1,6 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:sound_stream_flutter_app/app/modules/home/controllers/home_controller.dart';
 import 'package:sound_stream_flutter_app/app/service/audio.dart';
 import 'package:sound_stream_flutter_app/common_widgets/svg_widget/svg_widget.dart';
@@ -90,7 +91,38 @@ class _HomePlayButtonState extends State<HomePlayButton> {
                             color: blueColor)
                         .paddingOnly(bottom: 2),
                   ],
-                ).paddingOnly(left: 15)
+                ).paddingOnly(left: 15),
+                const Spacer(),
+                Obx(
+                  () {
+                    final song =
+                        controller.listsongdata[audioController.currentIndex];
+                    final downloadPercentage = song.downloadPercentage.value;
+                    final isDownloaded = song.assetLink.isNotEmpty ||
+                        downloadPercentage == "100";
+
+                    return isDownloaded
+                        ? const SizedBox()
+                        : CircularPercentIndicator(
+                            radius: 18.0,
+                            lineWidth: 3.0,
+                            animation: false,
+                            percent: downloadPercentage.isNotEmpty
+                                ? double.parse(downloadPercentage) / 100
+                                : 0.0,
+                            center: Text(
+                              "$downloadPercentage%",
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10.0,
+                                color: Color(0xFFFF9737),
+                              ),
+                            ),
+                            circularStrokeCap: CircularStrokeCap.round,
+                            progressColor: const Color(0xFFFF9737),
+                          );
+                  },
+                )
               ],
             ),
             Slider(

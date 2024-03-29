@@ -391,6 +391,11 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
                 );
                 matchingSong.assetLink = e.assetLink;
               }
+              if (e.categoryId == 3) {
+                isLoading(true);
+                candiateSong.add(e.assetLink);
+                isLoading(false);
+              }
             }
           } else if (listsongdata
               .every((e) => e.downloadPercentage.value == "100")) {
@@ -519,8 +524,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     isLoading(false);
   }
-
-  
 }
 
 class SongModel {
