@@ -125,44 +125,44 @@ class DataSyncingView extends GetView<DataSyncingController> {
                               ),
                               const Spacer(),
 
-                              Obx(() => CircularPercentIndicator(
-                                    radius: 25.0,
-                                    lineWidth: 5.0,
-                                    percent: controller.prog.value ?? 0,
-                                    center: Text(
-                                      "${((controller.prog.value ?? 0) * 100).toStringAsFixed(0)}%",
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 12.0,
-                                          color: Color(0xFFFF9737)),
-                                    ),
-                                    progressColor: const Color(0xFFFF9737),
-                                    circularStrokeCap: CircularStrokeCap.round,
-                                  )),
+                              // Obx(() => CircularPercentIndicator(
+                              //       radius: 25.0,
+                              //       lineWidth: 5.0,
+                              //       percent: controller.prog.value ?? 0,
+                              //       center: Text(
+                              //         "${((controller.prog.value ?? 0) * 100).toStringAsFixed(0)}%",
+                              //         style: const TextStyle(
+                              //             fontWeight: FontWeight.bold,
+                              //             fontSize: 12.0,
+                              //             color: Color(0xFFFF9737)),
+                              //       ),
+                              //       progressColor: const Color(0xFFFF9737),
+                              //       circularStrokeCap: CircularStrokeCap.round,
+                              //     )),
 
-                              // Obx(
-                              //   () => CircularPercentIndicator(
-                              //     radius: 25.0,
-                              //     lineWidth: 5.0,
-                              //     animation: true,
-                              //     percent: item.downloadPercentage.value != ""
-                              //         ? double.parse(
-                              //                 item.downloadPercentage.value) /
-                              //             100
-                              //         : 0.0,
-                              //     center: Text(
-                              //       "${item.downloadPercentage}%",
-                              //       style: const TextStyle(
-                              //           fontWeight: FontWeight.bold,
-                              //           fontSize: 12.0,
-                              //           color: Color(0xFFFF9737)),
-                              //     ),
-                              //     circularStrokeCap: CircularStrokeCap.round,
-                              //     progressColor: const Color(0xFFFF9737),
-                              //   ).paddingOnly(
-                              //     bottom: 10,
-                              //   ),
-                              // )
+                              Obx(
+                                () => CircularPercentIndicator(
+                                  radius: 25.0,
+                                  lineWidth: 5.0,
+                                  animation: true,
+                                  percent: item.downloadPercentage.value != ""
+                                      ? double.parse(
+                                              item.downloadPercentage.value) /
+                                          100
+                                      : 0.0,
+                                  center: Text(
+                                    "${item.downloadPercentage}%",
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12.0,
+                                        color: Color(0xFFFF9737)),
+                                  ),
+                                  circularStrokeCap: CircularStrokeCap.round,
+                                  progressColor: const Color(0xFFFF9737),
+                                ).paddingOnly(
+                                  bottom: 10,
+                                ),
+                              )
                             ],
                           ),
                         ).paddingAll(3);
