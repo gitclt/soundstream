@@ -39,11 +39,11 @@ class StartView extends GetView<HomeController> {
                       InkWell(
                           onTap: () async {
                             controller.getSongDetails();
-                            // final res = await Get.toNamed(Routes.DATA_SYNCING,
-                            //     arguments: "sync");
-                            // if (res == true) {
-                            //   controller.getSongDetails();
-                            // }
+                            final res = await Get.toNamed(Routes.DATA_SYNCING,
+                                arguments: "sync");
+                            if (res == true) {
+                              controller.getSongDetails();
+                            }
                           },
                           child: svgWidget('assets/svg/sync.svg'))
                     ],
