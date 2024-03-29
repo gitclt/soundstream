@@ -45,6 +45,7 @@ class StartView extends GetView<HomeController> {
                             } else if (controller.listsongdata.every(
                                 (e) => e.downloadPercentage.value == "100")) {
                               controller.getSongDetails();
+                              toast("Successfully Synced");
                             }
                           },
                           child: svgWidget('assets/svg/sync.svg'))

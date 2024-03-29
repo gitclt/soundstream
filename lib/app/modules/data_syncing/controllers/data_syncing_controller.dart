@@ -18,12 +18,53 @@ class DataSyncingController extends GetxController {
   var allSongsDownloaded = false.obs;
   String downlodPercntage = '';
   RxInt songnameIndex = 0.obs;
+
   final arg = Get.arguments;
+  RxDouble prog = 0.0.obs;
+  RxString status = "Not Downloaded".obs;
+
+  // void startDownload(String url) async {
+  //   progress.value = 0.000001;
+  //   status.value = "Download Started";
+
+  //   final request = http.Request('GET', Uri.parse(url));
+  //   final response = await http.Client().send(request);
+  //   final contentLength = response.contentLength;
+
+  //   List<int> bytes = [];
+  //   response.stream.listen(
+  //     (List<int> newBytes) {
+  //       bytes.addAll(newBytes);
+  //       final downloadedLength = bytes.length;
+  //       progress.value = downloadedLength.toDouble() / (contentLength ?? 1);
+  //       status.value =
+  //           "Progress: ${((progress.value ?? 0) * 100).toStringAsFixed(2)} %";
+  //     },
+  //     onDone: () async {
+  //       progress.value = 1;
+  //       status.value = "Download Finished";
+  //       await saveFile(bytes, 'downloaded_file.mp4');
+  //     },
+  //     onError: (e) {
+  //       status.value = "Error occurred during download";
+  //     },
+  //     cancelOnError: true,
+  //   );
+  // }
+
+  // Future<void> saveFile(List<int> bytes, String filename) async {
+  //   final dir = await getTemporaryDirectory();
+  //   final file = File("${dir.path}/$filename");
+  //   await file.writeAsBytes(bytes);
+  //   // debugPrint("Downloaded file saved at: ${file.path}");
+  // }
+
   @override
   void onInit() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? locid = prefs.getString("location_id");
     getSongs(locid.toString());
+    // startDownload('https://audiostream.gitzest.com/public/audios/KC_SONG_KADUVA.mp3');
     super.onInit();
   }
 
@@ -73,6 +114,7 @@ class DataSyncingController extends GetxController {
 
   Future<void> downloadAndSaveAudio(String url, String fileName,
       Function(double) onProgress, SongData song) async {
+    prog.value = 0.000001;
     var audioUrl = "$url$fileName";
     var response = await http.get(Uri.parse(audioUrl));
     if (response.statusCode == 200) {
@@ -84,6 +126,9 @@ class DataSyncingController extends GetxController {
       var sink = file.openWrite();
       sink.add(response.bodyBytes);
       bytesDownloaded += response.bodyBytes.length;
+      //       bytes.addAll(newBytes);
+      final downloadedLength = response.bodyBytes.length;
+      prog.value = downloadedLength.toDouble() / (response.contentLength ?? 1);
       double progress = bytesDownloaded / totalBytes;
       onProgress(progress);
       await sink.close();
