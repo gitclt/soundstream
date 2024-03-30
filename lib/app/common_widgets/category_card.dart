@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:sound_stream_flutter_app/app/modules/home/controllers/home_controller.dart';
@@ -14,42 +15,52 @@ class CategoryBuilder extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Obx(() => controller.isLoading.value
         ? const Center()
-        : ListView.builder(
-            physics: const ScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: controller.songdata.length,
-            itemBuilder: (context, index) {
-              return CategoryCard(
-                color: controller.audioController.currentIndex == index
-                    ? blueColor.withOpacity(0.3)
-                    : Colors.white,
-                audioname: controller.songdata[index].name,
-                downloadPercntage:
-                    controller.songdata[index].downloadPercentage.value,
-                name: '',
-                index: index,
-                ontap: () {
-                  controller.isLoading(true);
-                  controller.audioController.currentIndex = index;
-                  controller.audioPlayer.stop();
-                  controller.audioPlayer1.stop();
-                  controller.songIndex.value = index;
-                  controller.audioController.playlist = controller.songdata
-                      .map((element) => element.assetLink)
-                      .toList();
-                  // controller.audioController.pause(controller.audioPlayer2);
+        : controller.songdata.isEmpty
+            ? const SizedBox(
+                height: 100,
+                child: Center(
+                  child: Text(
+                    "NO DATA",
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              )
+            : ListView.builder(
+                physics: const ScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: controller.songdata.length,
+                itemBuilder: (context, index) {
+                  return CategoryCard(
+                    color: controller.audioController.currentIndex == index
+                        ? blueColor.withOpacity(0.3)
+                        : Colors.white,
+                    audioname: controller.songdata[index].name,
+                    downloadPercntage:
+                        controller.songdata[index].downloadPercentage.value,
+                    name: '',
+                    index: index,
+                    ontap: () {
+                      controller.isLoading(true);
+                      controller.audioController.currentIndex = index;
+                      controller.audioPlayer.stop();
+                      controller.audioPlayer1.stop();
+                      controller.songIndex.value = index;
+                      controller.audioController.playlist = controller.songdata
+                          .map((element) => element.assetLink)
+                          .toList();
+                      // controller.audioController.pause(controller.audioPlayer2);
 
-                  controller.isaudioIndex.value = index;
-                  controller.audioController.play(controller.audioPlayer2);
-                  controller.setPlayingAtIndex(index);
-                  controller.isLoading(false);
-                  Get.toNamed(
-                    Routes.AUDIO,
-                  );
+                      controller.isaudioIndex.value = index;
+                      controller.audioController.play(controller.audioPlayer2);
+                      controller.setPlayingAtIndex(index);
+                      controller.isLoading(false);
+                      Get.toNamed(
+                        Routes.AUDIO,
+                      );
+                    },
+                  ).paddingAll(3);
                 },
-              ).paddingAll(3);
-            },
-          ));
+              ));
   }
 }
 

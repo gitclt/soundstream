@@ -69,7 +69,11 @@ class _AudioPlayButtonState extends State<AudioPlayButton> {
           controller.songdata.map((element) => element.assetLink).toList();
       return Column(
         children: [
-          Image.asset('assets/image/music_image.png'),
+          Image.asset(
+            'assets/image/music_image.png',
+            height: 100,
+            width: 100,
+          ),
           Obx(() => controller.audioController.currentIndex != -1
               ? colorText(
                       // ignore: unnecessary_null_comparison
@@ -103,7 +107,7 @@ class _AudioPlayButtonState extends State<AudioPlayButton> {
               colorText(controller.formatDuration(duartion), 12,
                   color: Colors.grey)
             ],
-          ).paddingOnly(left: 25, right: 25, bottom: 10),
+          ).paddingOnly(left: 25, right: 25, bottom: 0),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

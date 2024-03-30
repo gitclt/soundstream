@@ -39,8 +39,8 @@ class ProfileView extends GetView<ProfileController> {
                             color: Colors.white,
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(8)),
-                            border:
-                                Border.all(width: 1, color: const Color(0xFFD8D8D8)),
+                            border: Border.all(
+                                width: 1, color: const Color(0xFFD8D8D8)),
                             boxShadow: const [
                               BoxShadow(
                                   color: Color.fromARGB(255, 240, 235, 235),
@@ -90,8 +90,8 @@ class ProfileView extends GetView<ProfileController> {
                             color: Colors.white,
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(8)),
-                            border:
-                                Border.all(width: 1, color: const Color(0xFFD8D8D8)),
+                            border: Border.all(
+                                width: 1, color: const Color(0xFFD8D8D8)),
                             boxShadow: const [
                               BoxShadow(
                                   color: Color.fromARGB(255, 240, 235, 235),
@@ -150,10 +150,10 @@ class ProfileImgWidget extends StatelessWidget {
     return Center(
       child: Stack(fit: StackFit.loose, clipBehavior: Clip.none, children: [
         Image.asset("assets/image/profile.png"),
-        Positioned(
-            bottom: 4,
-            right: -4,
-            child: svgWidget('assets/svg/edit_profile.svg'))
+        // Positioned(
+        //     bottom: 4,
+        //     right: -4,
+        //     child: svgWidget('assets/svg/edit_profile.svg'))
       ]),
     );
   }

@@ -93,65 +93,84 @@ class StartView extends GetView<HomeController> {
                     Obx(
                       () => controller.isLoading.value
                           ? const Center()
-                          : Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                  border: Border.all(
-                                      width: 1,
-                                      color: Colors.grey.withOpacity(0.3))),
-                              child: Column(
-                                children: [
-                                  Row(
+                          : controller
+                                      .calculatePercentage(
+                                          int.parse(controller.songsList
+                                              .where((element) =>
+                                                  element.downloadPercentage
+                                                      .value ==
+                                                  "100")
+                                              .length
+                                              .toString()),
+                                          int.parse(controller.songsList.length
+                                              .toString()))
+                                      .toStringAsFixed(0) ==
+                                  '100'
+                              ? const SizedBox()
+                              : Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      border: Border.all(
+                                          width: 1,
+                                          color: Colors.grey.withOpacity(0.3))),
+                                  child: Column(
                                     children: [
-                                      blackText(" Data Syncing Processing", 15,
-                                              fontWeight: FontWeight.w500)
-                                          .paddingOnly(
-                                        left: 15,
-                                      ),
-                                      const Spacer(),
-                                      Obx(
-                                        () => colorText(
-                                                "${controller.calculatePercentage(int.parse(controller.songsList.where((element) => element.downloadPercentage.value == "100").length.toString()), int.parse(controller.songsList.length.toString())).toStringAsFixed(0)} % Done",
-                                                15,
-                                                fontWeight: FontWeight.w500,
-                                                color: const Color(0xffFF9737))
-                                            .paddingOnly(right: 25),
-                                      )
-                                    ],
-                                  ),
-                                  Obx(
-                                    () => controller.isLoading.value
-                                        ? const Center()
-                                        : SliderTheme(
-                                            data: SliderTheme.of(context)
-                                                .copyWith(
-                                              thumbShape:
-                                                  SliderComponentShape.noThumb,
-                                              trackHeight: 8,
-                                            ),
-                                            child: Slider(
-                                              value: controller.songsList
-                                                  .where((element) =>
-                                                      element.downloadPercentage
-                                                          .value ==
-                                                      "100")
-                                                  .length
-                                                  .toDouble(),
-                                              activeColor:
-                                                  const Color(0xffFF9737),
-                                              inactiveColor:
-                                                  const Color(0xffFF9737)
-                                                      .withOpacity(0.5),
-                                              onChanged: (value) async {},
-                                              min: 0,
-                                              max: controller.songsList.length
-                                                  .toDouble(),
-                                            ),
+                                      Row(
+                                        children: [
+                                          blackText(" Data Syncing Processing",
+                                                  15,
+                                                  fontWeight: FontWeight.w500)
+                                              .paddingOnly(
+                                            left: 15,
                                           ),
-                                  ),
-                                ],
-                              ).paddingOnly(top: 10),
-                            ),
+                                          const Spacer(),
+                                          Obx(
+                                            () => colorText(
+                                                    "${controller.calculatePercentage(int.parse(controller.songsList.where((element) => element.downloadPercentage.value == "100").length.toString()), int.parse(controller.songsList.length.toString())).toStringAsFixed(0)} % Done",
+                                                    15,
+                                                    fontWeight: FontWeight.w500,
+                                                    color:
+                                                        const Color(0xffFF9737))
+                                                .paddingOnly(right: 25),
+                                          )
+                                        ],
+                                      ),
+                                      Obx(
+                                        () => controller.isLoading.value
+                                            ? const Center()
+                                            : SliderTheme(
+                                                data: SliderTheme.of(context)
+                                                    .copyWith(
+                                                  thumbShape:
+                                                      SliderComponentShape
+                                                          .noThumb,
+                                                  trackHeight: 8,
+                                                ),
+                                                child: Slider(
+                                                  value: controller.songsList
+                                                      .where((element) =>
+                                                          element
+                                                              .downloadPercentage
+                                                              .value ==
+                                                          "100")
+                                                      .length
+                                                      .toDouble(),
+                                                  activeColor:
+                                                      const Color(0xffFF9737),
+                                                  inactiveColor:
+                                                      const Color(0xffFF9737)
+                                                          .withOpacity(0.5),
+                                                  onChanged: (value) async {},
+                                                  min: 0,
+                                                  max: controller
+                                                      .songsList.length
+                                                      .toDouble(),
+                                                ),
+                                              ),
+                                      ),
+                                    ],
+                                  ).paddingOnly(top: 10),
+                                ),
                     ),
                     const SizedBox(
                       height: 10,

@@ -18,8 +18,10 @@ class LoginResponse {
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) => LoginResponse(
         success: json["success"],
-        data: List<ProfileData>.from(
-            json["data"].map((x) => ProfileData.fromJson(x))),
+        data: json["data"] == null
+            ? []
+            : List<ProfileData>.from(
+                json["data"].map((x) => ProfileData.fromJson(x))),
         message: json["message"],
       );
 

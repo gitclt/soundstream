@@ -60,6 +60,9 @@ class LoginView extends GetView<LoginController> {
                         if (value!.isEmpty) {
                           return 'Please enter Mobile Number';
                         }
+                        if (value!.toString().length < 10) {
+                          return 'Invalid mobile number';
+                        }
                         return null;
                       },
                     ),
