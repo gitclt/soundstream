@@ -18,12 +18,53 @@ class DataSyncingController extends GetxController {
   var allSongsDownloaded = false.obs;
   String downlodPercntage = '';
   RxInt songnameIndex = 0.obs;
+
   final arg = Get.arguments;
+  RxDouble prog = 0.0.obs;
+  RxString status = "Not Downloaded".obs;
+
+  // void startDownload(String url) async {
+  //   progress.value = 0.000001;
+  //   status.value = "Download Started";
+
+  //   final request = http.Request('GET', Uri.parse(url));
+  //   final response = await http.Client().send(request);
+  //   final contentLength = response.contentLength;
+
+  //   List<int> bytes = [];
+  //   response.stream.listen(
+  //     (List<int> newBytes) {
+  //       bytes.addAll(newBytes);
+  //       final downloadedLength = bytes.length;
+  //       progress.value = downloadedLength.toDouble() / (contentLength ?? 1);
+  //       status.value =
+  //           "Progress: ${((progress.value ?? 0) * 100).toStringAsFixed(2)} %";
+  //     },
+  //     onDone: () async {
+  //       progress.value = 1;
+  //       status.value = "Download Finished";
+  //       await saveFile(bytes, 'downloaded_file.mp4');
+  //     },
+  //     onError: (e) {
+  //       status.value = "Error occurred during download";
+  //     },
+  //     cancelOnError: true,
+  //   );
+  // }
+
+  // Future<void> saveFile(List<int> bytes, String filename) async {
+  //   final dir = await getTemporaryDirectory();
+  //   final file = File("${dir.path}/$filename");
+  //   await file.writeAsBytes(bytes);
+  //   // debugPrint("Downloaded file saved at: ${file.path}");
+  // }
+
   @override
   void onInit() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? locid = prefs.getString("location_id");
     getSongs(locid.toString());
+    // startDownload('https://audiostream.gitzest.com/public/audios/KC_SONG_KADUVA.mp3');
     super.onInit();
   }
 
@@ -35,18 +76,16 @@ class DataSyncingController extends GetxController {
         if (response.success == true) {
           songdata.addAll(response.items.data);
           isLoading(false);
-          addSongsData(songdata);
+
           if (Get.arguments == "sync") {
-            songDataList.clear();
-            SharedPreferences sharedPreferences =
-                await SharedPreferences.getInstance();
-            if (sharedPreferences.containsKey("audioFilePaths")) {
-              songDataList =
-                  sharedPreferences.getStringList('audioFilePaths') ?? [];
-            }
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            List<Map<String, dynamic>> existingSongs =
+                List<Map<String, dynamic>>.from(
+                    jsonDecode(prefs.getString("songs") ?? '[]'));
+
             for (var song in songdata) {
-              var index = songDataList.indexWhere(
-                  (element) => element.split("/").last == song.fileName);
+              var index = existingSongs
+                  .indexWhere((element) => element["id"] == song.id);
               if (index != -1 && song.downloadPercentage.value != "100") {
                 song.downloadPercentage.value = "100";
               }
@@ -61,7 +100,7 @@ class DataSyncingController extends GetxController {
                   (double progress) {
                 currentSong.downloadPercentage.value =
                     (progress * 100).toStringAsFixed(0);
-              });
+              }, e);
             }
 
             if (songdata.every((e) => e.downloadPercentage.value == '100')) {
@@ -73,8 +112,9 @@ class DataSyncingController extends GetxController {
     } finally {}
   }
 
-  Future<void> downloadAndSaveAudio(
-      String url, String fileName, Function(double) onProgress) async {
+  Future<void> downloadAndSaveAudio(String url, String fileName,
+      Function(double) onProgress, SongData song) async {
+    prog.value = 0.000001;
     var audioUrl = "$url$fileName";
     var response = await http.get(Uri.parse(audioUrl));
     if (response.statusCode == 200) {
@@ -86,18 +126,18 @@ class DataSyncingController extends GetxController {
       var sink = file.openWrite();
       sink.add(response.bodyBytes);
       bytesDownloaded += response.bodyBytes.length;
+      //       bytes.addAll(newBytes);
+      final downloadedLength = response.bodyBytes.length;
+      prog.value = downloadedLength.toDouble() / (response.contentLength ?? 1);
       double progress = bytesDownloaded / totalBytes;
       onProgress(progress);
       await sink.close();
-      await saveAudioFilePath(filePath);
+      await saveAudioFilePath(filePath, song);
     }
   }
 
-  Future<void> saveAudioFilePath(String filePath) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> filePaths = prefs.getStringList('audioFilePaths') ?? [];
-    filePaths.add(filePath);
-    await prefs.setStringList('audioFilePaths', filePaths);
+  Future<void> saveAudioFilePath(String filePath, SongData song) async {
+    addSongsData(song, filePath);
   }
 
   double calculatePercentage(int songsWithFullDownload, int totalSongs) {
@@ -108,26 +148,34 @@ class DataSyncingController extends GetxController {
     }
   }
 
-  void addSongsData(List<SongData> songs) async {
+  void addSongsData(SongData song, String path) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    prefs.setString(
-        "songs",
-        jsonEncode(songs
-            .map((song) => {
-                  "id": song.id,
-                  "name": song.name,
-                  "remark": song.remark,
-                  "category_id": song.categoryId,
-                  "location_id": song.locationId,
-                  "file_name": song.fileName,
-                  "status": song.status,
-                  "created_at": song.createdAt,
-                  "updated_at": song.updatedAt,
-                  "created_by": song.createdBy,
-                  "updated_by": song.updatedBy,
-                  'downloadPercentage': song.downloadPercentage.value,
-                })
-            .toList()));
+    String downloadPercentage = song.downloadPercentage.value;
+
+    List<Map<String, dynamic>> existingSongsJson = (prefs.getString("songs") !=
+            null)
+        ? List<Map<String, dynamic>>.from(jsonDecode(prefs.getString("songs")!))
+        : [];
+
+    Map<String, dynamic> newSongData = {
+      "id": song.id,
+      "name": song.name,
+      "remark": song.remark,
+      "category_id": song.categoryId,
+      "location_id": song.locationId,
+      "file_name": song.fileName,
+      "status": song.status,
+      "created_at": song.createdAt,
+      "updated_at": song.updatedAt,
+      "created_by": song.createdBy,
+      "updated_by": song.updatedBy,
+      "assetLink": path,
+      'downloadPercentage': downloadPercentage,
+    };
+
+    existingSongsJson.add(newSongData);
+
+    prefs.setString("songs", jsonEncode(existingSongsJson));
   }
 }

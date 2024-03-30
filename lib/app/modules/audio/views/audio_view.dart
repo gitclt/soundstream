@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sound_stream_flutter_app/app/common_widgets/audio_play_button.dart';
+import 'package:sound_stream_flutter_app/app/common_widgets/category_card.dart';
 import 'package:sound_stream_flutter_app/app/common_widgets/tab_bar.dart';
-import 'package:sound_stream_flutter_app/app/modules/audio/views/audio_tab.dart';
+import 'package:sound_stream_flutter_app/app/modules/home/controllers/home_controller.dart';
 import 'package:sound_stream_flutter_app/common_widgets/text/text.dart';
 import 'package:sound_stream_flutter_app/constrains/app_color.dart';
-import '../controllers/audio_controller.dart';
 
-class AudioView extends GetView<AudioController> {
+class AudioView extends GetView<HomeController> {
   const AudioView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -67,6 +67,8 @@ class AudioView extends GetView<AudioController> {
                                     controller.categoryFilter("2");
                                   } else if (index == 2) {
                                     controller.categoryFilter("1");
+                                  } else if (index == 3) {
+                                    controller.categoryFilter("4");
                                   }
                                 },
                                 tabs: [
@@ -97,15 +99,25 @@ class AudioView extends GetView<AudioController> {
                                         ? blueColor
                                         : Colors.white,
                                   ),
-                                ]).paddingOnly(right: 100)),
+                                  buildTab(
+                                    "Announcement",
+                                    controller.isIndex.value == 3
+                                        ? Colors.white
+                                        : Colors.black,
+                                    controller.isIndex.value == 3
+                                        ? blueColor
+                                        : Colors.white,
+                                  ),
+                                ]).paddingOnly(right: 5)),
                         Expanded(
                             child: TabBarView(
                           controller: controller.mainController,
                           physics: const NeverScrollableScrollPhysics(),
                           children: const [
-                            AudioBuilder(),
-                            AudioBuilder(),
-                            AudioBuilder(),
+                            CategoryBuilder(),
+                            CategoryBuilder(),
+                            CategoryBuilder(),
+                            CategoryBuilder(),
                           ],
                         )),
                       ]),

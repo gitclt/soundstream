@@ -30,7 +30,7 @@ class AudioController extends GetxController with GetTickerProviderStateMixin {
     isIndex.value = Get.arguments[3];
     super.onInit();
     getSongDetails();
-    mainController = TabController(length: 3, vsync: this);
+    mainController = TabController(length: 4, vsync: this);
   }
 
   String formatDuration(Duration duration) {

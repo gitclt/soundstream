@@ -4,8 +4,8 @@ import 'package:sound_stream_flutter_app/app/common_widgets/candidate_player_but
 import 'package:sound_stream_flutter_app/app/common_widgets/category_card.dart';
 import 'package:sound_stream_flutter_app/app/common_widgets/play_audio_button.dart';
 import 'package:sound_stream_flutter_app/app/common_widgets/tab_bar.dart';
+import 'package:sound_stream_flutter_app/app/common_widgets/toast.dart';
 import 'package:sound_stream_flutter_app/app/modules/home/views/custom_switch.dart';
-import 'package:sound_stream_flutter_app/app/routes/app_pages.dart';
 import 'package:sound_stream_flutter_app/app/service/sessio.dart';
 import 'package:sound_stream_flutter_app/common_widgets/card/home_card.dart';
 import 'package:sound_stream_flutter_app/common_widgets/card/home_top_card.dart';
@@ -34,16 +34,18 @@ class StartView extends GetView<HomeController> {
                         value: Session.isCheckin,
                         onChanged: (value) {
                           controller.getCheckIn();
-
-                          // Get.to(const EndView());
                         },
                       ),
                       InkWell(
                           onTap: () async {
-                            final res = await Get.toNamed(Routes.DATA_SYNCING,
-                                arguments: "sync");
-                            if (res == true) {
-                              controller.getSongData();
+                            if (controller.listsongdata
+                                .every((e) => e.assetLink != "")) {
+                              controller.getSongDetails();
+                              toast("Successfully Synced");
+                            } else if (controller.listsongdata.every(
+                                (e) => e.downloadPercentage.value == "100")) {
+                              controller.getSongDetails();
+                              toast("Successfully Synced");
                             }
                           },
                           child: svgWidget('assets/svg/sync.svg'))
@@ -84,15 +86,81 @@ class StartView extends GetView<HomeController> {
             shrinkWrap: true,
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 5, left: 20, right: 20),
+                padding: const EdgeInsets.only(top: 0, left: 20, right: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Obx(
+                      () => controller.isLoading.value
+                          ? const Center()
+                          : Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  border: Border.all(
+                                      width: 1,
+                                      color: Colors.grey.withOpacity(0.3))),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      blackText(" Data Syncing Processing", 15,
+                                              fontWeight: FontWeight.w500)
+                                          .paddingOnly(
+                                        left: 15,
+                                      ),
+                                      const Spacer(),
+                                      Obx(
+                                        () => colorText(
+                                                "${controller.calculatePercentage(int.parse(controller.songsList.where((element) => element.downloadPercentage.value == "100").length.toString()), int.parse(controller.songsList.length.toString())).toStringAsFixed(0)} % Done",
+                                                15,
+                                                fontWeight: FontWeight.w500,
+                                                color: const Color(0xffFF9737))
+                                            .paddingOnly(right: 25),
+                                      )
+                                    ],
+                                  ),
+                                  Obx(
+                                    () => controller.isLoading.value
+                                        ? const Center()
+                                        : SliderTheme(
+                                            data: SliderTheme.of(context)
+                                                .copyWith(
+                                              thumbShape:
+                                                  SliderComponentShape.noThumb,
+                                              trackHeight: 8,
+                                            ),
+                                            child: Slider(
+                                              value: controller.songsList
+                                                  .where((element) =>
+                                                      element.downloadPercentage
+                                                          .value ==
+                                                      "100")
+                                                  .length
+                                                  .toDouble(),
+                                              activeColor:
+                                                  const Color(0xffFF9737),
+                                              inactiveColor:
+                                                  const Color(0xffFF9737)
+                                                      .withOpacity(0.5),
+                                              onChanged: (value) async {},
+                                              min: 0,
+                                              max: controller.songsList.length
+                                                  .toDouble(),
+                                            ),
+                                          ),
+                                  ),
+                                ],
+                              ).paddingOnly(top: 10),
+                            ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     Obx(() => controller.isLoading.value
                         ? const Center(
                             child: CircularProgressIndicator(),
                           )
-                        : controller.songDataList.isEmpty
+                        : controller.listsongdata.isEmpty
                             ? const SizedBox()
                             : const HomePlayButton().paddingOnly(bottom: 30)),
                     Obx(() => controller.isLoading.value
@@ -131,7 +199,7 @@ class StartView extends GetView<HomeController> {
                                           } else if (index == 2) {
                                             controller.categoryFilter("1");
                                           } else if (index == 3) {
-                                            controller.categoryFilter("3");
+                                            controller.categoryFilter("4");
                                           }
                                         },
                                         labelPadding:
@@ -193,39 +261,81 @@ class StartView extends GetView<HomeController> {
           )),
         ],
       ),
-      bottomNavigationBar: Obx(
-        () => BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            currentIndex: controller.selectedIndex.value,
-            elevation: 0,
-            onTap: (int index) async {
-              controller.selectedIndex.value = index;
-            },
-            items: [
-              BottomNavigationBarItem(
-                  icon: Padding(
-                    padding: const EdgeInsets.only(bottom: 5.0),
-                    child: controller.selectedIndex.value == 0
-                        ? svgWidget('assets/svg/Home.svg',
-                            color: controller.selectedIndex.value == 0
-                                ? blueColor
-                                : Colors.black)
-                        : svgWidget('assets/svg/home1.svg'),
-                  ),
-                  label: 'Home'),
-              BottomNavigationBarItem(
-                  icon: Padding(
-                    padding: const EdgeInsets.only(bottom: 5.0),
-                    child: controller.selectedIndex.value == 1
-                        ? svgWidget('assets/svg/circle_profile1.svg',
-                            color: controller.selectedIndex.value == 1
-                                ? blueColor
-                                : Colors.black)
-                        : svgWidget('assets/svg/circle_profile.svg'),
-                  ),
-                  label: 'Profile')
-            ]),
-      ),
+
+      // bottomNavigationBar: Obx(
+      //   () => BottomNavigationBar(
+      //       type: BottomNavigationBarType.fixed,
+      //       currentIndex: controller.selectedIndex.value,
+      //       elevation: 0,
+      //       onTap: (int index) async {
+      //         controller.selectedIndex.value = index;
+      //       },
+      //       items: [
+      //         BottomNavigationBarItem(
+      //             icon: Padding(
+      //               padding: const EdgeInsets.only(bottom: 5.0),
+      //               child: controller.selectedIndex.value == 0
+      //                   ? svgWidget('assets/svg/Home.svg',
+      //                       color: controller.selectedIndex.value == 0
+      //                           ? blueColor
+      //                           : Colors.black)
+      //                   : svgWidget('assets/svg/home1.svg'),
+      //             ),
+      //             label: 'Home'),
+      //         BottomNavigationBarItem(
+      //             icon: Padding(
+      //               padding: const EdgeInsets.only(bottom: 5.0),
+      //               child: controller.selectedIndex.value == 1
+      //                   ? svgWidget('assets/svg/circle_profile1.svg',
+      //                       color: controller.selectedIndex.value == 1
+      //                           ? blueColor
+      //                           : Colors.black)
+      //                   : svgWidget('assets/svg/circle_profile.svg'),
+      //             ),
+      //             label: 'Profile')
+      //       ]),
+      // ),
+
+      // // bottomNavigationBar: BottomNavigationBar(
+      // //     type: BottomNavigationBarType.fixed,
+      // //     currentIndex: controller.selectedIndex.value,
+      // //     elevation: 0,
+      // //     onTap: (int index) async {
+      // //       controller.selectedIndex.value = index;
+      // //     },
+      // //     items: [
+      // //       BottomNavigationBarItem(
+      // //           icon: Padding(
+      // //             padding: const EdgeInsets.only(bottom: 5.0),
+      // //             child: controller.selectedIndex.value == 0
+      // //                 ? svgWidget('assets/svg/Home.svg',
+      // //                     color: controller.selectedIndex.value == 0
+      // //                         ? blueColor
+      // //                         : Colors.black)
+      // //                 : svgWidget('assets/svg/home1.svg'),
+      // //           ),
+      // //           label: 'Home'),
+      // //       // BottomNavigationBarItem(
+      // //       //     icon: Padding(
+      // //       //       padding: const EdgeInsets.only(bottom: 5.0),
+      // //       //       child: svgWidget('assets/svg/bottom_search.svg',
+      // //       //           color: controller.selectedIndex.value == 1
+      // //       //               ? redColor
+      // //       //               : Colors.black),
+      // //       //     ),
+      // //       //     label: 'Search'),
+      // //       BottomNavigationBarItem(
+      // //           icon: Padding(
+      // //             padding: const EdgeInsets.only(bottom: 5.0),
+      // //             child: controller.selectedIndex.value == 1
+      // //                 ? svgWidget('assets/svg/circle_profile1.svg',
+      // //                     color: controller.selectedIndex.value == 1
+      // //                         ? blueColor
+      // //                         : Colors.black)
+      // //                 : svgWidget('assets/svg/circle_profile.svg'),
+      // //           ),
+      // //           label: 'Profile')
+      // //     ]),
     );
   }
 }

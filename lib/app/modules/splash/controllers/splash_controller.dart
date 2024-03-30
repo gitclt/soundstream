@@ -42,7 +42,7 @@ class SplashController extends GetxController {
       Session.lati = lat.toString();
       Session.longi = longi.toString();
       if (Session.isCheckin == true) {
-        Get.offAndToNamed(Routes.HOME_START);
+        Get.offAndToNamed(Routes.HOME);
       } else {
         Get.offAndToNamed(Routes.HOME);
       }

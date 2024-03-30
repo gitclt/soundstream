@@ -5,14 +5,21 @@ class AudioPlayerService {
   List<String> playlist = [];
   int currentIndex = 0;
 
+  bool isPlayerCompleteListenerInitialized = false;
+
   play(AudioPlayer player) async {
     setPlayer(player);
 
     if (playlist.isNotEmpty) {
-      await _currentPlayer!.play(UrlSource(playlist[currentIndex]));
-      _currentPlayer!.onPlayerComplete.listen((event) {
-        playNextSong(_currentPlayer!);
-      });
+      await player.play(UrlSource(playlist[currentIndex]));
+
+      if (!isPlayerCompleteListenerInitialized) {
+        player.onPlayerComplete.listen((event) {
+          playNextSong(player);
+        });
+
+        isPlayerCompleteListenerInitialized = true;
+      }
     }
   }
 
@@ -27,7 +34,8 @@ class AudioPlayerService {
   }
 
   Future<void> playNextSong(AudioPlayer player) async {
-    currentIndex = (currentIndex + 1) % playlist.length;
+    int nextIndex = (currentIndex + 1) % playlist.length;
+    currentIndex = nextIndex;
     play(player);
   }
 

@@ -16,7 +16,6 @@ class DataSyncingView extends GetView<DataSyncingController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CommonAppBar(
-        
         appText: 'Data Syncing',
       ),
       body: Padding(
@@ -125,6 +124,22 @@ class DataSyncingView extends GetView<DataSyncingController> {
                                 ).paddingOnly(top: 5),
                               ),
                               const Spacer(),
+
+                              // Obx(() => CircularPercentIndicator(
+                              //       radius: 25.0,
+                              //       lineWidth: 5.0,
+                              //       percent: controller.prog.value ?? 0,
+                              //       center: Text(
+                              //         "${((controller.prog.value ?? 0) * 100).toStringAsFixed(0)}%",
+                              //         style: const TextStyle(
+                              //             fontWeight: FontWeight.bold,
+                              //             fontSize: 12.0,
+                              //             color: Color(0xFFFF9737)),
+                              //       ),
+                              //       progressColor: const Color(0xFFFF9737),
+                              //       circularStrokeCap: CircularStrokeCap.round,
+                              //     )),
+
                               Obx(
                                 () => CircularPercentIndicator(
                                   radius: 25.0,

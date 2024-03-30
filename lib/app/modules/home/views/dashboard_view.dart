@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sound_stream_flutter_app/app/modules/home/controllers/dashboard_controller.dart';
+import 'package:sound_stream_flutter_app/app/modules/profile/controllers/profile_controller.dart';
 import 'package:sound_stream_flutter_app/common_widgets/svg_widget/svg_widget.dart';
 import 'package:sound_stream_flutter_app/constrains/app_color.dart';
 
@@ -33,6 +34,9 @@ class DashboardView extends GetView<DashboardController> {
               elevation: 0,
               onTap: (int index) async {
                 controller.selectedIndex.value = index;
+                if (index == 1) {
+                  Get.put(ProfileController());
+                }
               },
               items: [
                 BottomNavigationBarItem(
