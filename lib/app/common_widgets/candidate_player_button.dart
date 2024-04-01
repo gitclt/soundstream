@@ -136,7 +136,7 @@ class _CandidateAudioPlayButtonState extends State<CandidateAudioPlayButton> {
 
   @override
   void dispose() {
-    controller.audioPlayer1.dispose();
+    // controller.audioPlayer1.dispose();
     super.dispose();
   }
 }

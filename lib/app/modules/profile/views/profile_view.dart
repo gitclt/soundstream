@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:sound_stream_flutter_app/app/modules/home/controllers/dashboard_controller.dart';
 import 'package:sound_stream_flutter_app/common_widgets/app_bar/home_appbar.dart';
 import 'package:sound_stream_flutter_app/common_widgets/svg_widget/svg_widget.dart';
 import 'package:sound_stream_flutter_app/common_widgets/text/text.dart';
@@ -12,7 +13,14 @@ class ProfileView extends GetView<ProfileController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const CommonAppBar(label: 'Profile'),
+        appBar: CommonAppBar(
+          label: 'Profile',
+          visibility: true,
+          ontap: () {
+            final DashboardController dashcontroller = Get.find();
+            dashcontroller.selectedIndex.value = 0;
+          },
+        ),
         body: Obx(() => controller.isLoading.value
             ? const Center(
                 child: CircularProgressIndicator(),

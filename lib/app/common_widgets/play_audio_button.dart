@@ -216,8 +216,8 @@ class _HomePlayButtonState extends State<HomePlayButton> {
   void dispose() {
     controller.audioPlayer1.stop();
     controller.audioPlayer.stop();
-    controller.audioPlayer.dispose();
-    controller.audioPlayer1.dispose();
+    // controller.audioPlayer.dispose();
+    // controller.audioPlayer1.dispose();
     super.dispose();
   }
 }

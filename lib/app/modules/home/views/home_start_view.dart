@@ -22,10 +22,10 @@ class StartView extends GetView<HomeController> {
       body: Column(
         children: [
           HomeHeader(
-              height: 180,
+              height: 200,
               stackheight: 140,
               feild: Padding(
-                padding: const EdgeInsets.only(top: 60, left: 15, right: 15),
+                padding: const EdgeInsets.only(top: 65, left: 15, right: 15),
                 child: Column(children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -70,7 +70,7 @@ class StartView extends GetView<HomeController> {
                           color: Colors.white, fontWeight: FontWeight.w500),
                     ],
                   ).paddingOnly(
-                    top: 25,
+                    top: 20,
                   )
                 ]),
               ),
@@ -78,15 +78,12 @@ class StartView extends GetView<HomeController> {
                 name: Session.userName,
                 number: Session.vehicle,
               )),
-          const SizedBox(
-            height: 10,
-          ),
           Expanded(
               child: ListView(
             shrinkWrap: true,
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 0, left: 20, right: 20),
+                padding: const EdgeInsets.only(left: 20, right: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -169,11 +166,8 @@ class StartView extends GetView<HomeController> {
                                               ),
                                       ),
                                     ],
-                                  ).paddingOnly(top: 10),
+                                  ).paddingOnly(),
                                 ),
-                    ),
-                    const SizedBox(
-                      height: 10,
                     ),
                     Obx(() => controller.isLoading.value
                         ? const Center(

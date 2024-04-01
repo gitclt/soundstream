@@ -6,7 +6,9 @@ import 'package:sound_stream_flutter_app/common_widgets/text/text.dart';
 class HomeCard extends StatelessWidget {
   final String name, number;
   const HomeCard({
-    super.key, required this.name, required this.number,
+    super.key,
+    required this.name,
+    required this.number,
   });
 
   @override

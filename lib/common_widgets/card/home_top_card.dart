@@ -30,7 +30,7 @@ class HomeHeader extends StatelessWidget {
           ),
           child: feild,
         ),
-        Positioned(left: 20, right: 20, top: stackheight, child: homecard)
+        Positioned(left: 20, right: 20, top: 135, child: homecard)
       ],
     );
   }
