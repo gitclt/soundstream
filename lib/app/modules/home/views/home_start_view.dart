@@ -78,6 +78,9 @@ class StartView extends GetView<HomeController> {
                 name: Session.userName,
                 number: Session.vehicle,
               )),
+          const SizedBox(
+            height: 10,
+          ),
           Expanded(
               child: ListView(
             shrinkWrap: true,
