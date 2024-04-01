@@ -78,9 +78,6 @@ class StartView extends GetView<HomeController> {
                 name: Session.userName,
                 number: Session.vehicle,
               )),
-          const SizedBox(
-            height: 10,
-          ),
           Expanded(
               child: ListView(
             shrinkWrap: true,
@@ -110,6 +107,7 @@ class StartView extends GetView<HomeController> {
                               : Container(
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(15),
+                                      color: Colors.white,
                                       border: Border.all(
                                           width: 1,
                                           color: Colors.grey.withOpacity(0.3))),
@@ -120,9 +118,7 @@ class StartView extends GetView<HomeController> {
                                           blackText(" Data Syncing Processing",
                                                   15,
                                                   fontWeight: FontWeight.w500)
-                                              .paddingOnly(
-                                            left: 15,
-                                          ),
+                                              .paddingOnly(left: 15, top: 10),
                                           const Spacer(),
                                           Obx(
                                             () => colorText(
@@ -171,6 +167,9 @@ class StartView extends GetView<HomeController> {
                                     ],
                                   ).paddingOnly(),
                                 ),
+                    ),
+                    const SizedBox(
+                      height: 10,
                     ),
                     Obx(() => controller.isLoading.value
                         ? const Center(
