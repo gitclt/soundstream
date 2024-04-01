@@ -44,6 +44,7 @@ class CategoryBuilder extends GetView<HomeController> {
                       controller.audioController.currentIndex = index;
                       controller.audioPlayer.stop();
                       controller.audioPlayer1.stop();
+
                       controller.songIndex.value = index;
                       controller.audioController.playlist = controller.songdata
                           .map((element) => element.assetLink)
@@ -51,6 +52,10 @@ class CategoryBuilder extends GetView<HomeController> {
                       // controller.audioController.pause(controller.audioPlayer2);
 
                       controller.isaudioIndex.value = index;
+                      if (Get.currentRoute == '/home') {
+                        controller.audioPlayer2.stop();
+                      }
+
                       controller.audioController.play(controller.audioPlayer2);
                       controller.setPlayingAtIndex(index);
                       controller.isLoading(false);
