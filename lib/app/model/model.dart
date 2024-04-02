@@ -67,20 +67,20 @@ class ProfileData {
   });
 
   factory ProfileData.fromJson(Map<String, dynamic> json) => ProfileData(
-        id: json["id"],
-        name: json["name"],
-        district: json["district"],
-        vehicleNo: json["vehicle_no"],
-        vehicleName: json["vehicle_name"],
-        mobile: json["mobile"],
-        locationId: json["location_id"],
-        status: json["status"],
-        stateId: json["state_id"],
-        periodId: json["period_id"],
-        location: json["location"],
-        districtId: json["district_id"],
-        createdAt: json["created_at"],
-        updatedAt: json["updated_at"],
+        id: json["id"] ?? "",
+        name: json["name"] ?? "",
+        district: json["district"] ?? "",
+        vehicleNo: json["vehicle_no"] ?? "",
+        vehicleName: json["vehicle_name"] ?? "",
+        mobile: json["mobile"] ?? "",
+        locationId: json["location_id"] ?? "",
+        status: json["status"] ?? "",
+        stateId: json["state_id"] ?? 0,
+        periodId: json["period_id"] ?? 0,
+        location: json["location"] ?? "",
+        districtId: json["district_id"] ?? "",
+        createdAt: json["created_at"] ?? "",
+        updatedAt: json["updated_at"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {

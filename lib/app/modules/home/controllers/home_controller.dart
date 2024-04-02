@@ -186,6 +186,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
           // getSongDetails();
           DialogHelper.hideLoading();
           toast("Checkin Sucessfully");
+          // LocationService().sendLocation();
           final DashboardController dashcontroller = Get.find();
           dashcontroller.updateWidgetOptions(true);
           // Get.offAndToNamed(Routes.HOME);

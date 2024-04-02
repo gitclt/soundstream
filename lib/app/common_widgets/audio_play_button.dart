@@ -67,6 +67,7 @@ class _AudioPlayButtonState extends State<AudioPlayButton> {
     return Obx(() {
       controller.audioController.playlist =
           controller.songdata.map((element) => element.assetLink).toList();
+      // LocationService().checkLocation(controller.songdata);
       return Column(
         children: [
           Image.asset(
